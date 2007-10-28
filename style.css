@@ -1,0 +1,89 @@
+html {
+	font-family: Arial Unicode MS;
+	margin:0;
+    padding:0;
+}
+body {
+	background-image: url('Iriya_no_sora_UFO_no_natsu022.jpg');
+	background-color: #eeeeee;
+	font-size: 12;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	background-position: top center;
+}
+div#head {
+	text-align: center;
+	font-size: 56;
+	font-weight: bold;
+	font-variant: small-caps;
+}
+a {
+	color: #000000;
+	text-decoration: none;
+}
+a:hover {
+	color: #ffffff;
+	text-decoration: none;
+	background-color: #000000;
+	opacity:0.6;
+	cursor: crosshair;
+}
+div.mainmenu {
+	margin-left: 75%;
+	margin-right: 10px;
+	font-variant: small-caps;
+	text-align: right;
+	clear: both;
+}
+div#content {
+	margin: 10px;
+}
+div.entry {
+	background-color: #ddddee;
+	opacity:0.75;
+	border-left: solid thin black;
+	border-bottom: solid thin black;
+	clear: both;
+	margin-bottom: 10px;
+}
+div.bigdate {
+	font-size: 48;
+	padding: 5px;
+	float: left;
+}
+div.title {
+	font-size: 24;
+	font-variant: small-caps;
+	display: inline;
+}
+div.date {
+	display: inline;
+}
+div.text {
+	text-align:right;
+	text-indent: 1em;
+}
+div.foot {
+	border-top: solid thin #000000;
+	text-align: center;
+	letter-spacing: 2;
+	font-variant: small-caps;
+	word-spacing: 2;
+	clear: both;
+}
+div#comments {
+	margin-left: 50px;
+}
+textarea {
+	margin-left: 5%;
+	margin-right: 5%;
+	width: 90%;
+}
+p.name {
+	text-align: center;
+	margin-bottom: 0px
+}
+div.rate {
+	text-align: center;
+	
+}
