@@ -27,21 +27,6 @@ echo '
     <pubDate>
 		'. date(get_det_var("datefmt")) .'
 	</pubDate>
-    <lastBuildDate>
-		'. date(get_det_var("datefmt")) .'
-	</lastBuildDate>
-    <docs>
-		http://blogs.law.harvard.edu/tech/rss
-	</docs>
-    <generator>
-		notepad++ and php
-	</generator>
-    <managingEditor>
-		'.get_det_var("email").'
-	</managingEditor>
-    <webMaster>
-		'.get_det_var("email").'
-	</webMaster>
 ';
 	if ($id != "" && $cat == "comments" && $id != "0")
 	{
@@ -61,7 +46,7 @@ echo '
 			AND moderated != 1 
 			AND date <= "'.date(get_det_var("datefmt")).'" 
 			AND rating >= -50
-		ORDER BY date DESC ';
+		ORDER BY sticky ASC, date DESC ';
 		if ($id >= 1) { $query .='LIMIT '.$id; }
 		else { $query .='LIMIT 20'; } 
 	}

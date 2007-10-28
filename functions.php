@@ -14,6 +14,26 @@ function date_reset($id){
 	mysql_query('UPDATE '.$GLOBALS['db_prefix'].'data SET date = '.date($GLOBALS['date_fmt']).' WHERE id = "'.$id.' LIMIT 1') or die('Could not reset date');
 }
 
+function styles($default) {
+	$styles = array('style','style2',"style3");
+	while ($first != $default) {
+		foreach ($styles as $style) {
+			if ($style == $default) {
+				$first = $default;
+				break;
+			}
+		}
+	}
+	echo '<link rel="stylesheet" title="default" href="'.$GLOBALS['hurl'].'/'.$default.'.css" />';
+	$stylenum = 1;
+	foreach ($styles as $style) {
+		if ($style != $default) {
+			echo '<link rel="alternate stylesheet" title="alternate '.$stylenum.'" href="'.$GLOBALS['hurl'].'/'.$style.'.css" />';
+			$stylenum++;
+		}
+	}
+}
+
 function mod_change($cat, $id) { 
 	$result = mysql_fetch_array(mysql_query('SELECT '.$cat.',section FROM '.$GLOBALS['db_prefix'].'data WHERE id = "'.$id.'"'), MYSQL_ASSOC);
 	if ($result[$cat] == 1) { $nr = 0; } else { $nr = 1; }
@@ -45,32 +65,31 @@ if (!function_exists('array_combine')) { function array_combine($keys, $values) 
 }
 
 function menu() {
-	/* echo '<div id="mainmenu">
-		<a href="http://www.theappleman.me.uk/view/news">news</a>
-		<a href="http://www.theappleman.me.uk/chatbox">chatbox</a>
-		<a href="http://www.theappleman.me.uk/view/changelog">changelog</a>
-	</div>'; */
 	$site_menu = get_det_array("menu");
 	$site_adm_menu = get_det_array("admmenu");
-	echo '<div class="mainmenu">';
-	foreach ($site_menu as $key => $link) {
-		echo '<a href="'.$link.'">'.ucwords($key).'</a>'; }
-	echo '</div>';
+	$return = NULL;
+	$return .= '<div class="mainmenu">';
+		foreach ($site_menu as $key => $link) {
+			$return .= '<a href="'.$link.'">'.ucwords($key).'</a>'; }
+	$return .= '</div>';
+	
 	$pages_q = 'SELECT id, title FROM '.$GLOBALS['db_prefix'].'data WHERE section LIKE "%pages%" AND moderated != 1 ORDER BY sticky ASC, date ASC';
 	$pages_r = mysql_query($pages_q);
-	echo '<div class="mainmenu">';
-	while ($pages = mysql_fetch_array($pages_r, MYSQL_ASSOC)) {
-		echo '<a href="'.$GLOBALS['hurl'].'/show/'.$pages['id'].'" class="navLink">'.ucwords($pages['title']).'</a>'; }
-	echo '</div>';
-	echo '<div class="mainmenu">';
-	if ($_SESSION['auth'] <= -1) {
-		echo '<a href="'.$GLOBALS['hurl'].'/login" class="navLink">Login</a>'; }
-	if (chkauth($_SESSION['auth']) >= 0) {
-		foreach ($site_adm_menu as $key => $lvl) {
-			if ($_SESSION['auth'] >= $lvl) { echo '<a href="'.$GLOBALS['hurl'].'/'.$key.'" class="navLink">'.ucwords($key).'</a>'; }
-		}
+	$return .= '<div class="mainmenu">';
+		while ($pages = mysql_fetch_array($pages_r, MYSQL_ASSOC)) {
+			$return .= '<a href="'.$GLOBALS['hurl'].'/show/'.$pages['id'].'" class="navLink">'.ucwords($pages['title']).'</a>'; }
+	$return .= '</div>';
+	
+	$return .= '<div class="mainmenu">';
+		if ($_SESSION['auth'] <= -1) {
+			$return .= '<a href="'.$GLOBALS['hurl'].'/login" class="navLink">Login</a>'; }
+		if (chkauth($_SESSION['auth']) >= 0) {
+			foreach ($site_adm_menu as $key => $lvl) {
+				if ($_SESSION['auth'] >= $lvl) { $return .= '<a href="'.$GLOBALS['hurl'].'/'.$key.'" class="navLink">'.ucwords($key).'</a>'; }
+			}
 	}
-	echo '</div>';
+	$return .= '</div>';
+	return $return;
 }
 
 function get_transaction_key() {

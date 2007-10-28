@@ -4,8 +4,8 @@ html {
     padding:0;
 }
 body {
-	background-image: url('Iriya_no_sora_UFO_no_natsu022.png');
-	background-color: #a19dfb;
+	background-image: url('insunn.jpg');
+	background-color: #dfc6fd;
 	font-size: 12;
 	background-repeat: no-repeat;
 	background-attachment: fixed;
@@ -18,31 +18,32 @@ div#head {
 	font-variant: small-caps;
 }
 a {
-	color: #000000;
+	color: #1b12e0;
 	text-decoration: none;
 }
 a:hover {
 	color: #ffffff;
 	text-decoration: none;
-	background-color: #000000;
+	background-color: #1b12e0;
 	opacity:0.6;
 	cursor: crosshair;
 }
 div.mainmenu {
-	margin-left: 75%;
-	margin-right: 10px;
+	margin-right: 25%;
+	margin-left: 10px;
 	font-variant: small-caps;
 	text-align: right;
 	clear: both;
 }
 div#content {
-	margin: 10px;
+	margin-left: 25%;
+	margin-right: 25%;
 }
 div.entry {
-	background-color: #ddddee;
+	background-color: #cd9ee8;
 	opacity:0.75;
-	border-left: solid thin black;
-	border-bottom: solid thin black;
+	border-top: solid thin black;
+	border-right: solid thin black;
 	clear: both;
 	margin-bottom: 10px;
 }

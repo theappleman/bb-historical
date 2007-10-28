@@ -33,8 +33,10 @@ echo '
 		<title>
 			'. get_det_var("sitename") .' '.html_entity_decode($line['title']).'
 		</title>
+		<meta http-equiv=Content-Type content="text/html; charset=UTF-8">
+		<script src="'.$hurl.'/gen_validatorv2.js" type="text/javascript"></script>
 		<link rel="alternate" type="application/rss+xml" href="'.$hurl.'/rss/comments/'.$id.'" title="' . get_det_var("sitename") . ' '.html_entity_decode($line['title']).' feed" />
-		<link rel="stylesheet" href="'. $hurl .'/style.css" type="text/css" title="default" />
+		'.styles("style2").'
 	</head>
 	
 	<body>
@@ -95,13 +97,13 @@ echo '
 							<div class="bigdate">'.$com_num.'</div>
 						';
 						echo '<div class="title">';
-							echo '<a href="'.$hurl.'/user/'. $line2['title'] . '">'. $line2['title'] . '</a>';
+							echo '<a href="'.$hurl.'/user/'. $line2['title'] . '">'. html_entity_decode($line2['title']) . '</a>';
 						echo '</div>';
 						echo '<div class="date">' . $line2['date'] . '</div>';
 						echo '<div class="text">' . html_entity_decode($line2['intro']) . '</div>';
 						echo '
 							<div class="foot">';
-							echo 'Posted by <a href="'.$hurl.'/user/'. $line2['title'] . '">'.$line2['title'].'</a>.';
+							echo 'Posted by <a href="'.$hurl.'/user/'. $line2['title'] . '">'.html_entity_decode($line2['title']).'</a>.';
 							echo '</div>';
 							if ($line2['ratable'] != 1) {
 								echo '<div class="rate">';
@@ -118,7 +120,7 @@ echo '
 					<div class="bigdate">
 						'.$com_num.'
 					</div>
-					<div class="title">comments</div>
+					<div class="title">comment'; if ($com_num != 1) { echo 's'; } echo '</div>
 					<div class="text"><a href="'.$hurl.'/rss/comments/'.$id.'">Comments through RSS feed</a></div>
 					<div class="foot"><a>Post a new comment</a></div>
 					</div>';
@@ -134,7 +136,7 @@ echo '
 					<div class="foot"><input type="submit" value="Lets go!" /><input type="reset" value="Reset" /></div>
 					</form>
 					</div>
-					<script language="JavaScript">
+					<script type="text/javascript">
 						var frmvalidator  = new Validator("frm_com");
 						frmvalidator.addValidation("title","req","Name is required");
 						frmvalidator.addValidation("intro","req","Comment is required");
@@ -143,8 +145,7 @@ echo '
 					</script>
 					';
 			}
-		echo '
-		</div>
+		echo '</div>
 		'. menu() .'
 	</body>
 </html>';

@@ -25,8 +25,9 @@ echo'
 		<title>
 			'.get_det_var("sitename").' chatbox
 		</title>
+		<meta http-equiv=Content-Type content="text/html; charset=UTF-8">
 		<link rel="alternate" type="application/rss+xml" href="'.$hurl.'/rss/chatbox" title="' . get_det_var("sitename") . ' chatbox feed" />
-		<link rel="stylesheet" href="'.$hurl.'/style.css" type="text/css" title="default" />
+		'.styles("style3").'
 		<script src="'.$hurl.'/gen_validatorv2.js" type="text/javascript"></script>
 	</head>
 	
@@ -68,7 +69,7 @@ echo'
 		<div class="foot"><input type="submit" value="Lets go!" /><input type="reset" value="Reset" /></div>
 		</form>
 		</div>
-		<script language="JavaScript">
+		<script type="text/javascript">
 			var frmvalidator  = new Validator("frm_cha");
 			frmvalidator.addValidation("title","req","Name is required");
 			frmvalidator.addValidation("intro","req","Comment is required");

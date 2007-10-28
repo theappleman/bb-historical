@@ -28,8 +28,9 @@ echo '
 		<title>
 			'. get_det_var("sitename") .' '.$cat.'
 		</title>
+		<meta http-equiv=Content-Type content="text/html; charset=UTF-8">
 		<link rel="alternate" type="application/rss+xml" href="'.$hurl.'/rss/'.$cat.'" title="'.$cat.' feed" />
-		<link rel="stylesheet" href="'.$hurl.'/style.css" type="text/css" title="default" />
+		'.styles("style").'
 	</head>
 	
 	<body>
@@ -38,23 +39,15 @@ echo '
 		</div>
 		
 		<div id="content">';
-			while ($line = mysql_fetch_array($result, MYSQL_ASSOC)) {
-			echo '
-				<div class="entry">
-			';
-			echo '
-				<div class="bigdate">'.get_day($line['date']).'</div>
-			';
+		while ($line = mysql_fetch_array($result, MYSQL_ASSOC)) {
+			echo '<div class="entry">';
+			echo '<div class="bigdate">'.get_day($line['date']).'</div>';
 			echo '
 				<div class="title">
 					<a href="'.$hurl.'/show/'.$line['id'].'">'.html_entity_decode($line['title']).'</a>
 				</div>
 			';
-			echo '
-				<div class="date">
-					'.$line['date'].'
-				</div>
-			';
+			echo '<div class="date">'.$line['date'].'</div>';
 			echo '
 				<div class="text">
 					'.html_entity_decode($line['intro']).'
