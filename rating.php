@@ -23,8 +23,8 @@ $result = mysql_result(mysql_query('SELECT rating FROM '.$db_prefix.'data WHERE 
 	mysql_query('UPDATE '.$db_prefix.'data SET rating = "'. $rating .'" WHERE id = "'. $id . '"');
 }
 	
-$r = mysql_query('SELECT section,commentref,id FROM '.$db_prefix.'data WHERE id = "'. $id . '"');
+$r = mysql_query('SELECT section,commentref FROM '.$db_prefix.'data WHERE id = "'. $id . '"');
 $result = mysql_fetch_array($r,MYSQL_BOTH);
 if ($result[0] == "comments") {
 	header('Location:'.$hurl.'/show/'.$result[1]);
-} else { header('Location:'.$hurl.'/view/'.$result[2]); }
+} else { header('Location:'.$hurl.'/show/'.$id); }
