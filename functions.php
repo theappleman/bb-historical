@@ -10,6 +10,11 @@ function get_day($id) {
 	return $day;
 }
 
+function single_section($cat) {
+	$cm = explode(",",$cat,2);
+	return $cm[0];
+}
+
 function date_reset($id){
 	mysql_query('UPDATE '.$GLOBALS['db_prefix'].'data SET date = '.date($GLOBALS['date_fmt']).' WHERE id = "'.$id.' LIMIT 1') or die('Could not reset date');
 }
@@ -53,7 +58,8 @@ function comments($id) {
 } 
 
 function ratings($id) { 
-	$query = 'SELECT rating FROM '.$GLOBALS['db_prefix'].'data WHERE id = "'.$id.'"';
+	global $db_prefix;
+	$query = 'SELECT rating FROM '.$db_prefix.'data WHERE id = "'.$id.'"';
 	$result = mysql_result(mysql_query($query),0);
 	return $result;
 } 

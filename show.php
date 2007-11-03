@@ -26,127 +26,111 @@ $query2 = 'SELECT id,title,date,intro,ratable,rating
 $result2 = mysql_query($query2);
 $com_num = 0;
 $line = mysql_fetch_array($result, MYSQL_ASSOC);
-// $hurl = get_det_var("hurl");
-echo '
-<html>
-	<head>
-		<title>
-			'. get_det_var("sitename") .' '.html_entity_decode($line['title']).'
-		</title>
-		<meta http-equiv=Content-Type content="text/html; charset=UTF-8">
-		<script src="'.$hurl.'/gen_validatorv2.js" type="text/javascript"></script>
-		<link rel="alternate" type="application/rss+xml" href="'.$hurl.'/rss/comments/'.$id.'" title="' . get_det_var("sitename") . ' '.html_entity_decode($line['title']).' feed" />
-		'.styles("style2").'
-	</head>
+
+$return = NULL;$head = NULL;$body = NULL;$comments = NULL;$bot = NULL;$box = NULL;$script=NULL;
+$head .= enclose('title',get_det_var("sitename") .' '.html_entity_decode($line['title']),'');
+$head .= styles($css_def);
+$head .= '<meta http-equiv=Content-Type content="text/html; charset=UTF-8">';
+$head .= enclose('script','','src="'.$hurl.'/gen_validatorv2.js" type="text/javascript"');
+$head .= '<link rel="alternate" type="application/rss+xml" href="'.$hurl.'/rss/comments/'.$id.'" title="'.html_entity_decode($line['title']).' comments feed" />';
+
+$body .= enclose('div',get_det_var("sitename"),'id="head"');
+
+	$entry .= enclose('div',$com_num,'class="bigdate"');
+
+	$title = enclose('a',html_entity_decode($line['title']),'href="'.$hurl.'/show/'.$id.'"');
+	$entry .= enclose('div',$title,'class="title"');
 	
-	<body>
-		<div id="head">
-			'. get_det_var("sitename") .'
-		</div>
+	$entry .= enclose('div',$line['date'],'class="date"');
+	$entry .= enclose('div',html_entity_decode($line['intro']),'class="text"');
+	$entry .= enclose('div',html_entity_decode($line['main']),'class="text"');
+
+	$foot .= ' Posted by ' . enclose('a',$line['owner'],'href="'.$hurl.'/user/'.$line['owner'].'"') . ' ';
+	
+	if ($line['commentable'] >= 1) { 
+		if (comments($id) != 1) { 
+			$comment = 's'; 
+		}
+		$foot .= enclose('a',comments($id). ' comment'.$comment,'href="'.$hurl.'/show/'.$id.'"');
+	}
+	
+	$entry .= enclose('div',$foot,'class="foot"');
+
+	if ($line['ratable'] != 1) {
+		$rate .= enclose('a','-','href="'.$hurl.'/rating/lower/'.$id.'/'.get_transaction_key().'"');
+		$rate .= '(' . ratings($id) . ')';
+		$rate .= enclose('a','+','href="'.$hurl.'/rating/raise/'.$id.'/'.get_transaction_key().'"');
+	}
+
+	$entry .= enclose('div',$rate,'class="rate"');
+
+$body .= enclose('div',$entry,'class="entry"');
+
+if ($line['commentable'] >= 1) {
+	while ($line2 = mysql_fetch_array($result2, MYSQL_ASSOC)) {
+		$loop = NULL;
+		$foot = NULL;
+		$rate = NULL;
+		$com_num += 1;
 		
-		<div id="content">';
-			
-			echo '
-				<div class="entry">
-			';
-			echo '
-				<div class="bigdate">'.$com_num.'</div>
-			';
-			echo '
-				<div class="title">
-					<a>'.html_entity_decode($line['title']).'</a>
-				</div>
-			';
-			echo '
-				<div class="date">
-					'.$line['date'].'
-				</div>
-			';
-			echo '
-				<div class="text">
-					'.html_entity_decode($line['intro']).'
-				</div>
-			';
-			echo '
-				<div class="text">
-					' . html_entity_decode($line['main']) . '
-				</div>
-			';
-			echo '
-				<div class="foot">';
-					echo 'Posted by <a href="'.$hurl.'/user/'.$line['owner'].'">'.$line['owner'].'</a>.';
-					if ($line['commentable'] != 1) { echo ' <a>' . comments($id) . ' comment';
-					if (comments($id) != 1) { echo 's'; } echo '</a>.'; }
-			echo '</div>';
-			if ($line['ratable'] != 1) {
-				echo '<div class="rate">';
-					echo '<a href="'.$hurl.'/rating/lower/'.$id.'/'.get_transaction_key().'">-</a>';
-					echo '(' . ratings($id) . ')';
-					echo '<a href="'.$hurl.'/rating/raise/'.$id.'/'.get_transaction_key().'">+</a>'; 
-				echo '</div>';	
-				}
-			echo '
-			</div>
-			';
-			if ($line['commentable'] != 1) {
-				echo '<div id="comments">';
-				while ($line2 = mysql_fetch_array($result2, MYSQL_ASSOC)) {
-					$com_num += 1;
-					echo '<div class="entry">';
-						echo '
-							<div class="bigdate">'.$com_num.'</div>
-						';
-						echo '<div class="title">';
-							echo '<a href="'.$hurl.'/user/'. $line2['title'] . '">'. html_entity_decode($line2['title']) . '</a>';
-						echo '</div>';
-						echo '<div class="date">' . $line2['date'] . '</div>';
-						echo '<div class="text">' . html_entity_decode($line2['intro']) . '</div>';
-						echo '
-							<div class="foot">';
-							echo 'Posted by <a href="'.$hurl.'/user/'. $line2['title'] . '">'.html_entity_decode($line2['title']).'</a>.';
-							echo '</div>';
-							if ($line2['ratable'] != 1) {
-								echo '<div class="rate">';
-									echo '<a href="'.$hurl.'/rating/lower/'.$line2['id'].'/'.get_transaction_key().'">-</a>';
-									echo '(' . ratings($line2['id']) . ')';
-									echo '<a href="'.$hurl.'/rating/raise/'.$line2['id'].'/'.get_transaction_key().'">+</a>'; 
-								echo '</div>';	
-							}
-					echo '</div>';
-					}
-				echo '</div>';
-				
-				echo '<div class="entry">
-					<div class="bigdate">
-						'.$com_num.'
-					</div>
-					<div class="title">comment'; if ($com_num != 1) { echo 's'; } echo '</div>
-					<div class="text"><a href="'.$hurl.'/rss/comments/'.$id.'">Comments through RSS feed</a></div>
-					<div class="foot"><a>Post a new comment</a></div>
-					</div>';
-				echo '<div class="entry">
-					<form name="frm_com" action="'.$GLOBALS['hurl'].'/addnew.php" method="post">
-					<input type="hidden" name="cat" value="comments" />
-					<input type="hidden" name="commentref" value="'.$id.'" />
-					<input type="hidden" name="moderated" />
-					<input type="hidden" name="commentable" />
-					<input type="hidden" name="transaction_key" value="'.get_transaction_key().'" />
-					<p class="name">Name: <input type="text" name="title" value="'	.	$_SESSION['name']	.	'" /></p>
-					<textarea name="intro" rows="4"></textarea>
-					<div class="foot"><input type="submit" value="Lets go!" /><input type="reset" value="Reset" /></div>
-					</form>
-					</div>
-					<script type="text/javascript">
-						var frmvalidator  = new Validator("frm_com");
-						frmvalidator.addValidation("title","req","Name is required");
-						frmvalidator.addValidation("intro","req","Comment is required");
-						frmvalidator.addValidation("title","maxlength=100","Title must be less than 100 characters");
-						frmvalidator.addValidation("intro","maxlength=500","Comment must be less than 500 characters");
-					</script>
-					';
-			}
-		echo '</div>
-		'. menu() .'
-	</body>
-</html>';
+		$loop .= enclose('div',$com_num,'class="bigdate"');
+
+		$title = enclose('a',html_entity_decode($line2['title']),'href="'.$hurl.'/user/'.$line2['title'].'"');
+		$loop .= enclose('div',$title,'class="title"');
+		
+		$loop .= enclose('div',$line2['date'],'class="date"');
+		$loop .= enclose('div',html_entity_decode($line2['intro']),'class="text"');
+
+		$foot .= ' Posted by ' . enclose('a',$line2['title'],'href="'.$hurl.'/user/'.$line2['title'].'"') . ' ';
+		$loop .= enclose('div',$foot,'class="foot"');
+
+		if ($line2['ratable'] != 1) {
+			$rate .= enclose('a','-','href="'.$hurl.'/rating/lower/'.$line2['id'].'/'.get_transaction_key().'"');
+			$rate .= '(' . ratings($line2['id']) . ')';
+			$rate .= enclose('a','+','href="'.$hurl.'/rating/raise/'.$line2['id'].'/'.get_transaction_key().'"');
+		}
+
+		$loop .= enclose('div',$rate,'class="rate"');
+
+		$comments .= enclose('div',$loop,'class="entry"');
+	} 
+
+	$body .= enclose('div',$comments,'id="comments"');
+		if ($com_num != 1) { $pl = 's'; } else { $pl = NULL; }
+	$bot .= enclose('div',$com_num,'class="bigdate"');
+	$bot .= enclose('div','comment'.$pl,'class="title"');
+	$bot .= enclose('div',enclose('a','Comments through RSS feed','href="'.$hurl.'/rss/comments/'.$id.'"'),'class="text"');
+	if ($line['commentable'] == 2) { $bot .= enclose('div',enclose('a','Post a new comment',''),'class="foot"'); }
+	else { $bot .= enclose('div',enclose('a','No more comments',''),'class="foot"'); }
+	$body .= enclose('div',$bot,'class="entry"');
+}
+if ($line['commentable'] == 2) {
+	$box .= '<input type="hidden" name="cat" value="comments" />
+		<input type="hidden" name="commentref" value="'.$id.'" />
+		<input type="hidden" name="moderated" />
+		<input type="hidden" name="commentable" />';
+	$box .= enclose('p','Name: <input type="text" name="title" value="'.$_SESSION['name'].'" />','class="name"');
+	$box .= enclose('textarea','','name="intro" rows="4"');
+	$box .= enclose('div','<input type="submit" value="Lets go!" /><input type="reset" value="Reset" />','class="foot"');
+	$box = enclose('form',$box,'name="frm_com" action="'.$GLOBALS['hurl'].'/addnew.php" method="post"');
+	$box = enclose('div',$box,'class="entry"');
+	$script .= enclose('script','var frmvalidator  = new Validator("frm_com");
+			frmvalidator.addValidation("title","req","Name is required");
+			frmvalidator.addValidation("intro","req","Comment is required");
+			frmvalidator.addValidation("title","maxlength=100","Title must be less than 100 characters");
+			frmvalidator.addValidation("intro","maxlength=500","Comment must be less than 500 characters");','type="text/javascript"');
+	$box = $box . $script;
+	$body .= $box;
+}
+
+$body = enclose('div',$body,'id="content"') . menu();
+$head = enclose('head',$head,'');
+$body = enclose('body',$body,'');
+$return = enclose('html',$head . $body,'');
+
+echo $return;
+
+// $hurl = get_det_var("hurl");
+
+
 ?>

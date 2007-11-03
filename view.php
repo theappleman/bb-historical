@@ -51,18 +51,20 @@ while ($line = mysql_fetch_array($result, MYSQL_ASSOC)) {
 
 	$foot .= ' Posted by ' . enclose('a',$line['owner'],'href="'.$hurl.'/user/'.$line['owner'].'"') . ' ';
 	
-	if ($line['commentable'] != 1) { 
+	if ($line['commentable'] >= 1) { 
 		if (comments($line['id']) != 1) { 
 			$comment = 's'; 
 		}
-	}
 		$foot .= enclose('a',comments($line['id']). ' comment'.$comment,'href="'.$hurl.'/show/'.$line['id'].'"');
+	}
+
 	$loop .= enclose('div',$foot,'class="foot"');
 
-	
-	$rate .= enclose('a','-','"'.$hurl.'/rating/lower/'.$line['id'].'/'.get_transaction_key().'"');
-	$rate .= '(' . ratings($line['id']) . ')';
-	$rate .= enclose('a','+','"'.$hurl.'/rating/raise/'.$line['id'].'/'.get_transaction_key().'"');
+	if ($line['ratable'] == 0) {
+		$rate .= enclose('a','-','href="'.$hurl.'/rating/lower/'.$line['id'].'/'.get_transaction_key().'"');
+		$rate .= '(' . ratings($line['id']) . ')';
+		$rate .= enclose('a','+','href="'.$hurl.'/rating/raise/'.$line['id'].'/'.get_transaction_key().'"');
+	}
 
 	$loop .= enclose('div',$rate,'class="rate"');
 
@@ -70,7 +72,7 @@ while ($line = mysql_fetch_array($result, MYSQL_ASSOC)) {
 }
 $body = enclose('div',$body,'id="content"');
 $body .= menu();
-
+$body = enclose('body',$body,'');
 $return = enclose('html',$head . $body,'');
 
 echo $return;

@@ -1,7 +1,6 @@
 <?
 // user.php
-// view a series of posts
-
+// view a series of posts from a single user
 require_once('userconf.php');
 require_once('functions.php');
 
@@ -21,61 +20,60 @@ $query = 'SELECT id,title,date,intro,commentable,main,owner,ratable,rating
 		AND rating >= -50
 	ORDER BY sticky ASC, date DESC ';
 if ($id != "0") { $query .= ' LIMIT '.$id; }
+
 $result = mysql_query($query);
-echo '
-<html>
-	<head>
-		<title>
-			'. get_det_var("sitename") .' '.$cat.'
-		</title>
-		<meta http-equiv=Content-Type content="text/html; charset=UTF-8">
-		<link rel="alternate" type="application/rss+xml" href="'.$hurl.'/rss/'.$cat.'" title="'.$cat.' feed" />
-		'.styles("style").'
-	</head>
+// $hurl = get_det_var("hurl");
+$return = NULL;$body = NULL;$head = NULL;
+$head .= enclose("title",get_det_var("sitename").' '. $cat,"");
+$head .= '<link rel="alternate" type="application/rss+xml" href="'.$hurl.'/rss/'.$cat.'" title="' . get_det_var("sitename") . ' '.$cat.' feed" />';
+$head .= styles($css_def);
+$head = enclose('head',$head,'');
+
+$body .= enclose('div',get_det_var("sitename"),'id="head"');
+
+while ($line = mysql_fetch_array($result, MYSQL_ASSOC)) {
+	$loop = NULL;
+	$foot = NULL;
+	$comments = NULL;
+	$rate = NULL;
 	
-	<body>
-		<div id="head">
-			'. get_det_var("sitename").'
-		</div>
-		
-		<div id="content">';
-		while ($line = mysql_fetch_array($result, MYSQL_ASSOC)) {
-			echo '<div class="entry">';
-			echo '<div class="bigdate">'.get_day($line['date']).'</div>';
-			echo '
-				<div class="title">
-					<a href="'.$hurl.'/show/'.$line['id'].'">'.html_entity_decode($line['title']).'</a>
-				</div>
-			';
-			echo '<div class="date">'.$line['date'].'</div>';
-			echo '
-				<div class="text">
-					'.html_entity_decode($line['intro']).'
-				</div>
-			';
-			echo '
-				<div class="foot">';
-			if ($line['main'] != "") { echo '<a href="'.$hurl.'/show/'.$line['id'].'">Read more</a>. '; }
-			echo 'Posted by <a href="'.$hurl.'/user/'.$line['owner'].'">'.$line['owner'].'</a>.';
-			if ($line['commentable'] != 1) { echo ' <a href="'.$hurl.'/show/'.$line['id'].'">' . comments($line['id']) . ' comment';
-			if (comments($line['id']) != 1) { echo 's'; } echo '</a>.'; }
-			echo '
-			</div>
-			';
-			if ($line['ratable'] != 1) {
-				echo '<div class="rate">';
-					echo '<a href="'.$hurl.'/rating/lower/'.$line['id'].'/'.get_transaction_key().'">-</a>';
-					echo '(' . ratings($line['id']) . ')';
-					echo '<a href="'.$hurl.'/rating/raise/'.$line['id'].'/'.get_transaction_key().'">+</a>'; 
-				echo '</div>';	
-				}
-			echo '
-			</div>
-			';
-			} // while
-		echo '
-		</div>
-		'. menu() .'
-	</body>
-</html>';
+	$loop .= enclose('div',get_day($line['date']),'class="bigdate"');
+
+	$title = enclose('a',html_entity_decode($line['title']),'href="'.$hurl.'/show/'.$line['id'].'"');
+	$loop .= enclose('div',$title,'class="title"');
+	
+	$loop .= enclose('div',$line['date'],'class="date"');
+	$loop .= enclose('div',html_entity_decode($line['intro']),'class="text"');
+	
+	if ($line['main'] != "") { 
+		$foot .= enclose('a','Read more','href="'.$hurl.'/show/'.$line['id'].'"'); 
+	}
+
+	$foot .= ' Posted by ' . enclose('a',$line['owner'],'href="'.$hurl.'/user/'.$line['owner'].'"') . ' ';
+	
+	if ($line['commentable'] >= 1) { 
+		if (comments($line['id']) != 1) { 
+			$comment = 's'; 
+		}
+		$foot .= enclose('a',comments($line['id']). ' comment'.$comment,'href="'.$hurl.'/show/'.$line['id'].'"');
+	}
+
+	$loop .= enclose('div',$foot,'class="foot"');
+
+	if ($line['ratable'] == 0) {
+		$rate .= enclose('a','-','href="'.$hurl.'/rating/lower/'.$line['id'].'/'.get_transaction_key().'"');
+		$rate .= '(' . ratings($line['id']) . ')';
+		$rate .= enclose('a','+','href="'.$hurl.'/rating/raise/'.$line['id'].'/'.get_transaction_key().'"');
+	}
+
+	$loop .= enclose('div',$rate,'class="rate"');
+
+	$body .= enclose('div',$loop,'class="entry"');
+}
+$body = enclose('div',$body,'id="content"');
+$body .= menu();
+$body = enclose('body',$body,'');
+$return = enclose('html',$head . $body,'');
+
+echo $return;
 ?>
