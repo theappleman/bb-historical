@@ -65,7 +65,7 @@ echo '
 			if ($line['ratable'] != 1) {
 				echo '<div class="rate">';
 					echo '<a href="'.$hurl.'/rating/lower/'.$line['id'].'/'.get_transaction_key().'">-</a>';
-					echo ' ' . ratings($line['id']) . ' ';
+					echo '(' . ratings($line['id']) . ')';
 					echo '<a href="'.$hurl.'/rating/raise/'.$line['id'].'/'.get_transaction_key().'">+</a>'; 
 				echo '</div>';	
 				}

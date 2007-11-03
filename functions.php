@@ -65,35 +65,48 @@ if (!function_exists('array_combine')) { function array_combine($keys, $values) 
 }
 
 function menu() {
+	$return = NULL;
 	$site_menu = get_det_array("menu");
 	$site_adm_menu = get_det_array("admmenu");
-	$return = NULL;
-	$return .= '<div class="mainmenu">';
-		foreach ($site_menu as $key => $link) {
-			$return .= '<a href="'.$link.'">'.ucwords($key).'</a>'; }
-	$return .= '</div>';
+	foreach ($site_menu as $key => $link) {
+		$sitemenu .= enclose('a',ucwords($key),'href="'.$link.'"');
+		}
+	$return .= enclose("div",$sitemenu,'class="mainmenu"');
 	
 	$pages_q = 'SELECT id, title FROM '.$GLOBALS['db_prefix'].'data WHERE section LIKE "%pages%" AND moderated != 1 ORDER BY sticky ASC, date ASC';
 	$pages_r = mysql_query($pages_q);
-	$return .= '<div class="mainmenu">';
-		while ($pages = mysql_fetch_array($pages_r, MYSQL_ASSOC)) {
-			$return .= '<a href="'.$GLOBALS['hurl'].'/show/'.$pages['id'].'" class="navLink">'.ucwords($pages['title']).'</a>'; }
-	$return .= '</div>';
+	while ($pages = mysql_fetch_array($pages_r, MYSQL_ASSOC)) {
+		$pagelist .= enclose('a',ucwords($pages['title']),'href="'.$GLOBALS['hurl'].'/show/'.$pages['id'].'"');
+		}
+	$return .= enclose("div",$pagelist,'class="mainmenu"');
 	
-	$return .= '<div class="mainmenu">';
-		if ($_SESSION['auth'] <= -1) {
-			$return .= '<a href="'.$GLOBALS['hurl'].'/login" class="navLink">Login</a>'; }
-		if (chkauth($_SESSION['auth']) >= 0) {
-			foreach ($site_adm_menu as $key => $lvl) {
-				if ($_SESSION['auth'] >= $lvl) { $return .= '<a href="'.$GLOBALS['hurl'].'/'.$key.'" class="navLink">'.ucwords($key).'</a>'; }
-			}
+	if ($_SESSION['auth'] <= -1) {
+	$auth .= enclose("a","Login",'href="'.$GLOBALS['hurl'].'/login"');
 	}
-	$return .= '</div>';
+	
+	if (chkauth($_SESSION['auth']) >= 0) {
+		foreach ($site_adm_menu as $key => $lvl) {
+			if ($_SESSION['auth'] >= $lvl) { 
+				$auth .= enclose('a',ucwords($key),'href="'.$GLOBALS['hurl'].'/'.$key.'"');
+				}
+		}
+	}
+	$return .= enclose('div',$auth,'class="mainmenu"');
 	return $return;
 }
 
 function get_transaction_key() {
     return uniqid('', true);
+}
+
+function enclose($type,$content,$opts) {
+	$return = NULL;
+	$return .= '<'.$type;
+	if ($opts != "") { $return .= ' '.$opts; }
+	$return .= '>';
+	$return .= $content;
+	$return .= '</'.$type.'>';
+	return $return;
 }
 
 function check_transaction_key($key) {

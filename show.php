@@ -81,7 +81,7 @@ echo '
 			if ($line['ratable'] != 1) {
 				echo '<div class="rate">';
 					echo '<a href="'.$hurl.'/rating/lower/'.$id.'/'.get_transaction_key().'">-</a>';
-					echo ' ' . ratings($id) . ' ';
+					echo '(' . ratings($id) . ')';
 					echo '<a href="'.$hurl.'/rating/raise/'.$id.'/'.get_transaction_key().'">+</a>'; 
 				echo '</div>';	
 				}
@@ -108,7 +108,7 @@ echo '
 							if ($line2['ratable'] != 1) {
 								echo '<div class="rate">';
 									echo '<a href="'.$hurl.'/rating/lower/'.$line2['id'].'/'.get_transaction_key().'">-</a>';
-									echo ' ' . ratings($line2['id']) . ' ';
+									echo '(' . ratings($line2['id']) . ')';
 									echo '<a href="'.$hurl.'/rating/raise/'.$line2['id'].'/'.get_transaction_key().'">+</a>'; 
 								echo '</div>';	
 							}
