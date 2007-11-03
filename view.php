@@ -25,9 +25,8 @@ $result = mysql_query($query);
 // $hurl = get_det_var("hurl");
 $return = NULL;$body = NULL;$head = NULL;
 $head .= enclose("title",get_det_var("sitename").' '. $cat,"");
-$head .= '
-	<link rel="stylesheet" href="'.$hurl.'/style.css" type="text/css" title="default" />
-	<link rel="alternate" type="application/rss+xml" href="'.$hurl.'/rss/'.$cat.'" title="' . get_det_var("sitename") . ' '.$cat.' feed" />';
+$head .= '<link rel="alternate" type="application/rss+xml" href="'.$hurl.'/rss/'.$cat.'" title="' . get_det_var("sitename") . ' '.$cat.' feed" />';
+$head .= styles($css_def);
 $head = enclose('head',$head,'');
 
 $body .= enclose('div',get_det_var("sitename"),'id="head"');
@@ -50,14 +49,14 @@ while ($line = mysql_fetch_array($result, MYSQL_ASSOC)) {
 		$foot .= enclose('a','Read more','href="'.$hurl.'/show/'.$line['id'].'"'); 
 	}
 
-	$foot .= 'Posted by ' . enclose('a',$line['owner'],'href="'.$hurl.'/user/'.$line['owner'].'"');
+	$foot .= ' Posted by ' . enclose('a',$line['owner'],'href="'.$hurl.'/user/'.$line['owner'].'"') . ' ';
 	
 	if ($line['commentable'] != 1) { 
 		if (comments($line['id']) != 1) { 
 			$comment = 's'; 
 		}
 	}
-		$foot .= enclose('a',comments($line['id']). 'comment'.$comment,'href="'.$hurl.'/show/'.$line['id'].'"');
+		$foot .= enclose('a',comments($line['id']). ' comment'.$comment,'href="'.$hurl.'/show/'.$line['id'].'"');
 	$loop .= enclose('div',$foot,'class="foot"');
 
 	

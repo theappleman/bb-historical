@@ -24,14 +24,15 @@ function styles($default) {
 			}
 		}
 	}
-	echo '<link rel="stylesheet" title="default" href="'.$GLOBALS['hurl'].'/'.$default.'.css" />';
+	$return .= '<link rel="stylesheet" title="default" href="'.$GLOBALS['hurl'].'/'.$default.'.css" />';
 	$stylenum = 1;
 	foreach ($styles as $style) {
 		if ($style != $default) {
-			echo '<link rel="alternate stylesheet" title="alternate '.$stylenum.'" href="'.$GLOBALS['hurl'].'/'.$style.'.css" />';
+			$return .= '<link rel="alternate stylesheet" title="alternate '.$stylenum.'" href="'.$GLOBALS['hurl'].'/'.$style.'.css" />';
 			$stylenum++;
 		}
 	}
+	return $return;
 }
 
 function mod_change($cat, $id) { 
