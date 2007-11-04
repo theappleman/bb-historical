@@ -13,7 +13,7 @@ else {
 
 if (isset($_POST['moderated'])) { $moderated = 0; }	else { $moderated = 1; }
 if (isset($_POST['sticky'])) { $sticky = 0; } else { $sticky = 1; }
-if (isset($_POST['commentable'])) { $commentable = 0; } else { $commentable = 1; }
+$commentable = $_POST['commentable'];
 
 if (isset($_POST['ratable'])) { $ratable = 0; } else { $ratable = 1; }
 if ($_POST['rating'] != "") { $rating = $_POST['rating']; } else { $rating = 0; }

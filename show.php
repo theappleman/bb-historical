@@ -93,22 +93,23 @@ if ($line['commentable'] >= 1) {
 		$loop .= enclose('div',$rate,'class="rate"');
 
 		$comments .= enclose('div',$loop,'class="entry"');
-	} 
-
+		
 	$body .= enclose('div',$comments,'id="comments"');
-		if ($com_num != 1) { $pl = 's'; } else { $pl = NULL; }
+	if ($com_num != 1) { $pl = 's'; } else { $pl = NULL; }
 	$bot .= enclose('div',$com_num,'class="bigdate"');
 	$bot .= enclose('div','comment'.$pl,'class="title"');
 	$bot .= enclose('div',enclose('a','Comments through RSS feed','href="'.$hurl.'/rss/comments/'.$id.'"'),'class="text"');
 	if ($line['commentable'] == 2) { $bot .= enclose('div',enclose('a','Post a new comment',''),'class="foot"'); }
 	else { $bot .= enclose('div',enclose('a','No more comments',''),'class="foot"'); }
 	$body .= enclose('div',$bot,'class="entry"');
+	} 
 }
 if ($line['commentable'] == 2) {
 	$box .= '<input type="hidden" name="cat" value="comments" />
 		<input type="hidden" name="commentref" value="'.$id.'" />
 		<input type="hidden" name="moderated" />
-		<input type="hidden" name="commentable" />';
+		<input type="hidden" name="transaction_key" value="'.get_transaction_key().'" />
+		<input type="hidden" name="commentable" value="2" />';
 	$box .= enclose('p','Name: <input type="text" name="title" value="'.$_SESSION['name'].'" />','class="name"');
 	$box .= enclose('textarea','','name="intro" rows="4"');
 	$box .= enclose('div','<input type="submit" value="Lets go!" /><input type="reset" value="Reset" />','class="foot"');

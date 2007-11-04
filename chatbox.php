@@ -71,7 +71,7 @@ $box .= '<input type="hidden" name="cat" value="comments" />
 	<input type="hidden" name="cat" value="chatbox" />
 	<input type="hidden" name="moderated" />
 	<input type="hidden" name="transaction_key" value="'.get_transaction_key().'" />
-	<input type="hidden" name="commentable" />';
+	<input type="hidden" name="commentable" value="2" />';
 	$box .= enclose('p','Name: <input type="text" name="title" value="'.$_SESSION['name'].'" />','class="name"');
 	$box .= enclose('textarea','','name="intro" rows="4"');
 	$box .= enclose('div','<input type="submit" value="Lets go!" /><input type="reset" value="Reset" />','class="foot"');
