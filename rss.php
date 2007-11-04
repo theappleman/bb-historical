@@ -9,26 +9,7 @@ $cat = $_GET['cat'];
 $id = $_GET['id'];
 $_REQUEST = array(NULL);
 
-echo '
-<rss version="2.0">
-  <channel>
-    <title>
-		'. get_det_var("sitename").' '.$cat.'
-	</title>
-    <link>
-		'.$hurl.'
-	</link>
-    <description>
-		'. get_det_vn("meta","desc").'
-	</description>
-    <language>
-		en-gb
-	</language>
-    <pubDate>
-		'. date(get_det_var("datefmt")) .'
-	</pubDate>
-';
-	if ($id != "" && $cat == "comments" && $id != "0")
+if ($id != "" && $cat == "comments" && $id != "0")
 	{
 	$query = 'SELECT id, title, date, intro, owner
 			FROM '.$db_prefix.'data 
@@ -50,21 +31,32 @@ echo '
 		if ($id >= 1) { $query .='LIMIT '.$id; }
 		else { $query .='LIMIT 20'; } 
 	}
-	$result = mysql_query($query); 
-	while ($line = mysql_fetch_array($result, MYSQL_ASSOC)) {
-   		echo '<item>';
-			echo '<title>'	.	html_entity_decode($line['title'])	.	'</title>';
-			echo '<description>'	.	html_entity_decode($line['intro'])	 .	 '</description>';
-			echo '<pubDate>'	. 	$line['date']	 .	 '</pubDate>';
-			echo '<author>'	.	$line['owner']	.	'</author>';
-			echo '<guid>'.$hurl.'/show/';
-				if ($cat == "comments") { echo $id; }
-				else {	echo $line['id']; }
-			echo '</guid>';
-		echo '</item>';
-	}
-echo '
-	</channel>
-</rss>
-';
+$result = mysql_query($query);
+	
+$return = NULL;
+$channel = NULL;
+
+$channel .= enclose('title',get_det_var("sitename").' '.$cat,'');
+$channel .= enclose('link',$hurl,'');
+$channel .= enclose('description',get_det_vn("meta","desc"),'');
+$channel .= enclose('language','en-gb','');
+$channel .= enclose('pubDate',date(get_det_var("datefmt")),'');
+
+$channel = enclose('channel',$channel,'');
+
+while ($line = mysql_fetch_array($result, MYSQL_ASSOC)) {
+	$item = NULL;
+	$item .= enclose('title',html_entity_decode($line['title']),'');
+	$item .= enclose('description',html_entity_decode($line['intro']),'');
+	$item .= enclose('pubDate',$line['date'],'');
+	$item .= enclose('author',$line['owner'],'');
+	if ($cat == "comments") { $perm = $id; }
+		else {	$perm = $line['id']; }
+	$item .= enclose('guid',$hurl.'/show/'.$perm,'');
+	$items .= enclose('item',$item,'');
+}
+
+$return = enclose('rss',$channel.$items,'version="2.0"');
+
+echo $return;
 ?>
