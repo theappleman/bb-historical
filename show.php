@@ -72,28 +72,21 @@ if ($line['commentable'] >= 1) {
 		$foot = NULL;
 		$rate = NULL;
 		$com_num += 1;
-		
 		$loop .= enclose('div',$com_num,'class="bigdate"');
-
 		$title = enclose('a',html_entity_decode($line2['title']),'href="'.$hurl.'/user/'.$line2['title'].'"');
 		$loop .= enclose('div',$title,'class="title"');
-		
 		$loop .= enclose('div',$line2['date'],'class="date"');
 		$loop .= enclose('div',html_entity_decode($line2['intro']),'class="text"');
-
 		$foot .= ' Posted by ' . enclose('a',$line2['title'],'href="'.$hurl.'/user/'.$line2['title'].'"') . ' ';
 		$loop .= enclose('div',$foot,'class="foot"');
-
 		if ($line2['ratable'] != 1) {
 			$rate .= enclose('a','-','href="'.$hurl.'/rating/lower/'.$line2['id'].'/'.get_transaction_key().'"');
 			$rate .= '(' . ratings($line2['id']) . ')';
 			$rate .= enclose('a','+','href="'.$hurl.'/rating/raise/'.$line2['id'].'/'.get_transaction_key().'"');
 		}
-
 		$loop .= enclose('div',$rate,'class="rate"');
-
 		$comments .= enclose('div',$loop,'class="entry"');
-		
+	} 
 	$body .= enclose('div',$comments,'id="comments"');
 	if ($com_num != 1) { $pl = 's'; } else { $pl = NULL; }
 	$bot .= enclose('div',$com_num,'class="bigdate"');
@@ -102,7 +95,6 @@ if ($line['commentable'] >= 1) {
 	if ($line['commentable'] == 2) { $bot .= enclose('div',enclose('a','Post a new comment',''),'class="foot"'); }
 	else { $bot .= enclose('div',enclose('a','No more comments',''),'class="foot"'); }
 	$body .= enclose('div',$bot,'class="entry"');
-	} 
 }
 if ($line['commentable'] == 2) {
 	$box .= '<input type="hidden" name="cat" value="comments" />
