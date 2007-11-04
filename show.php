@@ -35,35 +35,24 @@ $head .= enclose('script','','src="'.$hurl.'/gen_validatorv2.js" type="text/java
 $head .= '<link rel="alternate" type="application/rss+xml" href="'.$hurl.'/rss/comments/'.$id.'" title="'.html_entity_decode($line['title']).' comments feed" />';
 
 $body .= enclose('div',get_det_var("sitename"),'id="head"');
-
-	$entry .= enclose('div',$com_num,'class="bigdate"');
-
-	$title = enclose('a',html_entity_decode($line['title']),'href="'.$hurl.'/show/'.$id.'"');
-	$entry .= enclose('div',$title,'class="title"');
-	
-	$entry .= enclose('div',$line['date'],'class="date"');
-	$entry .= enclose('div',html_entity_decode($line['intro']),'class="text"');
-	$entry .= enclose('div',html_entity_decode($line['main']),'class="text"');
-
-	$foot .= ' Posted by ' . enclose('a',$line['owner'],'href="'.$hurl.'/user/'.$line['owner'].'"') . ' ';
-	
-	if ($line['commentable'] >= 1) { 
-		if (comments($id) != 1) { 
-			$comment = 's'; 
-		}
-		$foot .= enclose('a',comments($id). ' comment'.$comment,'href="'.$hurl.'/show/'.$id.'"');
-	}
-	
-	$entry .= enclose('div',$foot,'class="foot"');
-
-	if ($line['ratable'] != 1) {
-		$rate .= enclose('a','-','href="'.$hurl.'/rating/lower/'.$id.'/'.get_transaction_key().'"');
-		$rate .= '(' . ratings($id) . ')';
-		$rate .= enclose('a','+','href="'.$hurl.'/rating/raise/'.$id.'/'.get_transaction_key().'"');
-	}
-
-	$entry .= enclose('div',$rate,'class="rate"');
-
+$entry .= enclose('div',$com_num,'class="bigdate"');
+$title = enclose('a',html_entity_decode($line['title']),'href="'.$hurl.'/show/'.$id.'"');
+$entry .= enclose('div',$title,'class="title"');
+$entry .= enclose('div',$line['date'],'class="date"');
+$entry .= enclose('div',html_entity_decode($line['intro']),'class="text"');
+$entry .= enclose('div',html_entity_decode($line['main']),'class="text"');
+$foot .= ' Posted by ' . enclose('a',$line['owner'],'href="'.$hurl.'/user/'.$line['owner'].'"') . ' ';
+if ($line['commentable'] >= 1) { 
+	if (comments($id) != 1) { $comment = 's'; }
+	$foot .= enclose('a',comments($id). ' comment'.$comment,'href="'.$hurl.'/show/'.$id.'"');
+}
+$entry .= enclose('div',$foot,'class="foot"');
+if ($line['ratable'] != 1) {
+	$rate .= enclose('a','-','href="'.$hurl.'/rating/lower/'.$id.'/'.get_transaction_key().'"');
+	$rate .= '(' . ratings($id) . ')';
+	$rate .= enclose('a','+','href="'.$hurl.'/rating/raise/'.$id.'/'.get_transaction_key().'"');
+}
+$entry .= enclose('div',$rate,'class="rate"');
 $body .= enclose('div',$entry,'class="entry"');
 
 if ($line['commentable'] >= 1) {
@@ -122,8 +111,4 @@ $body = enclose('body',$body,'');
 $return = enclose('html',$head . $body,'');
 
 echo $return;
-
-// $hurl = get_det_var("hurl");
-
-
 ?>

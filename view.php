@@ -70,8 +70,7 @@ while ($line = mysql_fetch_array($result, MYSQL_ASSOC)) {
 
 	$body .= enclose('div',$loop,'class="entry"');
 }
-$body = enclose('div',$body,'id="content"');
-$body .= menu();
+$body = enclose('div',$body,'id="content"') . menu();
 $body = enclose('body',$body,'');
 $return = enclose('html',$head . $body,'');
 

@@ -4,6 +4,11 @@ session_start();
 $link = mysql_connect($db_host, $db_user, $db_pass) or die('Could not connect: ' . mysql_error());
 mysql_select_db($db_data) or die('Could not select database: ' . mysql_error() );
 
+function meta() {
+	$meta .= '<meta http-equiv=Content-Type content="text/html; charset=UTF-8">';
+	return $meta;
+}
+
 function get_day($id) {
 	list($p,$l) = explode(" ",$id,2);
 	list($year,$month,$day) = explode("-",$p,4);
@@ -87,7 +92,7 @@ function menu() {
 		}
 	$return .= enclose("div",$pagelist,'class="mainmenu"');
 	
-	if ($_SESSION['auth'] <= -1) {
+	if (chkauth($_SESSION['auth']) <= -1) {
 	$auth .= enclose("a","Login",'href="'.$GLOBALS['hurl'].'/login"');
 	}
 	

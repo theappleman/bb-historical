@@ -85,8 +85,7 @@ $box .= '<input type="hidden" name="cat" value="comments" />
 	$box = $box . $script;
 	$body .= $box;
 
-$body = enclose('div',$body,'id="content"');
-$body .= menu();
+$body = enclose('div',$body,'id="content"') . menu();
 $body = enclose('body',$body,'');
 $return = enclose('html',$head . $body,'');
 
