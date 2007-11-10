@@ -63,7 +63,7 @@ if (check_transaction_key($transaction_key)) {
 if ($commentref == 0) {
 	if ($cm == TRUE) { $cm = explode(",",$cat,2); header('Location:'.$hurl.'/view/'.$cm[0]); }
 	else { 
-	if ($cat = "chatbox") {
+	if ($cat == "chatbox") {
 		header('Location:'.$hurl.'/chatbox');
 	} else { header('Location:'.$hurl.'/view/'.$cat); }
 	}

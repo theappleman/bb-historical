@@ -23,6 +23,7 @@ $return = NULL;$body = NULL;$head = NULL;
 $head .= enclose("title",get_det_var("sitename").' '. $cat,"");
 $head .= '<link rel="alternate" type="application/rss+xml" href="'.$hurl.'/rss/'.$cat.'" title="' . get_det_var("sitename") . ' '.$cat.' feed" />';
 $head .= styles($css_def);
+$head .= enclose('script','','src="'.$hurl.'/gen_validatorv2.js" type="text/javascript"');
 $head = enclose('head',$head,'');
 
 $body .= enclose('div',get_det_var("sitename"),'id="head"');
@@ -73,9 +74,9 @@ $box .= '<input type="hidden" name="cat" value="comments" />
 	<input type="hidden" name="transaction_key" value="'.get_transaction_key().'" />
 	<input type="hidden" name="commentable" value="2" />';
 	$box .= enclose('p','Name: <input type="text" name="title" value="'.$_SESSION['name'].'" />','class="name"');
-	$box .= enclose('textarea','','name="intro" rows="4"');
+	$box .= enclose('textarea','','name="intro" rows="5" columns="100"');
 	$box .= enclose('div','<input type="submit" value="Lets go!" /><input type="reset" value="Reset" />','class="foot"');
-	$box = enclose('form',$box,'name="frm_cha" action="'.$GLOBALS['hurl'].'/addnew.php" method="post"');
+	$box = enclose('form',$box,'name="frm_cha" action="'.$GLOBALS['hurl'].'/addnew" method="post"');
 	$box = enclose('div',$box,'class="entry"');
 	$script .= enclose('script','var frmvalidator  = new Validator("frm_cha");
 			frmvalidator.addValidation("title","req","Name is required");

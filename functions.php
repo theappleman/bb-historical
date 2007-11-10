@@ -9,6 +9,11 @@ function meta() {
 	return $meta;
 }
 
+function comment_types() {
+	$comments = array(2=>'Commentable',1=>'Show current',0=>'Not commentable');
+	return $comments;
+}
+
 function get_day($id) {
 	list($p,$l) = explode(" ",$id,2);
 	list($year,$month,$day) = explode("-",$p,4);
