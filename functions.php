@@ -4,8 +4,9 @@ session_start();
 $link = mysql_connect($db_host, $db_user, $db_pass) or die('Could not connect: ' . mysql_error());
 mysql_select_db($db_data) or die('Could not select database: ' . mysql_error() );
 
-function meta() {
+function head() {
 	$meta .= '<meta http-equiv=Content-Type content="text/html; charset=UTF-8">';
+	$meta .= '<script src="'.$hurl.'/ie7-standard-p.js" type="text/javascript"></script>';
 	return $meta;
 }
 

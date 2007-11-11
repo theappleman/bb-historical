@@ -30,9 +30,9 @@ $line = mysql_fetch_array($result, MYSQL_ASSOC);
 $return = NULL;$head = NULL;$body = NULL;$comments = NULL;$bot = NULL;$box = NULL;$script=NULL;
 $head .= enclose('title',get_det_var("sitename") .' '.html_entity_decode($line['title']),'');
 $head .= styles($css_def);
-$head .= '<meta http-equiv=Content-Type content="text/html; charset=UTF-8">';
 $head .= enclose('script','','src="'.$hurl.'/gen_validatorv2.js" type="text/javascript"');
 $head .= '<link rel="alternate" type="application/rss+xml" href="'.$hurl.'/rss/comments/'.$id.'" title="'.html_entity_decode($line['title']).' comments feed" />';
+$head .= head();
 
 $body .= enclose('div',get_det_var("sitename"),'id="head"');
 $entry .= enclose('div',$com_num,'class="bigdate"');

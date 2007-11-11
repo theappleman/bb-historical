@@ -27,6 +27,7 @@ $return = NULL;$body = NULL;$head = NULL;
 $head .= enclose("title",get_det_var("sitename").' '. $cat,"");
 $head .= '<link rel="alternate" type="application/rss+xml" href="'.$hurl.'/rss/'.$cat.'" title="' . get_det_var("sitename") . ' '.$cat.' feed" />';
 $head .= styles($css_def);
+$head .= head();
 $head = enclose('head',$head,'');
 
 $body .= enclose('div',get_det_var("sitename"),'id="head"');

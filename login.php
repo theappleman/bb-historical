@@ -6,6 +6,7 @@ $head = NULL; $body = NULL;
 $head .= enclose('title',get_det_var("sitename"). ' login','');
 $head .= enclose('script','','src="'.$hurl.'/gen_validatorv2.js" type="text/javascript"');
 $head .= styles($css_def);
+$head .= head();
 $head = enclose('head',$head,'');
 
 $top .= enclose('div',get_det_var("sitename"),'id="head"');

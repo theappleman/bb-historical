@@ -9,6 +9,7 @@ $head .= enclose("title",get_det_var("sitename").' '. $cat,"");
 $head .= '<link rel="alternate" type="application/rss+xml" href="'.$hurl.'/rss/'.$cat.'" title="' . get_det_var("sitename") . ' '.$cat.' feed" />';
 $head .= styles($css_def);
 $head .= enclose('script','','src="'.$hurl.'/gen_validatorv2.js" type="text/javascript"');
+$head .= head();
 $head = enclose('head',$head,'');
 
 $top .= enclose('div',get_det_var("sitename"),'id="head"');
