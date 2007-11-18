@@ -34,31 +34,43 @@ if (isset($_POST['owner']) && $_POST['owner'] != "") {
 } else { $owner = $title; }
 $main = htmlentities($_POST['main']);
 $transaction_key = $_POST['transaction_key'];
+$sess_id = $_POST['session_id'];
 $_REQUEST = array(NULL);
 
 if ($cat != "comments" && $cat != "chatbox") {
 	$site_usr_lvls = get_det_array("usertype");
 	if ($_SESSION['auth'] < $site_usr_lvls['writer']) {
+		$allowed = false;
 		die("Not enough privilage to post");
+		exit;
 	}
-}
+	$session = mysql_result( mysql_query( 'SELECT session FROM '.$db_prefix.'users WHERE username = "'.$owner.'" LIMIT 1' ) , 0 );
+	if ($session != session_id() || $session != $sess_id || session_id() != $sess_id || session_id() == NULL || $sess_id == NULL || $session == NULL) {
+		$allowed = false;
+		die('Session ids do not match');
+		exit;
+	}
+	$allowed = true;
+} else { $allowed = true; }
 
-if (check_transaction_key($transaction_key)) {
-	mysql_query('INSERT INTO '.$db_prefix.'data
-		(title,section, date, intro, main, moderated, commentable, commentref,owner,sticky,ratable) 
-		VALUES ("' . $title . '", 
-			"'. $cat .'",
-			"'.$date.'", 
-			"' . $intro . '",
-			"'. $main .'",
-			"' . $moderated . '",
-			"' . $commentable . '",
-			"' . $commentref . '",
-			"'.$owner.'",
-			"'.$sticky.'",
-			"'.$ratable.'"
-			)') or die('Sorry, there was a problem and your post could not be completed. ' .mysql_error() );
-} else { die("Double post detected!"); };
+if($allowed == true) {
+	if (check_transaction_key($transaction_key)) {
+		mysql_query('INSERT INTO '.$db_prefix.'data
+			(title,section, date, intro, main, moderated, commentable, commentref,owner,sticky,ratable) 
+			VALUES ("' . $title . '", 
+				"'. $cat .'",
+				"'.$date.'", 
+				"' . $intro . '",
+				"'. $main .'",
+				"' . $moderated . '",
+				"' . $commentable . '",
+				"' . $commentref . '",
+				"'.$owner.'",
+				"'.$sticky.'",
+				"'.$ratable.'"
+				)') or die('Sorry, there was a problem and your post could not be completed. ' .mysql_error() );
+	} else { die("Double post detected!"); }
+}
 
 if ($commentref == 0) {
 	if ($cm == TRUE) { $cm = explode(",",$cat,2); header('Location:'.$hurl.'/view/'.$cm[0]); }

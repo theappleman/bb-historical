@@ -110,6 +110,11 @@ function menu() {
 		}
 	}
 	$return .= enclose('div',$auth,'class="mainmenu"');
+	global $snapcode;
+	if ($snapcode != "") {
+		$return .= enclose('script','','type="text/javascript" src="http://shots.snap.com/ss/'.$snapcode.'/snap_shots.js"');
+	}
+	
 	return $return;
 }
 
@@ -170,6 +175,7 @@ function login($username, $password) {
 			if (crypt($password,$user['password']) == $user['password']) {
 				$_SESSION['auth'] = $user['type'];
 				$_SESSION['name'] = $user['username'];
+				mysql_query('UPDATE '.$db_prefix.'users SET session = "'.session_id().'" WHERE username = "'.$_SESSION['name'].'" LIMIT 1');
 				return $_SESSION['auth']; 
 			} else { return -2; } 
 		}

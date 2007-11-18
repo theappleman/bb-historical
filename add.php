@@ -33,6 +33,7 @@ $form .= enclose('select',$commentable,'name="commentable"') . '<br />';
 $form .= 'Moderate: <input type="checkbox" name="moderated" /><br />
 	Sticky: <input type="checkbox" name="sticky" /><br />
 	Ratable: <input type="checkbox" name="ratable" /><br />
+	<input type="hidden" name="session_id" value="'. session_id() .'" />
 	<input type="hidden" name="transaction_key" value="'.get_transaction_key().'" />
 	<input type="hidden" name="owner" value="'.$_SESSION['name'].'" />
 	<input type="submit" value="Lets go!" /><input type="reset" value="Reset" />';
