@@ -31,7 +31,7 @@ $body .= enclose('div',enclose('a','lost your password?','href="'.$hurl.'/lpw"')
 $body = enclose('div',$body,'class="entry"');
 $body = enclose('div',$body,'id="content"') . menu();
 $body = enclose('body',$top . $body,'');
-$return = enclose('html',$head . $body,'');
+$return = enclose('html',$head . $body,'xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"');
 
 echo $return;
 

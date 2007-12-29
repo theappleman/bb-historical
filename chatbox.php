@@ -89,7 +89,7 @@ $box .= '<input type="hidden" name="cat" value="comments" />
 
 $body = enclose('div',$body,'id="content"') . menu();
 $body = enclose('body',$body,'');
-$return = enclose('html',$head . $body,'');
-
+$return = enclose('html',$head . $body,'xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"');
+//$return = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">' . $return;
 echo $return;
 ?>
