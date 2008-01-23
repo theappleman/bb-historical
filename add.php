@@ -5,7 +5,7 @@ require_once('userconf.php');
 require_once('functions.php');
 
 $return = NULL;$body = NULL;$head = NULL;$rry = NULL;$commentable = NULL;
-$head .= enclose("title",get_det_var("sitename").' '. $cat,"");
+$head .= enclose("title",get_det_var("sitename").' add',"");
 $head .= '<link rel="alternate" type="application/rss+xml" href="'.$hurl.'/rss/'.$cat.'" title="' . get_det_var("sitename") . ' '.$cat.' feed" />';
 $head .= styles($css_def);
 $head .= enclose('script','','src="'.$hurl.'/gen_validatorv2.js" type="text/javascript"');
