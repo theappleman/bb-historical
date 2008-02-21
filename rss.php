@@ -9,38 +9,46 @@ $cat = $_GET['cat'];
 $id = $_GET['id'];
 $_REQUEST = array(NULL);
 
+$query = 'SELECT id,title,date,intro,owner FROM '.$db_prefix.'data ';
+
 if ($id != "" && $cat == "comments" && $id != "0")
 	{
-	$query = 'SELECT id, title, date, intro, owner
-			FROM '.$db_prefix.'data 
-			WHERE section = "comments" 
+	$query .= 'WHERE section = "comments" 
 				AND commentref = "'.$id.'" 
 				AND moderated != "1" 
 				AND rating >= -50
-				AND date <= "'.date(get_det_var("datefmt")).'"
+				AND date <= "'.date($datefmt).'"
 			ORDER BY sticky ASC, date DESC';
 	}
 	else {
-		$query = 'SELECT id,title,date,intro,owner 
-		FROM '.$db_prefix.'data 
-		WHERE section LIKE "%'.$cat.'%" 
-			AND moderated != 1 
-			AND date <= "'.date(get_det_var("datefmt")).'" 
-			AND rating >= -50
-		ORDER BY sticky ASC, date DESC ';
-		if ($id >= 1) { $query .='LIMIT '.$id; }
-		else { $query .='LIMIT 20'; } 
+		if($cat != "") {
+			$query .= '
+			WHERE section LIKE "%'.$cat.'%" 
+				AND moderated != 1 
+				AND date <= "'.date($datefmt).'" 
+				AND rating >= -50
+			ORDER BY sticky ASC, date DESC ';
+			 
+		}
+		else {
+			$query .= 'WHERE moderated != 1 
+				AND date <= "'.date($datefmt).'" 
+				AND rating >= -50
+			ORDER BY sticky ASC, date DESC ';
+		}
+	if ($id >= 1) { $query .='LIMIT '.$id; }
+		else { $query .='LIMIT 20'; }
 	}
 $result = mysql_query($query);
 	
 $return = NULL;
 $channel = NULL;
 
-$channel .= enclose('title',get_det_var("sitename").' '.$cat,'');
+$channel .= enclose('title',$sitename.' '.$cat,'');
 $channel .= enclose('link',$hurl,'');
-$channel .= enclose('description',get_det_vn("meta","desc"),'');
+$channel .= enclose('description',$meta_desc,'');
 $channel .= enclose('language','en-gb','');
-$channel .= enclose('pubDate',date(get_det_var("datefmt")),'');
+$channel .= enclose('pubDate',date($datefmt),'');
 
 $channel = enclose('channel',$channel,'');
 

@@ -5,10 +5,10 @@
 require_once('userconf.php');
 require_once('functions.php');
 
-if (isset($_POST['reset'])) { $date = date(get_det_var("datefmt")); }
+if (isset($_POST['reset'])) { $date = date($datefmt); }
 else { 
 	if ($_POST['date'] != "") { $date = htmlspecialchars($_POST['date']); }
-	else { $date = date(get_det_var("datefmt")); } 
+	else { $date = date($datefmt); } 
 }
 
 if (isset($_POST['moderated'])) { $moderated = 0; }	else { $moderated = 1; }
@@ -23,7 +23,7 @@ if (isset($_POST['commentref']) && $_POST['commentref'] != 0) { $commentref = $_
 if ($_POST['cat'] == "other") {
 	if (isset($_POST['section']) && $_POST['section'] != "") {
 		$cat = $_POST['section']; $cm = TRUE;
-	} else { $cat = $get_det_var("default"); }
+	} else { $cat = $default; }
 } else { $cat = $_POST['cat']; }
 
 $title = strip_tags(htmlentities($_POST['title']));
@@ -37,21 +37,7 @@ $transaction_key = $_POST['transaction_key'];
 $sess_id = $_POST['session_id'];
 $_REQUEST = array(NULL);
 
-if ($cat != "comments" && $cat != "chatbox") {
-	$site_usr_lvls = get_det_array("usertype");
-	if ($_SESSION['auth'] < $site_usr_lvls['writer']) {
-		$allowed = false;
-		die("Not enough privilage to post");
-		exit;
-	}
-	$session = mysql_result( mysql_query( 'SELECT session FROM '.$db_prefix.'users WHERE username = "'.$owner.'" LIMIT 1' ) , 0 );
-	if ($session != session_id() || $session != $sess_id || session_id() != $sess_id || session_id() == NULL || $sess_id == NULL || $session == NULL) {
-		$allowed = false;
-		die('Session ids do not match');
-		exit;
-	}
-	$allowed = true;
-} else { $allowed = true; }
+$allowed = true;
 
 if($allowed == true) {
 	if (check_transaction_key($transaction_key)) {
@@ -72,14 +58,13 @@ if($allowed == true) {
 	} else { die("Double post detected!"); }
 }
 
-if ($commentref == 0) {
-	if ($cm == TRUE) { $cm = explode(",",$cat,2); header('Location:'.$hurl.'/view/'.$cm[0]); }
-	else { 
+if ($commentref == 0) { 
 	if ($cat == "chatbox") {
 		header('Location:'.$hurl.'/chatbox');
-	} else { header('Location:'.$hurl.'/view/'.$cat); }
-	}
-} else { header('Location:'.$hurl.'/show/'.$commentref); }
+	} else { header('Location:'.$hurl.'/'.$cat); }
+
+} else { mysql_query('UPDATE '.$db_prefix.'data SET lastupd = "'.date($datefmt).'" WHERE id = "'.$commentref.'" LIMIT 1') or die('Could not update post time (don\'t worry, your post has gone through).');
+header('Location:'.$hurl.'/show/'.$commentref); }
 
 
 ?>

@@ -1,10 +1,13 @@
+Options -Indexes
 RewriteEngine on
 
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^([a-z]+)$ $1.php
-RewriteRule ^([a-z]+)/([a-z]+)$ $1.php?cat=$2
-RewriteRule ^([a-z]+)/([0-9]+)$ $1.php?id=$2
-RewriteRule ^([a-z]+)/([a-z]+)/([0-9]+)$ $1.php?cat=$2&id=$3
-RewriteRule ^([a-z]+)/([a-z]+)/([0-9]+)/(.+)$ $1.php?cat=$2&id=$3&key=$4
+RewriteRule ^show/([0-9]+)$ show.php?id=$1
 RewriteRule ^user/(.+)$ user.php?cat=$1
+RewriteRule ^rating/([a-z]+)/([0-9]+)/(.+)$ rating.php?cat=$1&id=$2&key=$3
+RewriteRule ^([A-Za-z0-9]+)/([0-9]+)$ chatbox.php?cat=$1&id=$2
+RewriteRule ^rss/([A-Za-z0-9]+)/([0-9]+)$ rss.php?cat=$1&id=$2
+RewriteRule ^rss/([A-Za-z0-9]+)$ rss.php?cat=$1
+RewriteRule ^comments$ view.php?cat=comments
+RewriteRule ^([A-Za-z0-9]+)$ chatbox.php?cat=$1

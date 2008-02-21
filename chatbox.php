@@ -4,30 +4,31 @@
 require_once('userconf.php');
 require_once('functions.php');
 
+$cat = $_REQUEST['cat'];
 $id = $_REQUEST['id'];
 $_REQUEST = array(NULL);
 
 if ($id == "") { $id = "10"; }
 $query = 'SELECT id,title,date,intro,commentable,main,owner,ratable,rating 
 	FROM '.$db_prefix.'data 
-	WHERE section = "chatbox" 
+	WHERE section = "'.$cat.'" 
 		AND moderated != 1 
-		AND date <= "'.date(get_det_var("datefmt")).'" 
+		AND date <= "'.date($datefmt).'" 
 		AND rating >= -50
-	ORDER BY sticky ASC, date DESC ';
+	ORDER BY sticky ASC, lastupd DESC, date DESC ';
 if ($id != "0") { $query .= ' LIMIT '.$id; }
 
 $result = mysql_query($query);
-// $hurl = get_det_var("hurl");
+
 $return = NULL;$body = NULL;$head = NULL;
-$head .= enclose("title",get_det_var("sitename").' '. $cat,"");
-$head .= '<link rel="alternate" type="application/rss+xml" href="'.$hurl.'/rss/'.$cat.'" title="' . get_det_var("sitename") . ' '.$cat.' feed" />';
-$head .= styles($css_def);
+$head .= enclose("title",$sitename.' '. $cat,"");
+$head .= '<link rel="alternate" type="application/rss+xml" href="'.$hurl.'/rss/'.$cat.'" title="' . $sitename . ' '.$cat.' feed" />';
+$head .= styles();
 $head .= enclose('script','','src="'.$hurl.'/gen_validatorv2.js" type="text/javascript"');
 $head .= head();
 $head = enclose('head',$head,'');
 
-$body .= enclose('div',get_det_var("sitename"),'id="head"');
+$body .= enclose('div',$sitename,'id="head"');
 
 while ($line = mysql_fetch_array($result, MYSQL_ASSOC)) {
 	$loop = NULL;
@@ -41,6 +42,12 @@ while ($line = mysql_fetch_array($result, MYSQL_ASSOC)) {
 	$loop .= enclose('div',$title,'class="title"');
 	
 	$loop .= enclose('div',$line['date'],'class="date"');
+	if ($line['ratable'] == 0) {
+		$rate .= enclose('a','-','href="'.$hurl.'/rating/lower/'.$line['id'].'/'.get_transaction_key().'"');
+		$rate .= '(' . ratings($line['id']) . ')';
+		$rate .= enclose('a','+','href="'.$hurl.'/rating/raise/'.$line['id'].'/'.get_transaction_key().'"');
+	}
+	$loop .= enclose('div',$rate,'class="rate"');
 	$loop .= enclose('div',html_entity_decode($line['intro']),'class="text"');
 	
 	if ($line['main'] != "") { 
@@ -58,26 +65,48 @@ while ($line = mysql_fetch_array($result, MYSQL_ASSOC)) {
 
 	$loop .= enclose('div',$foot,'class="foot"');
 
-	if ($line['ratable'] == 0) {
-		$rate .= enclose('a','-','href="'.$hurl.'/rating/lower/'.$line['id'].'/'.get_transaction_key().'"');
-		$rate .= '(' . ratings($line['id']) . ')';
-		$rate .= enclose('a','+','href="'.$hurl.'/rating/raise/'.$line['id'].'/'.get_transaction_key().'"');
+if (comments($line['id']) >= 1) {
+	$query2 = 'SELECT id,title,date,intro,ratable,rating 
+		FROM '.$db_prefix.'data  
+		WHERE moderated != 1 
+			AND date <= "'.date($datefmt).'" 
+			AND commentref="'.$line['id'].'" 
+			AND rating >= -50
+		ORDER BY sticky ASC, date DESC
+		LIMIT 1';
+	$result2 = mysql_query($query2);
+	while ($line2 = mysql_fetch_array($result2, MYSQL_ASSOC)) {
+		$nloop = NULL;
+		$foot = NULL;
+		$rate = NULL;
+		$nloop .= enclose('div','LC','class="bigdate"');
+		$title = enclose('a',html_entity_decode($line2['title']),'href="'.$hurl.'/show/'.$line['id'].'"');
+		$nloop .= enclose('div',$title,'class="title"');
+		$nloop .= enclose('div',$line2['date'],'class="date"');
+		if ($line2['ratable'] != 1) {
+			$rate .= enclose('a','-','href="'.$hurl.'/rating/lower/'.$line2['id'].'/'.get_transaction_key().'"');
+			$rate .= '(' . ratings($line2['id']) . ')';
+			$rate .= enclose('a','+','href="'.$hurl.'/rating/raise/'.$line2['id'].'/'.get_transaction_key().'"');
+		}
+		$nloop .= enclose('div',$rate,'class="rate"');
+		$nloop .= enclose('div',html_entity_decode($line2['intro']),'class="text"');
+		$comments .= enclose('div',$nloop,'class="entry"');
 	}
-
-	$loop .= enclose('div',$rate,'class="rate"');
-
+	$loop .= enclose('div',$comments,'id="comments"');
+}	 
 	$body .= enclose('div',$loop,'class="entry"');
 }
 
 $box .= '<input type="hidden" name="cat" value="comments" />
-	<input type="hidden" name="cat" value="chatbox" />
+	<input type="hidden" name="cat" value="'.$cat.'" />
 	<input type="hidden" name="moderated" />
+	<input type="hidden" name="ratable" />
 	<input type="hidden" name="transaction_key" value="'.get_transaction_key().'" />
 	<input type="hidden" name="commentable" value="2" />';
 	$box .= enclose('p','Name: <input type="text" name="title" value="'.$_SESSION['name'].'" />','class="name"');
 	$box .= enclose('textarea','','name="intro" rows="5" columns="100"');
 	$box .= enclose('div','<input type="submit" value="Lets go!" /><input type="reset" value="Reset" />','class="foot"');
-	$box = enclose('form',$box,'name="frm_cha" action="'.$GLOBALS['hurl'].'/addnew" method="post"');
+	$box = enclose('form',$box,'name="frm_cha" action="'.$GLOBALS['hurl'].'/addnew.php" method="post"');
 	$box = enclose('div',$box,'class="entry"');
 	$script .= enclose('script','var frmvalidator  = new Validator("frm_cha");
 			frmvalidator.addValidation("title","req","Name is required");

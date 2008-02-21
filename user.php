@@ -16,21 +16,21 @@ $query = 'SELECT id,title,date,intro,commentable,main,owner,ratable,rating
 	FROM '.$db_prefix.'data 
 	WHERE owner = "' . $cat . '" 
 		AND moderated != 1 
-		AND date <= "'.date(get_det_var("datefmt")).'" 
+		AND date <= "'.date($datefmt).'" 
 		AND rating >= -50
-	ORDER BY sticky ASC, date DESC ';
+	ORDER BY sticky ASC, lastupd DESC, date DESC ';
 if ($id != "0") { $query .= ' LIMIT '.$id; }
 
 $result = mysql_query($query);
-// $hurl = get_det_var("hurl");
+
 $return = NULL;$body = NULL;$head = NULL;
-$head .= enclose("title",get_det_var("sitename").' '. $cat,"");
-$head .= '<link rel="alternate" type="application/rss+xml" href="'.$hurl.'/rss/'.$cat.'" title="' . get_det_var("sitename") . ' '.$cat.' feed" />';
-$head .= styles($css_def);
+$head .= enclose("title",$sitename.' '. $cat,"");
+$head .= '<link rel="alternate" type="application/rss+xml" href="'.$hurl.'/rss/'.$cat.'" title="' . $sitename . ' '.$cat.' feed" />';
+$head .= styles();
 $head .= head();
 $head = enclose('head',$head,'');
 
-$body .= enclose('div',get_det_var("sitename"),'id="head"');
+$body .= enclose('div',$sitename,'id="head"');
 
 while ($line = mysql_fetch_array($result, MYSQL_ASSOC)) {
 	$loop = NULL;
@@ -44,6 +44,13 @@ while ($line = mysql_fetch_array($result, MYSQL_ASSOC)) {
 	$loop .= enclose('div',$title,'class="title"');
 	
 	$loop .= enclose('div',$line['date'],'class="date"');
+	if ($line['ratable'] == 0) {
+		$rate .= enclose('a','-','href="'.$hurl.'/rating/lower/'.$line['id'].'/'.get_transaction_key().'"');
+		$rate .= '(' . ratings($line['id']) . ')';
+		$rate .= enclose('a','+','href="'.$hurl.'/rating/raise/'.$line['id'].'/'.get_transaction_key().'"');
+	}
+
+	$loop .= enclose('div',$rate,'class="rate"');
 	$loop .= enclose('div',html_entity_decode($line['intro']),'class="text"');
 	
 	if ($line['main'] != "") { 
@@ -60,14 +67,6 @@ while ($line = mysql_fetch_array($result, MYSQL_ASSOC)) {
 	}
 
 	$loop .= enclose('div',$foot,'class="foot"');
-
-	if ($line['ratable'] == 0) {
-		$rate .= enclose('a','-','href="'.$hurl.'/rating/lower/'.$line['id'].'/'.get_transaction_key().'"');
-		$rate .= '(' . ratings($line['id']) . ')';
-		$rate .= enclose('a','+','href="'.$hurl.'/rating/raise/'.$line['id'].'/'.get_transaction_key().'"');
-	}
-
-	$loop .= enclose('div',$rate,'class="rate"');
 
 	$body .= enclose('div',$loop,'class="entry"');
 }
