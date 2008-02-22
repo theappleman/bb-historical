@@ -33,6 +33,20 @@ $transaction_key = $_POST['transaction_key'];
 $sess_id = $_POST['session_id'];
 $_REQUEST = array(NULL);
 
+if (is_uploaded_file($_FILES['userfile']['tmp_name']) ) {
+	$image_type = image_type_to_mime_type( exif_imagetype( $_FILES['userfile']['tmp_name'] ) );
+	if ( $image_type == "image/gif" || $image_type == "image/jpeg" || $image_type == "image/png" ) {
+		$uploadfile = $uploaddir . basename($_FILES['userfile']['name']);
+		if (move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadfile)) {
+		$imagesize = getimagesize($uploadfile);
+		$height = $imagesize[1] * ( 200 / $imagesize[0] );
+			$intro .= htmlentities('<br /><a href="'.$hurl.'/uploaded/'.$_FILES['userfile']['name'].'">
+				<img src="'.$hurl.'/uploaded/'.$_FILES['userfile']['name'].'" width="200" />
+			</a>');
+		} else { echo 'failed. '.$_FILES['userfile']['error']; }
+	}
+}
+
 $allowed = true;
 
 if($allowed == true) {

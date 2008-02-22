@@ -1,6 +1,10 @@
 Options -Indexes
 RewriteEngine on
 
+<IfModule mod_php5.c>
+	php_value upload_tmp_dir /var/www/localhost/htdocs/uploaded
+</IfModule>
+
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^show/([0-9]+)$ show.php?id=$1

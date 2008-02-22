@@ -1,7 +1,7 @@
 <?
 require_once('userconf.php');
 global $hurl;
-session_start();
+#session_start();
 $link = mysql_connect($db_host, $db_user, $db_pass) or die('Could not connect: ' . mysql_error());
 mysql_select_db($db_data) or die('Could not select database: ' . mysql_error() );
 
@@ -32,7 +32,7 @@ function date_reset($id){
 }
 
 function styles() {
-	$return = enclose('link','','rel="stylesheet" href="/style.css" type="text/css" title="default"');
+	$return = enclose('link','','rel="stylesheet" href="'.$hurl.'/style.css" type="text/css" title="default"');
 	return $return;
 }
 

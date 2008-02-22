@@ -15,7 +15,7 @@ $query = 'SELECT id,title,date,intro,commentable,ratable,rating
 		AND moderated != 1 
 		AND date <= "'.date($datefmt).'" 
 		AND rating >= -50
-	ORDER BY sticky ASC, lastupd DESC, date DESC ';
+	ORDER BY sticky ASC,lastupd DESC, date DESC ';
 if ($id != "0") { $query .= ' LIMIT '.$id; }
 
 $result = mysql_query($query);
@@ -101,8 +101,9 @@ if ( !in_array($cat, $nochat) ) {
 		<input type="hidden" name="commentable" value="2" />';
 		$box .= enclose('p','Name: <input type="text" name="title" value="'.$_SESSION['name'].'" />','class="name"');
 		$box .= enclose('textarea','','name="intro" rows="5" columns="100"');
+		$box .= 'Upload .gif/.jpeg/.png: ' . enclose('p','<input type="file" name="userfile" />','class="name"');
 		$box .= enclose('div','<input type="submit" value="Lets go!" /><input type="reset" value="Reset" />','class="foot"');
-		$box = enclose('form',$box,'name="frm_cha" action="'.$GLOBALS['hurl'].'/addnew.php" method="post"');
+		$box = enclose('form',$box,'name="frm_cha" action="'.$GLOBALS['hurl'].'/addnew.php" method="post" enctype="multipart/form-data"');
 		$box = enclose('div',$box,'class="entry"');
 		$script .= enclose('script','var frmvalidator  = new Validator("frm_cha");
 				frmvalidator.addValidation("title","req","Name is required");
