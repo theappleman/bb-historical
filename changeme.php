@@ -19,6 +19,9 @@ $snapcode = ""; // Your snap shots, just the number
 
 $nochat = array('comments'); // categories that will not be easily postable to.
 $uploaddir = ''; // world writable folder for uploaded images. System absolute path - past the $hurl
+// thumbnail max sizes
+$width = 200;
+$height = 200;
 
 // the following variables
 // are used for header bits and the RSS feed
