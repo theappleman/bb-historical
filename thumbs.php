@@ -18,8 +18,9 @@
 
 	// Resample
 	$image_p = imagecreatetruecolor($width, $height);
+	$type = getimagesize($fullfile);
 
-	$image_type = image_type_to_mime_type( exif_imagetype( $fullfile ) );
+	$image_type = image_type_to_mime_type( $type[2] );
 	switch($image_type) {
 		case 'image/gif': $image = imagecreatefromgif($fullfile);
 			break;

@@ -34,7 +34,8 @@ $sess_id = $_POST['session_id'];
 $_REQUEST = array(NULL);
 
 if (is_uploaded_file($_FILES['userfile']['tmp_name']) ) {
-	$image_type = image_type_to_mime_type( exif_imagetype( $_FILES['userfile']['tmp_name'] ) );
+	$type=getimagesize($_FILES['userfile']['tmp_name'];
+	$image_type = image_type_to_mime_type( $type[2] );
 	if ( $image_type == "image/gif" || $image_type == "image/jpeg" || $image_type == "image/png" ) {
 		$rand = mt_rand();
 		$uploadfilename = $rand . '-' . basename($_FILES['userfile']['name']);
