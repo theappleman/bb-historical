@@ -9,7 +9,7 @@ $id = $_REQUEST['id'];
 $_REQUEST = array(NULL);
 
 if ($id == "") { $id = "10"; }
-$query = 'SELECT id,title,date,intro,commentable,main,owner,ratable,rating 
+$query = 'SELECT id,title,date,intro,commentable,ratable,rating 
 	FROM '.$db_prefix.'data 
 	WHERE section LIKE "%' . $cat . '%" 
 		AND moderated != 1 
@@ -48,12 +48,8 @@ while ($line = mysql_fetch_array($result, MYSQL_ASSOC)) {
 
 	$loop .= enclose('div',$rate,'class="rate"');
 	$loop .= enclose('div',html_entity_decode($line['intro']),'class="text"');
-	
-	if ($line['main'] != "") { 
-		$foot .= enclose('a','Read more','href="'.$hurl.'/show/'.$line['id'].'"'); 
-	}
 
-	$foot .= ' Posted by ' . enclose('a',$line['owner'],'href="'.$hurl.'/user/'.$line['owner'].'"') . ' ';
+	// $foot .= ' Posted by ' . enclose('a',$line['owner'],'href="'.$hurl.'/user/'.$line['owner'].'"') . ' ';
 	
 	if ($line['commentable'] >= 1) { 
 		if (comments($line['id']) != 1) { 

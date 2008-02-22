@@ -9,7 +9,7 @@ $cat = $_GET['cat'];
 $id = $_GET['id'];
 $_REQUEST = array(NULL);
 
-$query = 'SELECT id,title,date,intro,owner FROM '.$db_prefix.'data ';
+$query = 'SELECT id,title,date,intro FROM '.$db_prefix.'data ';
 
 if ($id != "" && $cat == "comments" && $id != "0")
 	{

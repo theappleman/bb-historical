@@ -29,10 +29,6 @@ if ($_POST['cat'] == "other") {
 $title = strip_tags(htmlentities($_POST['title']));
 $intro = strip_tags(htmlentities($_POST['intro']),"<a><br>");
 
-if (isset($_POST['owner']) && $_POST['owner'] != "") {
-	$owner = $_POST['owner'];
-} else { $owner = $title; }
-$main = htmlentities($_POST['main']);
 $transaction_key = $_POST['transaction_key'];
 $sess_id = $_POST['session_id'];
 $_REQUEST = array(NULL);
@@ -42,16 +38,15 @@ $allowed = true;
 if($allowed == true) {
 	if (check_transaction_key($transaction_key)) {
 		mysql_query('INSERT INTO '.$db_prefix.'data
-			(title,section, date, intro, main, moderated, commentable, commentref,owner,sticky,ratable) 
+			(title,section, date,lastupd, intro, moderated, commentable, commentref,sticky,ratable) 
 			VALUES ("' . $title . '", 
 				"'. $cat .'",
-				"'.$date.'", 
+				"'.$date.'",
+				"'.$date.'",
 				"' . $intro . '",
-				"'. $main .'",
 				"' . $moderated . '",
 				"' . $commentable . '",
 				"' . $commentref . '",
-				"'.$owner.'",
 				"'.$sticky.'",
 				"'.$ratable.'"
 				)') or die('Sorry, there was a problem and your post could not be completed. ' .mysql_error() );

@@ -9,7 +9,7 @@ $id = $_REQUEST['id'];
 $_REQUEST = array(NULL);
 
 if ($id == "") { $id = "10"; }
-$query = 'SELECT id,title,date,intro,commentable,main,owner,ratable,rating 
+$query = 'SELECT id,title,date,intro,commentable,ratable,rating 
 	FROM '.$db_prefix.'data 
 	WHERE section = "'.$cat.'" 
 		AND moderated != 1 
@@ -49,12 +49,8 @@ while ($line = mysql_fetch_array($result, MYSQL_ASSOC)) {
 	}
 	$loop .= enclose('div',$rate,'class="rate"');
 	$loop .= enclose('div',html_entity_decode($line['intro']),'class="text"');
-	
-	if ($line['main'] != "") { 
-		$foot .= enclose('a','Read more','href="'.$hurl.'/show/'.$line['id'].'"'); 
-	}
 
-	$foot .= ' Posted by ' . enclose('a',$line['owner'],'href="'.$hurl.'/user/'.$line['owner'].'"') . ' ';
+	// $foot .= 'Tags: ' . enclose('a',$line['owner'],'href="'.$hurl.'/user/'.$line['owner'].'"') . ' ';
 	
 	if ($line['commentable'] >= 1) { 
 		if (comments($line['id']) != 1) { 
@@ -96,25 +92,25 @@ if (comments($line['id']) >= 1) {
 }	 
 	$body .= enclose('div',$loop,'class="entry"');
 }
-
-$box .= '<input type="hidden" name="cat" value="comments" />
-	<input type="hidden" name="cat" value="'.$cat.'" />
-	<input type="hidden" name="moderated" />
-	<input type="hidden" name="ratable" />
-	<input type="hidden" name="transaction_key" value="'.get_transaction_key().'" />
-	<input type="hidden" name="commentable" value="2" />';
-	$box .= enclose('p','Name: <input type="text" name="title" value="'.$_SESSION['name'].'" />','class="name"');
-	$box .= enclose('textarea','','name="intro" rows="5" columns="100"');
-	$box .= enclose('div','<input type="submit" value="Lets go!" /><input type="reset" value="Reset" />','class="foot"');
-	$box = enclose('form',$box,'name="frm_cha" action="'.$GLOBALS['hurl'].'/addnew.php" method="post"');
-	$box = enclose('div',$box,'class="entry"');
-	$script .= enclose('script','var frmvalidator  = new Validator("frm_cha");
-			frmvalidator.addValidation("title","req","Name is required");
-			frmvalidator.addValidation("intro","req","Comment is required");
-			frmvalidator.addValidation("title","maxlength=100","Title must be less than 100 characters");
-			frmvalidator.addValidation("intro","maxlength=500","Comment must be less than 500 characters");','type="text/javascript"');
-	$box = $box . $script;
-	$body .= $box;
+if ( !in_array($cat, $nochat) ) {
+	$box .= '<input type="hidden" name="cat" value="comments" />
+		<input type="hidden" name="cat" value="'.$cat.'" />
+		<input type="hidden" name="moderated" />
+		<input type="hidden" name="ratable" />
+		<input type="hidden" name="transaction_key" value="'.get_transaction_key().'" />
+		<input type="hidden" name="commentable" value="2" />';
+		$box .= enclose('p','Name: <input type="text" name="title" value="'.$_SESSION['name'].'" />','class="name"');
+		$box .= enclose('textarea','','name="intro" rows="5" columns="100"');
+		$box .= enclose('div','<input type="submit" value="Lets go!" /><input type="reset" value="Reset" />','class="foot"');
+		$box = enclose('form',$box,'name="frm_cha" action="'.$GLOBALS['hurl'].'/addnew.php" method="post"');
+		$box = enclose('div',$box,'class="entry"');
+		$script .= enclose('script','var frmvalidator  = new Validator("frm_cha");
+				frmvalidator.addValidation("title","req","Name is required");
+				frmvalidator.addValidation("intro","req","Comment is required");
+				frmvalidator.addValidation("title","maxlength=100","Title must be less than 100 characters");
+				frmvalidator.addValidation("intro","maxlength=500","Comment must be less than 500 characters");','type="text/javascript"');
+		$box = $box . $script;
+		$body .= $box; }
 
 $body = enclose('div',$body,'id="content"') . menu();
 $body = enclose('body',$body,'');

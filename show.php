@@ -8,12 +8,12 @@ require_once('functions.php');
 $id = $_REQUEST['id'];
 $_REQUEST = array(NULL);
 
-$query = 'SELECT title,date,section,intro,main,commentable,owner,ratable,rating 
+$query = 'SELECT title,date,section,intro,commentable,ratable,rating 
 	FROM '.$db_prefix.'data 
 	WHERE id ="' . $id . '"
 	LIMIT 1';
 $result = mysql_query($query);
-$query2 = 'SELECT id,title,date,intro,ratable,rating 
+$query2 = 'SELECT id,title,date,intro,ratable,rating,commentable 
 	FROM '.$db_prefix.'data  
 	WHERE moderated != 1 
 		AND date <= "'.date($datefmt).'" 
@@ -43,8 +43,7 @@ if ($line['ratable'] != 1) {
 }
 $entry .= enclose('div',$rate,'class="rate"');
 $entry .= enclose('div',html_entity_decode($line['intro']),'class="text"');
-$entry .= enclose('div',html_entity_decode($line['main']),'class="text"');
-$foot .= ' Posted by ' . enclose('a',$line['owner'],'href="'.$hurl.'/user/'.$line['owner'].'"') . ' ';
+// $foot .= ' Posted by ' . enclose('a',$line['owner'],'href="'.$hurl.'/user/'.$line['owner'].'"') . ' ';
 if ($line['commentable'] >= 1) { 
 	if (comments($id) != 1) { $comment = 's'; }
 	$foot .= enclose('a',comments($id). ' comment'.$comment,'href="'.$hurl.'/show/'.$id.'"');
@@ -60,7 +59,7 @@ if ($line['commentable'] >= 1) {
 		$rate = NULL;
 		$com_num += 1;
 		$loop .= enclose('div',$com_num,'class="bigdate"');
-		$title = enclose('a',html_entity_decode($line2['title']),'href="'.$hurl.'/user/'.$line2['title'].'"');
+		$title = enclose('a',html_entity_decode($line2['title']),'');
 		$loop .= enclose('div',$title,'class="title"');
 		$loop .= enclose('div',$line2['date'],'class="date"');
 		if ($line2['ratable'] != 1) {
@@ -70,7 +69,11 @@ if ($line['commentable'] >= 1) {
 		}
 		$loop .= enclose('div',$rate,'class="rate"');
 		$loop .= enclose('div',html_entity_decode($line2['intro']),'class="text"');
-		$foot .= ' Posted by ' . enclose('a',$line2['title'],'href="'.$hurl.'/user/'.$line2['title'].'"') . ' ';
+		if ($line2['commentable'] >= 1) { 
+			if (comments($line2['id']) != 1) { $comment = 's'; }
+			$foot .= enclose('a',comments($line2['id']). ' comment'.$comment,'href="'.$hurl.'/show/'.$line2['id'].'"');
+		}
+		// $foot .= 'Tags: ' . enclose('a',$line2['title'],'href="'.$hurl.'/user/'.$line2['title'].'"') . ' ';
 		$loop .= enclose('div',$foot,'class="foot"');
 		$comments .= enclose('div',$loop,'class="entry"');
 	} 
