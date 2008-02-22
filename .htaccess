@@ -1,10 +1,6 @@
 Options -Indexes
 RewriteEngine on
 
-<IfModule mod_php5.c>
-	php_value upload_tmp_dir /var/www/localhost/htdocs/uploaded
-</IfModule>
-
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^show/([0-9]+)$ show.php?id=$1
@@ -12,4 +8,5 @@ RewriteRule ^rating/([a-z]+)/([0-9]+)/(.+)$ rating.php?cat=$1&id=$2&key=$3
 RewriteRule ^([A-Za-z0-9]+)/([0-9]+)$ chatbox.php?cat=$1&id=$2
 RewriteRule ^rss/([A-Za-z0-9]+)/([0-9]+)$ rss.php?cat=$1&id=$2
 RewriteRule ^rss/([A-Za-z0-9]+)$ rss.php?cat=$1
+RewriteRule ^thumb/(.+)$ thumbs.php?cat=$1
 RewriteRule ^([A-Za-z0-9]+)$ chatbox.php?cat=$1

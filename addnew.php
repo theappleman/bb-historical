@@ -36,12 +36,12 @@ $_REQUEST = array(NULL);
 if (is_uploaded_file($_FILES['userfile']['tmp_name']) ) {
 	$image_type = image_type_to_mime_type( exif_imagetype( $_FILES['userfile']['tmp_name'] ) );
 	if ( $image_type == "image/gif" || $image_type == "image/jpeg" || $image_type == "image/png" ) {
-		$uploadfile = $uploaddir . basename($_FILES['userfile']['name']);
+		$rand = mt_rand();
+		$uploadfilename = $rand . '-' . basename($_FILES['userfile']['name']);
+		$uploadfile = $uploaddir . $uploadfilename;
 		if (move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadfile)) {
-		$imagesize = getimagesize($uploadfile);
-		$height = $imagesize[1] * ( 200 / $imagesize[0] );
-			$intro .= htmlentities('<br /><a href="'.$hurl.'/uploaded/'.$_FILES['userfile']['name'].'">
-				<img src="'.$hurl.'/uploaded/'.$_FILES['userfile']['name'].'" width="200" />
+			$intro .= htmlentities('<br /><a href="'.$hurl.'/uploaded/'.$uploadfilename.'">
+				<img src="'.$hurl.'/thumb/'.$uploadfilename.'" />
 			</a>');
 		} else { echo 'failed. '.$_FILES['userfile']['error']; }
 	}
