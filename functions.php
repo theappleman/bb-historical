@@ -21,6 +21,7 @@ function make_thumb($filename) {
   $thumbfile = $uploaddir . 'thumb-' . $filename;
 	if ($image_type = is_image($fullfile)) {
 		list($width_orig, $height_orig) = getimagesize($fullfile);
+    if ($width > $width_orig && $height > $height_orig) { return false; }
 		$ratio_orig = $width_orig/$height_orig;
 		if ($width/$height > $ratio_orig) { $width = $height*$ratio_orig; } 
 			else { $height = $width/$ratio_orig; }
