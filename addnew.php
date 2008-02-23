@@ -5,6 +5,8 @@
 require_once('userconf.php');
 require_once('functions.php');
 
+$allowed = true;
+
 if (isset($_POST['reset'])) { $date = date($datefmt); }
 else { 
 	if ($_POST['date'] != "") { $date = htmlspecialchars($_POST['date']); }
@@ -34,9 +36,8 @@ $sess_id = $_POST['session_id'];
 $_REQUEST = array(NULL);
 
 if (is_uploaded_file($_FILES['userfile']['tmp_name']) ) {
-	$type=getimagesize($_FILES['userfile']['tmp_name']);
-	$image_type = image_type_to_mime_type( $type[2] );
-	if ( $image_type == "image/gif" || $image_type == "image/jpeg" || $image_type == "image/png" ) {
+	
+	if ( is_image($_FILES['userfile']['tmp_name']) ) {
 		$rand = mt_rand();
 		$uploadfilename = $rand . '-' . basename($_FILES['userfile']['name']);
 		$uploadfile = $uploaddir . $uploadfilename;
@@ -44,11 +45,9 @@ if (is_uploaded_file($_FILES['userfile']['tmp_name']) ) {
 			$intro .= htmlentities('<br /><a href="'.$hurl.'/uploaded/'.$uploadfilename.'">
 				<img src="'.$hurl.'/thumb/'.$uploadfilename.'" />
 			</a>');
-		} else { echo 'failed. '.$_FILES['userfile']['error']; }
+		} else { $allowed = false; }
 	}
 }
-
-$allowed = true;
 
 if($allowed == true) {
 	if (check_transaction_key($transaction_key)) {
