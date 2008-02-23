@@ -1,6 +1,9 @@
 <?
 require_once('userconf.php');
-global $hurl, $datefmt, $db_prefix;
+global $hurl;
+global $datefmt;
+global $db_prefix;
+
 $link = mysql_pconnect($db_host, $db_user, $db_pass) or die('Could not connect. Have you read the installation instructions?');
 mysql_select_db($db_data) or die('Could not select database. Have you read the installation instructions? ' );
 
