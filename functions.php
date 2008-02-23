@@ -60,12 +60,14 @@ function mod_change($cat, $id) {
 }
 
 function comments($id) { 
+	global $db_prefix;
 	$query = 'SELECT COUNT(*) FROM '.$db_prefix.'data WHERE commentref = "'.$id.'" AND moderated != "1" AND section = "comments"';
 	$result = mysql_result(mysql_query($query),0);
 	return $result;
 } 
 
 function ratings($id) { 
+	global $db_prefix;
 	$query = 'SELECT rating FROM '.$db_prefix.'data WHERE id = "'.$id.'"';
 	$result = mysql_result(mysql_query($query),0);
 	return $result;
@@ -79,7 +81,7 @@ if (!function_exists('array_combine')) { function array_combine($keys, $values) 
 }
 
 function menu() {
-	global $menu, $hurl;
+	global $menu, $hurl, $db_prefix;
 	$return = NULL;
 	foreach ($menu as $key=>$link) {
 		$sitemenu .= enclose('a',ucwords($key),'href="'.$link.'"');
