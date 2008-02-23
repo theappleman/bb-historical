@@ -8,18 +8,18 @@ $link = mysql_pconnect($db_host, $db_user, $db_pass) or die('Could not connect. 
 mysql_select_db($db_data) or die('Could not select database. Have you read the installation instructions? ' );
 
 function is_image($filename) {
-	global $image_type;
 	$type=getimagesize($filename) or die("Not an image (gif/jpeg/png)");
 	$image_type = $type['mime'];
 	if ($image_type == "image/gif" || $image_type == "image/jpeg" || $image_type == "image/png") {
-		return true;
+		return $image_type;
 	} else { return false; }
 }
 
 function make_thumb($filename) {
+  global $width, $height, $uploaddir;
   $fullfile = $uploaddir . $filename;
-  $thumbfile = $uploaddir . 'thumb-' . $filename
-	if(is_image($fullfile)) {
+  $thumbfile = $uploaddir . 'thumb-' . $filename;
+	if ($image_type = is_image($fullfile)) {
 		list($width_orig, $height_orig) = getimagesize($fullfile);
 		$ratio_orig = $width_orig/$height_orig;
 		if ($width/$height > $ratio_orig) { $width = $height*$ratio_orig; } 
@@ -36,7 +36,7 @@ function make_thumb($filename) {
 				break;
 			case 'image/png': $image = imagecreatefrompng($fullfile);
           imagecopyresampled($image_p, $image, 0, 0, 0, 0, $width, $height, $width_orig, $height_orig);
-          case 'image/png': $image = imagepng($$image_p,$thumbfile);
+          case 'image/png': $image = imagepng($image_p,$thumbfile);
 				break;
 			default: exit("Somehow, there is an error");
 		}
