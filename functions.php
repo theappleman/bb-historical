@@ -16,6 +16,33 @@ function is_image($filename) {
 	} else { return false; }
 }
 
+function make_thumb($filename) {
+  $fullfile = $uploaddir . $filename;
+  $thumbfile = $uploaddir . 'thumb-' . $filename
+	if(is_image($fullfile)) {
+		list($width_orig, $height_orig) = getimagesize($fullfile);
+		$ratio_orig = $width_orig/$height_orig;
+		if ($width/$height > $ratio_orig) { $width = $height*$ratio_orig; } 
+			else { $height = $width/$ratio_orig; }
+		$image_p = imagecreatetruecolor($width, $height);
+		switch($image_type) {
+			case 'image/gif': $image = imagecreatefromgif($fullfile);
+          imagecopyresampled($image_p, $image, 0, 0, 0, 0, $width, $height, $width_orig, $height_orig);
+          case 'image/gif': $image = imagegif($image_p,$thumbfile);
+				break;
+			case 'image/jpeg': $image = imagecreatefromjpeg($fullfile);
+          imagecopyresampled($image_p, $image, 0, 0, 0, 0, $width, $height, $width_orig, $height_orig);
+          case 'image/jpeg': $image = imagejpeg($image_p,$thumbfile);
+				break;
+			case 'image/png': $image = imagecreatefrompng($fullfile);
+          imagecopyresampled($image_p, $image, 0, 0, 0, 0, $width, $height, $width_orig, $height_orig);
+          case 'image/png': $image = imagepng($$image_p,$thumbfile);
+				break;
+			default: exit("Somehow, there is an error");
+		}
+	}
+}
+
 function head() {
 	$meta .= '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />';
 	$meta .= '<script src="'.$hurl.'/ie7-standard-p.js" type="text/javascript"></script>';

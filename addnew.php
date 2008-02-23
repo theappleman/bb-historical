@@ -42,8 +42,9 @@ if (is_uploaded_file($_FILES['userfile']['tmp_name']) ) {
 		$uploadfilename = $rand . '-' . basename($_FILES['userfile']['name']);
 		$uploadfile = $uploaddir . $uploadfilename;
 		if (move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadfile)) {
+      make_thumb($uploadfilename);
 			$intro .= htmlentities('<br /><a href="'.$hurl.'/uploaded/'.$uploadfilename.'">
-				<img src="'.$hurl.'/thumb/'.$uploadfilename.'" />
+				<img src="'.$hurl.'/uploaded/thumb-'.$uploadfilename.'" />
 			</a>');
 		} else { $allowed = false; }
 	}
