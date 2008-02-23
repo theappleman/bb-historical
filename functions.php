@@ -6,7 +6,7 @@ mysql_select_db($db_data) or die('Could not select database. Have you read the i
 
 function is_image($filename) {
 	global $image_type;
-	$type=getimagesize($_FILES['userfile']['tmp_name']) or die("Not an image (gif/jpeg/png)");
+	$type=getimagesize($filename) or die("Not an image (gif/jpeg/png)");
 	$image_type = $type['mime'];
 	if ($image_type == "image/gif" || $image_type == "image/jpeg" || $image_type == "image/png") {
 		return true;
