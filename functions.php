@@ -4,7 +4,8 @@ global $hurl;
 $link = mysql_connect($db_host, $db_user, $db_pass) or die('Could not connect. Have you read the installation instructions?');
 mysql_select_db($db_data) or die('Could not select database. Have you read the installation instructions? ' );
 
-is_image($filename) {
+function is_image($filename) {
+	global $image_type;
 	$type=getimagesize($_FILES['userfile']['tmp_name']) or die("Not an image (gif/jpeg/png)");
 	$image_type = $type['mime'];
 	if ($image_type == "image/gif" || $image_type == "image/jpeg" || $image_type == "image/png") {
