@@ -1,7 +1,7 @@
 <?
 /*
 	This is just a layout for the config file: change this now!
-	Rename this file index.php aswell
+	Rename this file userconf.php aswell
 */
 $db_host = "localhost"; // database hostname
 $db_user = ""; // username for the database
