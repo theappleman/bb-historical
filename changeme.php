@@ -13,6 +13,7 @@ $sitename = ""; // Kinda obvious?
 $hurl = ""; // It is best to set this. Very rarely it is ok to leave it blank.
 $datefmt = "Y-m-d H:i:s"; 
 $default = ""; // default category.
+$style = ""; // stylesheet name
 
 $menu = array('Link1'=>'http://url.to/link/1'); // array containing links for the main menu
 $snapcode = ""; // Your snap shots, just the number

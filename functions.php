@@ -32,7 +32,8 @@ function date_reset($id){
 }
 
 function styles() {
-	$return = enclose('link','','rel="stylesheet" href="'.$hurl.'/style.css" type="text/css" title="default"');
+	global $style;
+	$return = enclose('link','','rel="stylesheet" href="'.$hurl.'/'.$style.'.css" type="text/css" title="default"');
 	return $return;
 }
 
