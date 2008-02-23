@@ -96,7 +96,6 @@ if ( !in_array($cat, $nochat) ) {
 	$box .= '<input type="hidden" name="cat" value="comments" />
 		<input type="hidden" name="cat" value="'.$cat.'" />
 		<input type="hidden" name="moderated" />
-		<input type="hidden" name="ratable" />
 		<input type="hidden" name="transaction_key" value="'.get_transaction_key().'" />
 		<input type="hidden" name="commentable" value="2" />';
 		$box .= enclose('p','Name: <input type="text" name="title" value="'.$_SESSION['name'].'" />','class="name"');
