@@ -1,7 +1,7 @@
 <?
 require_once('userconf.php');
-global $hurl;
-$link = mysql_connect($db_host, $db_user, $db_pass) or die('Could not connect. Have you read the installation instructions?');
+global $hurl, $datefmt, $db_prefix;
+$link = mysql_pconnect($db_host, $db_user, $db_pass) or die('Could not connect. Have you read the installation instructions?');
 mysql_select_db($db_data) or die('Could not select database. Have you read the installation instructions? ' );
 
 function is_image($filename) {
@@ -36,19 +36,19 @@ function single_section($cat) {
 }
 
 function date_reset($id){
-	mysql_query('UPDATE '.$GLOBALS['db_prefix'].'data SET date = '.date($GLOBALS['date_fmt']).' WHERE id = "'.$id.' LIMIT 1') or die('Could not reset date');
+	mysql_query('UPDATE '.$db_prefix.'data SET date = '.date($datefmt).' WHERE id = "'.$id.' LIMIT 1') or die('Could not reset date');
 }
 
 function styles() {
-	global $style;
+	global $hurl, $style;
 	$return = enclose('link','','rel="stylesheet" href="'.$hurl.'/'.$style.'.css" type="text/css" title="default"');
 	return $return;
 }
 
 function mod_change($cat, $id) { 
-	$result = mysql_fetch_array(mysql_query('SELECT '.$cat.',section FROM '.$GLOBALS['db_prefix'].'data WHERE id = "'.$id.'"'), MYSQL_ASSOC);
+	$result = mysql_fetch_array(mysql_query('SELECT '.$cat.',section FROM '.$db_prefix.'data WHERE id = "'.$id.'"'), MYSQL_ASSOC);
 	if ($result[$cat] == 1) { $nr = 0; } else { $nr = 1; }
-	mysql_query('UPDATE '.$GLOBALS['db_prefix'].'data
+	mysql_query('UPDATE '.$db_prefix.'data
 		SET '.$cat.' = "'.$nr.'"
 		WHERE id = '.$id.'
 		LIMIT 1') or die('Change failed. ' . mysql_error() );
@@ -57,13 +57,12 @@ function mod_change($cat, $id) {
 }
 
 function comments($id) { 
-	$query = 'SELECT COUNT(*) FROM '.$GLOBALS['db_prefix'].'data WHERE commentref = "'.$id.'" AND moderated != "1" AND section = "comments"';
+	$query = 'SELECT COUNT(*) FROM '.$db_prefix.'data WHERE commentref = "'.$id.'" AND moderated != "1" AND section = "comments"';
 	$result = mysql_result(mysql_query($query),0);
 	return $result;
 } 
 
 function ratings($id) { 
-	global $db_prefix;
 	$query = 'SELECT rating FROM '.$db_prefix.'data WHERE id = "'.$id.'"';
 	$result = mysql_result(mysql_query($query),0);
 	return $result;
@@ -77,15 +76,14 @@ if (!function_exists('array_combine')) { function array_combine($keys, $values) 
 }
 
 function menu() {
-	global $menu;
-	global $hurl;
+	global $menu, $hurl;
 	$return = NULL;
 	foreach ($menu as $key=>$link) {
 		$sitemenu .= enclose('a',ucwords($key),'href="'.$link.'"');
 		}
 	$return .= enclose("div",$sitemenu,'class="mainmenu"');
 
-	$rslt = mysql_query('SELECT section FROM '.$GLOBALS['db_prefix'].'data');
+	$rslt = mysql_query('SELECT section FROM '.$db_prefix.'data');
 
 	while($ln = mysql_fetch_assoc($rslt)) {
 	$rry .= $ln['section'] .',';
