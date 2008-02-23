@@ -55,7 +55,7 @@ while ($line = mysql_fetch_array($result, MYSQL_ASSOC)) {
 	if ($line['commentable'] >= 1) { 
 		if (comments($line['id']) != 1) { 
 			$comment = 's'; 
-		} else { $comments = NULL; }
+		} else { $comment = NULL; }
 		$foot .= enclose('a',comments($line['id']). ' comment'.$comment,'href="'.$hurl.'/show/'.$line['id'].'"');
 	}
 
