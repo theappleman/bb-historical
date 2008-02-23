@@ -1,7 +1,7 @@
 <?
 /*
 	This is just a layout for the config file: change this now!
-	Rename this file userconf.php aswell
+	Rename this file userconf.php as well
 */
 $db_host = "localhost"; // database hostname
 $db_user = ""; // username for the database
@@ -9,7 +9,7 @@ $db_pass = ""; // password for said user
 $db_data = ""; // name of the database being used
 $db_prefix = ""; // prefix of database tables
 
-$sitename = ""; // Kinda obvious?
+$sitename = ""; // Kinda obvious? unless you can't read that...
 $hurl = ""; // It is best to set this. Very rarely it is ok to leave it blank.
 $datefmt = "Y-m-d H:i:s"; 
 $default = ""; // default category.
@@ -20,7 +20,7 @@ $snapcode = ""; // Your snap shots, just the number
 
 $nochat = array('comments'); // categories that will not be easily postable to.
 $uploaddir = ''; // world writable folder for uploaded images. System absolute path - past the $hurl
-// thumbnail max sizes
+// thumbnail max sizes DO NOT SET $height TO 0 (ZERO)
 $width = 200;
 $height = 200;
 
