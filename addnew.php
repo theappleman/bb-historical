@@ -23,7 +23,7 @@ if (isset($_POST['commentref']) && $_POST['commentref'] != 0) { $commentref = $_
 if ($_POST['cat'] == "other") {
 	if (isset($_POST['section']) && $_POST['section'] != "") {
 		$cat = $_POST['section']; $cm = TRUE;
-	} else { $cat = $default; }
+	} else { $cat = "other"; }
 } else { $cat = $_POST['cat']; }
 
 $title = strip_tags(htmlentities($_POST['title']));
@@ -34,7 +34,7 @@ $sess_id = $_POST['session_id'];
 $_REQUEST = array(NULL);
 
 if (is_uploaded_file($_FILES['userfile']['tmp_name']) ) {
-	$type=getimagesize($_FILES['userfile']['tmp_name'];
+	$type=getimagesize($_FILES['userfile']['tmp_name']);
 	$image_type = image_type_to_mime_type( $type[2] );
 	if ( $image_type == "image/gif" || $image_type == "image/jpeg" || $image_type == "image/png" ) {
 		$rand = mt_rand();

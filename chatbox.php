@@ -108,8 +108,7 @@ if ( !in_array($cat, $nochat) ) {
 		$script .= enclose('script','var frmvalidator  = new Validator("frm_cha");
 				frmvalidator.addValidation("title","req","Name is required");
 				frmvalidator.addValidation("intro","req","Comment is required");
-				frmvalidator.addValidation("title","maxlength=100","Title must be less than 100 characters");
-				frmvalidator.addValidation("intro","maxlength=500","Comment must be less than 500 characters");','type="text/javascript"');
+				frmvalidator.addValidation("title","maxlength=100","Name must be less than 100 characters");','type="text/javascript"');
 		$box = $box . $script;
 		$body .= $box; }
 
