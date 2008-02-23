@@ -8,12 +8,12 @@ require_once('functions.php');
 $id = $_REQUEST['id'];
 $_REQUEST = array(NULL);
 
-$query = 'SELECT title,date,section,intro,commentable,ratable,rating 
+$query = 'SELECT title,date,section,intro,commentable,rateable,rating 
 	FROM '.$db_prefix.'data 
 	WHERE id ="' . $id . '"
 	LIMIT 1';
 $result = mysql_query($query);
-$query2 = 'SELECT id,title,date,intro,ratable,rating,commentable 
+$query2 = 'SELECT id,title,date,intro,rateable,rating,commentable 
 	FROM '.$db_prefix.'data  
 	WHERE moderated != 1 
 		AND date <= "'.date($datefmt).'" 
@@ -36,7 +36,7 @@ $entry .= enclose('div',$com_num,'class="bigdate"');
 $title = enclose('a',html_entity_decode($line['title']),'href="'.$hurl.'/show/'.$id.'"');
 $entry .= enclose('div',$title,'class="title"');
 $entry .= enclose('div',$line['date'],'class="date"');
-if ($line['ratable'] != 1) {
+if ($line['rateable'] != 1) {
 	$rate .= enclose('a','-','href="'.$hurl.'/rating/lower/'.$id.'/'.get_transaction_key().'"');
 	$rate .= '(' . ratings($id) . ')';
 	$rate .= enclose('a','+','href="'.$hurl.'/rating/raise/'.$id.'/'.get_transaction_key().'"');
@@ -62,7 +62,7 @@ if ($line['commentable'] >= 1) {
 		$title = enclose('a',html_entity_decode($line2['title']),'');
 		$loop .= enclose('div',$title,'class="title"');
 		$loop .= enclose('div',$line2['date'],'class="date"');
-		if ($line2['ratable'] != 1) {
+		if ($line2['rateable'] != 1) {
 			$rate .= enclose('a','-','href="'.$hurl.'/rating/lower/'.$line2['id'].'/'.get_transaction_key().'"');
 			$rate .= '(' . ratings($line2['id']) . ')';
 			$rate .= enclose('a','+','href="'.$hurl.'/rating/raise/'.$line2['id'].'/'.get_transaction_key().'"');

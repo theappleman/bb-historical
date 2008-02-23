@@ -9,7 +9,7 @@ $id = $_REQUEST['id'];
 $_REQUEST = array(NULL);
 
 if ($id == "") { $id = "10"; }
-$query = 'SELECT id,title,date,intro,commentable,ratable,rating 
+$query = 'SELECT id,title,date,intro,commentable,rateable,rating 
 	FROM '.$db_prefix.'data 
 	WHERE section = "'.$cat.'" 
 		AND moderated != 1 
@@ -42,7 +42,7 @@ while ($line = mysql_fetch_array($result, MYSQL_ASSOC)) {
 	$loop .= enclose('div',$title,'class="title"');
 	
 	$loop .= enclose('div',$line['date'],'class="date"');
-	if ($line['ratable'] == 0) {
+	if ($line['rateable'] == 0) {
 		$rate .= enclose('a','-','href="'.$hurl.'/rating/lower/'.$line['id'].'/'.get_transaction_key().'"');
 		$rate .= '(' . ratings($line['id']) . ')';
 		$rate .= enclose('a','+','href="'.$hurl.'/rating/raise/'.$line['id'].'/'.get_transaction_key().'"');
@@ -62,7 +62,7 @@ while ($line = mysql_fetch_array($result, MYSQL_ASSOC)) {
 	$loop .= enclose('div',$foot,'class="foot"');
 
 if (comments($line['id']) >= 1) {
-	$query2 = 'SELECT id,title,date,intro,ratable,rating 
+	$query2 = 'SELECT id,title,date,intro,rateable,rating 
 		FROM '.$db_prefix.'data  
 		WHERE moderated != 1 
 			AND date <= "'.date($datefmt).'" 
@@ -79,7 +79,7 @@ if (comments($line['id']) >= 1) {
 		$title = enclose('a',html_entity_decode($line2['title']),'href="'.$hurl.'/show/'.$line['id'].'"');
 		$nloop .= enclose('div',$title,'class="title"');
 		$nloop .= enclose('div',$line2['date'],'class="date"');
-		if ($line2['ratable'] != 1) {
+		if ($line2['rateable'] != 1) {
 			$rate .= enclose('a','-','href="'.$hurl.'/rating/lower/'.$line2['id'].'/'.get_transaction_key().'"');
 			$rate .= '(' . ratings($line2['id']) . ')';
 			$rate .= enclose('a','+','href="'.$hurl.'/rating/raise/'.$line2['id'].'/'.get_transaction_key().'"');

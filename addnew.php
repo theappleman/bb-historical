@@ -15,7 +15,7 @@ if (isset($_POST['moderated'])) { $moderated = 0; }	else { $moderated = 1; }
 if (isset($_POST['sticky'])) { $sticky = 0; } else { $sticky = 1; }
 $commentable = $_POST['commentable'];
 
-if (isset($_POST['ratable'])) { $ratable = 0; } else { $ratable = 1; }
+if (isset($_POST['rateable'])) { $rateable = 0; } else { $rateable = 1; }
 if ($_POST['rating'] != "") { $rating = $_POST['rating']; } else { $rating = 0; }
 
 if (isset($_POST['commentref']) && $_POST['commentref'] != 0) { $commentref = $_POST['commentref']; } else { $commentref=0; }
@@ -53,7 +53,7 @@ $allowed = true;
 if($allowed == true) {
 	if (check_transaction_key($transaction_key)) {
 		mysql_query('INSERT INTO '.$db_prefix.'data
-			(title,section, date,lastupd, intro, moderated, commentable, commentref,sticky,ratable) 
+			(title,section, date,lastupd, intro, moderated, commentable, commentref,sticky,rateable) 
 			VALUES ("' . $title . '", 
 				"'. $cat .'",
 				"'.$date.'",
@@ -63,7 +63,7 @@ if($allowed == true) {
 				"' . $commentable . '",
 				"' . $commentref . '",
 				"'.$sticky.'",
-				"'.$ratable.'"
+				"'.$rateable.'"
 				)') or die('Sorry, there was a problem and your post could not be completed. ' .mysql_error() );
 	} else { die("Double post detected!"); }
 }
