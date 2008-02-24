@@ -1,7 +1,7 @@
 <?
 // comment.php
 // view the chatbox and post
-require_once('userconf.php');
+
 require_once('functions.php');
 
 $cat = $_REQUEST['cat'];
@@ -75,7 +75,7 @@ if (comments($line['id']) >= 1) {
 		$nloop = NULL;
 		$foot = NULL;
 		$rate = NULL;
-		$nloop .= enclose('div','LC','class="bigdate"');
+		$nloop .= enclose('div',get_day($line2['date']),'class="bigdate"');
 		$title = enclose('a',html_entity_decode($line2['title']),'href="'.$hurl.'/show/'.$line['id'].'"');
 		$nloop .= enclose('div',$title,'class="title"');
 		$nloop .= enclose('div',$line2['date'],'class="date"');
@@ -98,9 +98,8 @@ if ( !in_array($cat, $nochat) ) {
 		<input type="hidden" name="moderated" />
 		<input type="hidden" name="transaction_key" value="'.get_transaction_key().'" />
 		<input type="hidden" name="commentable" value="2" />';
-		$box .= enclose('p','Name: <input type="text" name="title" value="'.$_SESSION['name'].'" />','class="name"');
+		$box .= enclose('p','Name: <input type="text" name="title" value="'.$_SESSION['name'].'" /><input type="file" name="userfile" />','class="name"');
 		$box .= enclose('textarea','','name="intro" rows="5" columns="100"');
-		$box .= enclose('p','<input type="file" name="userfile" value="Upload .jpg,.gif or .png" />','class="name"');
 		$box .= enclose('div','<input type="submit" value="Lets go!" /><input type="reset" value="Reset" />','class="foot"');
 		$box = enclose('form',$box,'name="frm_cha" action="'.$GLOBALS['hurl'].'/addnew.php" method="post" enctype="multipart/form-data"');
 		$box = enclose('div',$box,'class="entry"');

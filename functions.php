@@ -42,6 +42,7 @@ function make_thumb($filename) {
 			default: exit("Somehow, there is an error");
 		}
 	}
+  return true;
 }
 
 function head() {
