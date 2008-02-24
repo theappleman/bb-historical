@@ -2,7 +2,6 @@
 // rss.php
 // displays rss feeds
 
-require_once('userconf.php');
 require_once('functions.php');
 
 $cat = $_GET['cat'];

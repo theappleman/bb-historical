@@ -8,23 +8,25 @@ $link = mysql_pconnect($db_host, $db_user, $db_pass) or die('Could not connect. 
 mysql_select_db($db_data) or die('Could not select database. Have you read the installation instructions? ' );
 
 function postbox($cat,$id) {
-  global $hurl;
+  global $hurl, $accept;
   $box = NULL;
+  $name = "form_form";
   if ($id != 0) { $box = '<input type="hidden" name="commentref" value="'.$id.'" />'; }
   $box .= '
 		<input type="hidden" name="cat" value="'.$cat.'" />
 		<input type="hidden" name="moderated" />
 		<input type="hidden" name="transaction_key" value="'.get_transaction_key().'" />
 		<input type="hidden" name="commentable" value="2" />';
-		$box .= enclose('p','Name: <input type="text" name="title" />&nbsp;<input type="file" name="userfile" />','class="name"');
+		$box .= enclose('p','Name: <input type="text" name="title" />&nbsp;<input type="file" name="userfile" accept="'.$accept.'" />','class="name"');
 		$box .= enclose('textarea','','name="intro" rows="5" columns="100"');
 		$box .= enclose('div','<input type="submit" value="Lets go!" /><input type="reset" value="Reset" />','class="foot"');
-		$box = enclose('form',$box,'name="frm_cha" action="'.$hurl.'/addnew.php" method="post" enctype="multipart/form-data"');
+		$box = enclose('form',$box,'name="'.$name.'" action="'.$hurl.'/addnew.php" method="post" enctype="multipart/form-data"');
 		$box = enclose('div',$box,'class="entry"');
-		$script .= enclose('script','var frmvalidator  = new Validator("frm_cha");
+		$script .= enclose('script','var frmvalidator  = new Validator("'.$name.'");
 				frmvalidator.addValidation("title","req","Name is required");
+        frmvalidator.addValidation("title","maxlength=100","Name must be less than 100 characters");
 				frmvalidator.addValidation("intro","req","Comment is required");
-				frmvalidator.addValidation("title","maxlength=100","Name must be less than 100 characters");','type="text/javascript"');
+        frmvalidator.addValidation("intro","maxlength=1000","Comment must be less than 1000 characters");','type="text/javascript"');
 		$box = $box . $script;
 		return $box;
  }

@@ -2,7 +2,6 @@
 // addnew.php
 // adds new items to the database
 
-require_once('userconf.php');
 require_once('functions.php');
 
 $allowed = true;

@@ -2,7 +2,6 @@
 // rating.php
 // change a rating
 
-require_once('userconf.php');
 require_once('functions.php');
 
 $cat = $_GET['cat'];
@@ -24,7 +23,7 @@ $result = mysql_result(mysql_query('SELECT rating FROM '.$db_prefix.'data WHERE 
 }
 	
 $r = mysql_query('SELECT section,commentref FROM '.$db_prefix.'data WHERE id = "'. $id . '"');
-$result = mysql_fetch_array($r,MYSQL_BOTH);
-if ($result[0] == "comments") {
-	header('Location:'.$hurl.'/show/'.$result[1]);
+list($section,$commentref) = mysql_fetch_array($r,MYSQL_BOTH);
+if ($section == "comments") {
+	header('Location:'.$hurl.'/show/'.$commentref);
 } else { header('Location:'.$hurl.'/show/'.$id); }
