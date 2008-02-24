@@ -15,7 +15,7 @@ function postbox($cat,$id) {
     $box .= enclose('input','type="hidden" name="commentable" value="2"');
 		$box .= enclose('p','Name: '.enclose('input','name="title"').'&nbsp;'.enclose('input','type="file" name="userfile" accept="'.$accept.'"'),'class="name"');
 		$box .= enclose('textarea','','name="intro" rows="5" columns="100"');
-		$box .= enclose('div',enclose('input','type="submit" value="Lets go!"').enclose('input','type="reset" value="Reset"','class="foot"');
+		$box .= enclose('div',enclose('input','type="submit" value="Lets go!"').enclose('input','type="reset" value="Reset"'),'class="foot"');
 		$box = enclose('form',$box,'name="'.$name.'" action="'.$hurl.'/addnew.php" method="post" enctype="multipart/form-data"');
 		$box = enclose('div',$box,'class="entry"');
 		$script .= enclose('script','var frmvalidator  = new Validator("'.$name.'");
