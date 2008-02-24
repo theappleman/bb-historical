@@ -24,7 +24,7 @@ $com_num = 0;
 $line = mysql_fetch_array($result, MYSQL_ASSOC);
 
 $return = NULL;$head = NULL;$body = NULL;$comments = NULL;$bot = NULL;$box = NULL;$script=NULL;
-$head .= enclose('title',$sitename,'');
+$head .= enclo_s('title',$sitename,'');
 $head .= head();
 
 $body .= enclose('div',$sitename,'id="head"');
