@@ -36,25 +36,17 @@ while ($line = mysql_fetch_array($result, MYSQL_ASSOC)) {
 	$rate = NULL;
 	
 	$loop .= enclose('div',get_day($line['date']),'class="bigdate"');
-
 	$title = enclose('a',html_entity_decode($line['title']),'href="'.$hurl.'/show/'.$line['id'].'"');
 	$loop .= enclose('div',$title,'class="title"');
-	
 	$loop .= enclose('div',$line['date'],'class="date"');
 	if ($line['rateable'] == 0) { $loop .= enclose('div',chrate($line['id']),'class="rate"'); }
 	$loop .= enclose('div',html_entity_decode($line['intro']),'class="text"');
-
-	// $foot .= 'Tags: ' . enclose('a',$line['owner'],'href="'.$hurl.'/user/'.$line['owner'].'"') . ' ';
 	
 	if ($line['commentable'] >= 1) { 
-		if (comments($line['id']) != 1) { 
-			$comment = 's'; 
-		} else { $comment = NULL; }
+		if (comments($line['id']) != 1) { $comment = 's'; } else { $comment = NULL; }
 		$foot .= enclose('a',comments($line['id']). ' comment'.$comment,'href="'.$hurl.'/show/'.$line['id'].'"');
 	}
-
 	$loop .= enclose('div',$foot,'class="foot"');
-
 if (comments($line['id']) >= 1) {
 	$query2 = 'SELECT id,title,date,intro,rateable,rating 
 		FROM '.$db_prefix.'data  
@@ -75,6 +67,8 @@ if (comments($line['id']) >= 1) {
 		$nloop .= enclose('div',$line2['date'],'class="date"');
 		if ($line2['rateable'] != 1) { $nloop .= enclose('div',chrate($line2['id']),'class="rate"'); }
 		$nloop .= enclose('div',html_entity_decode($line2['intro']),'class="text"');
+    if ($line['commentable'] == 2) { $nloop .= enclose('div',enclose('a','Post new comment','href="'.$hurl.'/show/'.$line['id'].'"'),'class="foot"'); }
+    else { $nloop .= enclose('div',enclose('a','No more comments',''),'class="foot"'); }
 		$comments .= enclose('div',$nloop,'class="entry"');
 	}
 	$loop .= enclose('div',$comments,'id="comments"');

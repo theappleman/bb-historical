@@ -35,17 +35,13 @@ $entry .= enclose('div',$com_num,'class="bigdate"');
 $title = enclose('a',html_entity_decode($line['title']),'href="'.$hurl.'/show/'.$id.'"');
 $entry .= enclose('div',$title,'class="title"');
 $entry .= enclose('div',$line['date'],'class="date"');
-if ($line['rateable'] != 1) {
- $entry .= enclose('div',chrate($id),'class="rate"'); 
-}
+if ($line['rateable'] != 1) { $entry .= enclose('div',chrate($id),'class="rate"'); }
 $entry .= enclose('div',html_entity_decode($line['intro']),'class="text"');
-// $foot .= ' Posted by ' . enclose('a',$line['owner'],'href="'.$hurl.'/user/'.$line['owner'].'"') . ' ';
 if ($line['commentable'] >= 1) { 
-	if (comments($id) != 1) { $comment = 's'; }
+	if (comments($id) != 1) { $comment = 's'; } else { $comment = NULL; }
 	$foot .= enclose('a',comments($id). ' comment'.$comment,'href="'.$hurl.'/show/'.$id.'"');
 }
 $entry .= enclose('div',$foot,'class="foot"');
-
 $body .= enclose('div',$entry,'class="entry"');
 
 if ($line['commentable'] >= 1) {
@@ -58,15 +54,12 @@ if ($line['commentable'] >= 1) {
 		$title = enclose('a',html_entity_decode($line2['title']),'');
 		$loop .= enclose('div',$title,'class="title"');
 		$loop .= enclose('div',$line2['date'],'class="date"');
-		if ($line2['rateable'] != 1) { 
-      $loop .= enclose('div',chrate($line2['id']),'class="rate"');
-    }
+		if ($line2['rateable'] != 1) { $loop .= enclose('div',chrate($line2['id']),'class="rate"'); }
 		$loop .= enclose('div',html_entity_decode($line2['intro']),'class="text"');
 		if ($line2['commentable'] >= 1) { 
-			if (comments($line2['id']) != 1) { $comment = 's'; }
+			if (comments($line2['id']) != 1) { $comment = 's'; } else { $comment = NULL; }
 			$foot .= enclose('a',comments($line2['id']). ' comment'.$comment,'href="'.$hurl.'/show/'.$line2['id'].'"');
 		}
-		// $foot .= 'Tags: ' . enclose('a',$line2['title'],'href="'.$hurl.'/user/'.$line2['title'].'"') . ' ';
 		$loop .= enclose('div',$foot,'class="foot"');
 		$comments .= enclose('div',$loop,'class="entry"');
 	} 
