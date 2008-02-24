@@ -61,7 +61,7 @@ if (comments($line['id']) >= 1) {
 		$nloop .= enclose('div',get_day($line2['date']),'class="bigdate"');
 		$title = enclose('a',html_entity_decode($line2['title']),'href="'.$hurl.'/show/'.$line['id'].'"');
 		$nloop .= enclose('div',$title,'class="title"');
-		$nloop .= enclose('div','latest reply','class="date"');
+		$nloop .= enclose('div',$line2['date'],'class="date"');
 		if ($line2['rateable'] != 1) { $nloop .= enclose('div',chrate($line2['id']),'class="rate"'); }
 		$nloop .= enclose('div',html_entity_decode($line2['intro']),'class="text"');
     if ($line['commentable'] == 2) { $nloop .= enclose('div',enclose('a','Post a comment','href="'.$hurl.'/show/'.$line['id'].'"'),'class="foot"'); }

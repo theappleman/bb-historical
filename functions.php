@@ -1,4 +1,7 @@
 <?
+// functions.php
+// contains function definitions and essential stuff
+
 require_once('userconf.php');
 
 $link = mysql_pconnect($db_host, $db_user, $db_pass) or die('Could not connect. Have you read the installation instructions?');
@@ -95,7 +98,7 @@ function head() {
 function comment_types() {
 	$comments = array(2=>'Commentable',1=>'Show current',0=>'Not commentable');
 	return $comments;
-}
+} // currently unused
 
 function get_day($id) {
 	list($p,$l) = explode(" ",$id,2);
@@ -110,19 +113,19 @@ function single_section($cat) {
 
 function date_reset($id){
   global $datefmt, $db_prefix;
-	mysql_query('UPDATE '.$db_prefix.'data SET date = '.date($datefmt).' WHERE id = "'.$id.' LIMIT 1') or die('Could not reset date');
-}
+	mysql_unbuffered_query('UPDATE '.$db_prefix.'data SET date = '.date($datefmt).' WHERE id = "'.$id.' LIMIT 1') or die('Could not reset date');
+} // currently unused
 
 function mod_change($cat, $id) { 
   global $db_prefix;
 	list($cat,$section) = mysql_fetch_array(mysql_query('SELECT '.$cat.',section FROM '.$db_prefix.'data WHERE id = "'.$id.'"'), MYSQL_ASSOC);
 	if ($result[$cat] == 1) { $nr = 0; } else { $nr = 1; }
-	mysql_query('UPDATE '.$db_prefix.'data
+	mysql_unbuffered_query('UPDATE '.$db_prefix.'data
 		SET '.$cat.' = "'.$nr.'"
 		WHERE id = '.$id.'
 		LIMIT 1') or die('Change failed. ' . mysql_error() );
 	return(single_section($section)); 
-}
+} //currently unused
 
 function comments($id) { 
 	global $db_prefix;
@@ -143,7 +146,7 @@ if (!function_exists('array_combine')) { function array_combine($keys, $values) 
 		while( ($k=each($keys)) && ($v=each($values)) ) $result[$k[1]] = $v[1] ;
 		return $result ;
 	}
-}
+} // currently unused
 
 function menu() {
 	global $menu, $hurl, $db_prefix, $snapcode;
@@ -169,9 +172,7 @@ function menu() {
 	return $return;
 }
 
-function get_transaction_key() {
-    return uniqid('', true);
-}
+function get_transaction_key() { return uniqid('', true); }
 
 function enclose($type,$content,$opts) {
 	$return = NULL;
@@ -186,8 +187,7 @@ function enclose($type,$content,$opts) {
 function enclo_s($type,$opts) { return '<' . $type . ' ' . $opts . ' />'; }
 
 function check_transaction_key($key) {
-    $return_value = mysql_query('INSERT INTO transactions (transaction_key) VALUES ("'.$key.'")');
-    if ($return_value === false) { return false; }
+    if (false === mysql_unbuffered_query('INSERT INTO transactions (transaction_key) VALUES ("'.$key.'")')) { return false; }
     else { return true; }
 }
 

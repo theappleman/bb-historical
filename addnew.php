@@ -42,16 +42,14 @@ if (is_uploaded_file($_FILES['userfile']['tmp_name']) ) {
 		$uploadfile = $uploaddir . $uploadfilename;
 		if (move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadfile)) {
       if(!make_thumb($uploadfilename)) { $thumb = NULL; } else { $thumb = "thumb-"; }
-			$intro .= htmlentities('<br /><a href="'.$hurl.'/uploaded/'.$uploadfilename.'">
-				<img src="'.$hurl.'/uploaded/'.$thumb.$uploadfilename.'" />
-			</a>');
+      $intro .= htmlentities('<br />'.enclose('a',enclo_s('img','src="'.$hurl.'/uploaded/'.$thumb.$uploadfilename.'"),'href="'.$hurl.'/uploaded/'.$uploadfilename.'"));
 		} else { $allowed = false; }
 	}
 }
 
 if($allowed == true) {
 	if (check_transaction_key($transaction_key)) {
-		mysql_query('INSERT INTO '.$db_prefix.'data
+		mysql_unbuffered_query('INSERT INTO '.$db_prefix.'data
 			(title,section, date,lastupd, intro, moderated, commentable, commentref,sticky,rateable) 
 			VALUES ("' . $title . '", 
 				"'. $cat .'",
@@ -72,7 +70,7 @@ if ($commentref == 0) {
 		header('Location:'.$hurl.'/chatbox');
 	} else { header('Location:'.$hurl.'/'.$cat); }
 
-} else { mysql_query('UPDATE '.$db_prefix.'data SET lastupd = "'.date($datefmt).'" WHERE id = "'.$commentref.'" LIMIT 1') or die('Could not update post time (don\'t worry, your post has gone through).');
+} else { mysql_unbuffered_query('UPDATE '.$db_prefix.'data SET lastupd = "'.date($datefmt).'" WHERE id = "'.$commentref.'" LIMIT 1') or die('Could not update post time (don\'t worry, your post has gone through).');
 header('Location:'.$hurl.'/show/'.$commentref); }
 
 

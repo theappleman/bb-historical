@@ -18,8 +18,9 @@ $result = mysql_result(mysql_query('SELECT rating FROM '.$db_prefix.'data WHERE 
 		case "lower":
 			$rating = $result - 1;
 			break;
+    default: exit("Sorry, can't do that.");
 	}
-	mysql_query('UPDATE '.$db_prefix.'data SET rating = "'. $rating .'" WHERE id = "'. $id . '"');
+	mysql_unbuffered_query('UPDATE '.$db_prefix.'data SET rating = "'. $rating .'" WHERE id = "'. $id . '"');
 }
 	
 $r = mysql_query('SELECT section,commentref FROM '.$db_prefix.'data WHERE id = "'. $id . '"');
