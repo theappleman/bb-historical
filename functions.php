@@ -33,7 +33,7 @@ function postbox($cat,$id) {
    global $hurl;
    $rate = NULL;
    $rate .= enclose('a','-','href="'.$hurl.'/rating/lower/'.$id.'/'.get_transaction_key().'"');
-   $rate .= '(' . ratings($line2['id']) . ')';
+   $rate .= '(' . ratings($id) . ')';
    $rate .= enclose('a','+','href="'.$hurl.'/rating/raise/'.$id.'/'.get_transaction_key().'"');
    return $rate;
   }
