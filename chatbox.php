@@ -98,7 +98,7 @@ if ( !in_array($cat, $nochat) ) {
 		<input type="hidden" name="moderated" />
 		<input type="hidden" name="transaction_key" value="'.get_transaction_key().'" />
 		<input type="hidden" name="commentable" value="2" />';
-		$box .= enclose('p','Name: <input type="text" name="title" value="'.$_SESSION['name'].'" /><input type="file" name="userfile" />','class="name"');
+		$box .= enclose('p','Name: <input type="text" name="title" value="'.$_SESSION['name'].'" />&nbsp;<input type="file" name="userfile" />','class="name"');
 		$box .= enclose('textarea','','name="intro" rows="5" columns="100"');
 		$box .= enclose('div','<input type="submit" value="Lets go!" /><input type="reset" value="Reset" />','class="foot"');
 		$box = enclose('form',$box,'name="frm_cha" action="'.$GLOBALS['hurl'].'/addnew.php" method="post" enctype="multipart/form-data"');
