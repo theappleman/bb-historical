@@ -10,7 +10,7 @@ $db_data = ""; // name of the database being used
 $db_prefix = ""; // prefix of database tables
 
 $sitename = ""; // Kinda obvious? unless you can't read that...
-$hurl = ""; // It is best to set this. Very rarely it is ok to leave it blank.
+$hurl = ""; // It is best to set this. Very rarely it is ok to leave it blank. Base URL.
 $datefmt = "Y-m-d H:i:s"; 
 $default = ""; // default category.
 $style = ""; // stylesheet name

@@ -25,9 +25,6 @@ $line = mysql_fetch_array($result, MYSQL_ASSOC);
 
 $return = NULL;$head = NULL;$body = NULL;$comments = NULL;$bot = NULL;$box = NULL;$script=NULL;
 $head .= enclose('title',$sitename,'');
-$head .= styles();
-$head .= enclose('script','','src="'.$hurl.'/gen_validatorv2.js" type="text/javascript"');
-$head .= '<link rel="alternate" type="application/rss+xml" href="'.$hurl.'/rss/'.$cat.'" title="' . $sitename . ' '.$cat.' feed" />';
 $head .= head();
 
 $body .= enclose('div',$sitename,'id="head"');

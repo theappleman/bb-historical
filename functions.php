@@ -1,8 +1,5 @@
 <?
 require_once('userconf.php');
-global $hurl;
-global $datefmt;
-global $db_prefix;
 
 $link = mysql_pconnect($db_host, $db_user, $db_pass) or die('Could not connect. Have you read the installation instructions?');
 mysql_select_db($db_data) or die('Could not select database. Have you read the installation instructions? ' );
@@ -11,15 +8,14 @@ function postbox($cat,$id) {
   global $hurl, $accept;
   $box = NULL;
   $name = "form_form";
-  if ($id != 0) { $box = '<input type="hidden" name="commentref" value="'.$id.'" />'; }
-  $box .= '
-		<input type="hidden" name="cat" value="'.$cat.'" />
-		<input type="hidden" name="moderated" />
-		<input type="hidden" name="transaction_key" value="'.get_transaction_key().'" />
-		<input type="hidden" name="commentable" value="2" />';
-		$box .= enclose('p','Name: <input type="text" name="title" />&nbsp;<input type="file" name="userfile" accept="'.$accept.'" />','class="name"');
+  if ($id != 0) { $box = enclose('input','type="hidden" name="commentref" value="'.$id.'"'); }
+    $box .= enclose('input','type="hidden" name="cat" value="'.$cat.'"');
+    $box .= enclose('input','type="hidden" name="moderated"');
+    $box .= enclose('input','type="hidden" name="transaction_key" value="'.get_transaction_key().'"');
+    $box .= enclose('input','type="hidden" name="commentable" value="2"');
+		$box .= enclose('p','Name: '.enclose('input','name="title"').'&nbsp;'.enclose('input','type="file" name="userfile" accept="'.$accept.'"'),'class="name"');
 		$box .= enclose('textarea','','name="intro" rows="5" columns="100"');
-		$box .= enclose('div','<input type="submit" value="Lets go!" /><input type="reset" value="Reset" />','class="foot"');
+		$box .= enclose('div',enclose('input','type="submit" value="Lets go!"').enclose('input','type="reset" value="Reset"','class="foot"');
 		$box = enclose('form',$box,'name="'.$name.'" action="'.$hurl.'/addnew.php" method="post" enctype="multipart/form-data"');
 		$box = enclose('div',$box,'class="entry"');
 		$script .= enclose('script','var frmvalidator  = new Validator("'.$name.'");
@@ -79,8 +75,12 @@ function make_thumb($filename) {
 }
 
 function head() {
-	$meta .= '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />';
-	$meta .= '<script src="'.$hurl.'/ie7-standard-p.js" type="text/javascript"></script>';
+  global $hurl, $style;
+	$meta = enclose('link','','rel="stylesheet" href="'.$hurl.'/'.$style.'.css" type="text/css" title="default"');
+	$meta .= enclose('meta','http-equiv="Content-Type" content="text/html; charset=UTF-8"');
+  $meta .= enclose('script','','src="'.$hurl.'/ie7-standard-p.js" type="text/javascript"');
+  $meta .= enclose('link','rel="alternate" type="application/rss+xml" href="'.$hurl.'/rss/'.$cat.'" title="' . $sitename . ' feed"');
+  $meta .= enclose('script','','src="'.$hurl.'/gen_validatorv2.js" type="text/javascript"');
 	return $meta;
 }
 
@@ -96,29 +96,24 @@ function get_day($id) {
 }
 
 function single_section($cat) {
-	$cm = explode(",",$cat,2);
-	return $cm[0];
+	list($cm) = explode(",",$cat,2);
+	return $cm;
 }
 
 function date_reset($id){
+  global $datefmt, $db_prefix;
 	mysql_query('UPDATE '.$db_prefix.'data SET date = '.date($datefmt).' WHERE id = "'.$id.' LIMIT 1') or die('Could not reset date');
 }
 
-function styles() {
-	global $hurl, $style;
-	$return = enclose('link','','rel="stylesheet" href="'.$hurl.'/'.$style.'.css" type="text/css" title="default"');
-	return $return;
-}
-
 function mod_change($cat, $id) { 
-	$result = mysql_fetch_array(mysql_query('SELECT '.$cat.',section FROM '.$db_prefix.'data WHERE id = "'.$id.'"'), MYSQL_ASSOC);
+  global $db_prefix;
+	list($cat,$section) = mysql_fetch_array(mysql_query('SELECT '.$cat.',section FROM '.$db_prefix.'data WHERE id = "'.$id.'"'), MYSQL_ASSOC);
 	if ($result[$cat] == 1) { $nr = 0; } else { $nr = 1; }
 	mysql_query('UPDATE '.$db_prefix.'data
 		SET '.$cat.' = "'.$nr.'"
 		WHERE id = '.$id.'
 		LIMIT 1') or die('Change failed. ' . mysql_error() );
-	$cm = explode(",",$result['section'],2); 
-	return($cm[0]); 
+	return(single_section($section)); 
 }
 
 function comments($id) { 
@@ -143,7 +138,7 @@ if (!function_exists('array_combine')) { function array_combine($keys, $values) 
 }
 
 function menu() {
-	global $menu, $hurl, $db_prefix;
+	global $menu, $hurl, $db_prefix, $snapcode;
 	$return = NULL;
 	foreach ($menu as $key=>$link) {
 		$sitemenu .= enclose('a',ucwords($key),'href="'.$link.'"');
@@ -160,7 +155,6 @@ function menu() {
 	$rslt = NULL;
 	foreach (array_unique($array) as $table) { $rslt .= enclose('a',$table,'href="'.$hurl.'/'.$table.'"'); }
 	$return .= enclose('div',$rslt,'class="mainmenu"');
-	global $snapcode;
 	if ($snapcode != "") {
 		$return .= enclose('script','','type="text/javascript" src="http://shots.snap.com/ss/'.$snapcode.'/snap_shots.js"');
 	}
@@ -180,6 +174,8 @@ function enclose($type,$content,$opts) {
 	$return .= '</'.$type.'>';
 	return $return;
 }
+
+function enclose($type,$opts) { return '<' . $type . ' ' . $opts . ' />'; }
 
 function check_transaction_key($key) {
     $return_value = mysql_query('INSERT INTO transactions (transaction_key) VALUES ("'.$key.'")');

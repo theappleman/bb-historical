@@ -22,9 +22,6 @@ $result = mysql_query($query);
 
 $return = NULL;$body = NULL;$head = NULL;
 $head .= enclose("title",$sitename.' '. $cat,"");
-$head .= '<link rel="alternate" type="application/rss+xml" href="'.$hurl.'/rss/'.$cat.'" title="' . $sitename . ' '.$cat.' feed" />';
-$head .= styles();
-$head .= enclose('script','','src="'.$hurl.'/gen_validatorv2.js" type="text/javascript"');
 $head .= head();
 
 $body .= enclose('div',$sitename,'id="head"');
