@@ -8,14 +8,14 @@ function postbox($cat,$id) {
   global $hurl, $accept;
   $box = NULL;
   $name = "form_form";
-  if ($id != 0) { $box = enclose('input','type="hidden" name="commentref" value="'.$id.'"'); }
-    $box .= enclose('input','type="hidden" name="cat" value="'.$cat.'"');
-    $box .= enclose('input','type="hidden" name="moderated"');
-    $box .= enclose('input','type="hidden" name="transaction_key" value="'.get_transaction_key().'"');
-    $box .= enclose('input','type="hidden" name="commentable" value="2"');
-		$box .= enclose('p','Name: '.enclose('input','name="title"').'&nbsp;'.enclose('input','type="file" name="userfile" accept="'.$accept.'"'),'class="name"');
+  if ($id != 0) { $box = enclo_s('input','type="hidden" name="commentref" value="'.$id.'"'); }
+    $box .= enclo_s('input','type="hidden" name="cat" value="'.$cat.'"');
+    $box .= enclo_s('input','type="hidden" name="moderated"');
+    $box .= enclo_s('input','type="hidden" name="transaction_key" value="'.get_transaction_key().'"');
+    $box .= enclo_s('input','type="hidden" name="commentable" value="2"');
+		$box .= enclose('p','Name: '.enclose('input','name="title"').'&nbsp;'.enclo_s('input','type="file" name="userfile" accept="'.$accept.'"'),'class="name"');
 		$box .= enclose('textarea','','name="intro" rows="5" columns="100"');
-		$box .= enclose('div',enclose('input','type="submit" value="Lets go!"').enclose('input','type="reset" value="Reset"'),'class="foot"');
+		$box .= enclose('div',enclo_s('input','type="submit" value="Lets go!"').enclo_s('input','type="reset" value="Reset"'),'class="foot"');
 		$box = enclose('form',$box,'name="'.$name.'" action="'.$hurl.'/addnew.php" method="post" enctype="multipart/form-data"');
 		$box = enclose('div',$box,'class="entry"');
 		$script .= enclose('script','var frmvalidator  = new Validator("'.$name.'");
@@ -175,7 +175,7 @@ function enclose($type,$content,$opts) {
 	return $return;
 }
 
-function enclose($type,$opts) { return '<' . $type . ' ' . $opts . ' />'; }
+function enclo_s($type,$opts) { return '<' . $type . ' ' . $opts . ' />'; }
 
 function check_transaction_key($key) {
     $return_value = mysql_query('INSERT INTO transactions (transaction_key) VALUES ("'.$key.'")');
