@@ -28,7 +28,7 @@ $head .= enclose('title',$sitename,'');
 $head .= head();
 
 $body .= enclose('div',$sitename,'id="head"');
-$entry .= enclose('div',$com_num,'class="bigdate"');
+$entry .= enclose('div',get_day($line['date']),'class="bigdate"');
 $title = enclose('a',html_entity_decode($line['title']),'href="'.$hurl.'/show/'.$id.'"');
 $entry .= enclose('div',$title,'class="title"');
 $entry .= enclose('div',$line['date'],'class="date"');
@@ -47,7 +47,7 @@ if ($line['commentable'] >= 1) {
 		$foot = NULL;
 		$rate = NULL;
 		$com_num += 1;
-		$loop .= enclose('div',$com_num,'class="bigdate"');
+		$loop .= enclose('div',get_day($line2['date']),'class="bigdate"');
 		$title = enclose('a',html_entity_decode($line2['title']),'');
 		$loop .= enclose('div',$title,'class="title"');
 		$loop .= enclose('div',$line2['date'],'class="date"');
@@ -61,20 +61,17 @@ if ($line['commentable'] >= 1) {
 		$comments .= enclose('div',$loop,'class="entry"');
 	} 
 	$body .= enclose('div',$comments,'id="comments"');
-	if ($com_num != 1) { $pl = 's'; } else { $pl = NULL; }
 	$bot .= enclose('div',$com_num,'class="bigdate"');
+  if ($com_num != 1) { $pl = 's'; } else { $pl = NULL; }
 	$bot .= enclose('div','comment'.$pl,'class="title"');
 	$bot .= enclose('div',enclose('a','Comments through RSS feed','href="'.$hurl.'/rss/comments/'.$id.'"'),'class="text"');
-	if ($line['commentable'] == 2) { $bot .= enclose('div',enclose('a','Post new comment',''),'class="foot"'); }
+	if ($line['commentable'] == 2) { $bot .= enclose('div',enclose('a','Post a comment',''),'class="foot"'); }
 	else { $bot .= enclose('div',enclose('a','No more comments',''),'class="foot"'); }
 	$body .= enclose('div',$bot,'class="entry"');
 }
 if ($line['commentable'] == 2) { $body .= postbox('comments',$id); }
 
-$body = enclose('div',$body,'id="content"') . menu();
-$head = enclose('head',$head,'');
-$body = enclose('body',$body,'');
-$return = enclose('html',$head . $body,'xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"');
+$return = finish_up($head,$body);
 //$return = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">' . $return;
 echo $return;
 ?>

@@ -27,6 +27,14 @@ function postbox($cat,$id) {
 		return $box;
  }
  
+ function finish_up($head,$body) {
+  $body = enclose('div',$body,'id="content"') . menu();
+  $head = enclose('head',$head,'');
+  $body = enclose('body',$body,'');
+  $finish = enclose('html',$head . $body,'xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"');
+  return $finish;
+  }
+ 
  function chrate($id) {
    global $hurl;
    $rate = NULL;

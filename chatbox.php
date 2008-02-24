@@ -61,10 +61,10 @@ if (comments($line['id']) >= 1) {
 		$nloop .= enclose('div',get_day($line2['date']),'class="bigdate"');
 		$title = enclose('a',html_entity_decode($line2['title']),'href="'.$hurl.'/show/'.$line['id'].'"');
 		$nloop .= enclose('div',$title,'class="title"');
-		$nloop .= enclose('div',$line2['date'],'class="date"');
+		$nloop .= enclose('div','latest reply','class="date"');
 		if ($line2['rateable'] != 1) { $nloop .= enclose('div',chrate($line2['id']),'class="rate"'); }
 		$nloop .= enclose('div',html_entity_decode($line2['intro']),'class="text"');
-    if ($line['commentable'] == 2) { $nloop .= enclose('div',enclose('a','Post new comment','href="'.$hurl.'/show/'.$line['id'].'"'),'class="foot"'); }
+    if ($line['commentable'] == 2) { $nloop .= enclose('div',enclose('a','Post a comment','href="'.$hurl.'/show/'.$line['id'].'"'),'class="foot"'); }
     else { $nloop .= enclose('div',enclose('a','No more comments',''),'class="foot"'); }
 		$comments .= enclose('div',$nloop,'class="entry"');
 	}
@@ -73,11 +73,7 @@ if (comments($line['id']) >= 1) {
 	$body .= enclose('div',$loop,'class="entry"');
 }
 if ( !in_array($cat, $nochat) ) { $body .= postbox($cat,0); }
-
-$body = enclose('div',$body,'id="content"') . menu();
-$head = enclose('head',$head,'');
-$body = enclose('body',$body,'');
-$return = enclose('html',$head . $body,'xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"');
+$return = finish_up($head,$body);
 //$return = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">' . $return;
 echo $return;
 ?>
