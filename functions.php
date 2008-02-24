@@ -75,7 +75,7 @@ function make_thumb($filename) {
 }
 
 function head() {
-  global $hurl, $style;
+  global $hurl, $style, $sitename;
 	$meta = enclo_s('link','rel="stylesheet" href="'.$hurl.'/'.$style.'.css" type="text/css" title="default"');
 	$meta .= enclo_s('meta','http-equiv="Content-Type" content="text/html; charset=UTF-8"');
   $meta .= enclose('script','','src="'.$hurl.'/ie7-standard-p.js" type="text/javascript"');
