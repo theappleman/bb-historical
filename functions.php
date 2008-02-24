@@ -13,7 +13,7 @@ function postbox($cat,$id) {
     $box .= enclo_s('input','type="hidden" name="moderated"');
     $box .= enclo_s('input','type="hidden" name="transaction_key" value="'.get_transaction_key().'"');
     $box .= enclo_s('input','type="hidden" name="commentable" value="2"');
-		$box .= enclose('p','Name: '.enclose('input','name="title"').'&nbsp;'.enclo_s('input','type="file" name="userfile" accept="'.$accept.'"'),'class="name"');
+		$box .= enclose('p','Name: '.enclo_s('input','name="title"').'&nbsp;'.enclo_s('input','type="file" name="userfile" accept="'.$accept.'"'),'class="name"');
 		$box .= enclose('textarea','','name="intro" rows="5" columns="100"');
 		$box .= enclose('div',enclo_s('input','type="submit" value="Lets go!"').enclo_s('input','type="reset" value="Reset"'),'class="foot"');
 		$box = enclose('form',$box,'name="'.$name.'" action="'.$hurl.'/addnew.php" method="post" enctype="multipart/form-data"');
