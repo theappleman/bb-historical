@@ -76,11 +76,11 @@ function make_thumb($filename) {
 
 function head() {
   global $hurl, $style;
-	$meta = enclose('link','','rel="stylesheet" href="'.$hurl.'/'.$style.'.css" type="text/css" title="default"');
-	$meta .= enclose('meta','http-equiv="Content-Type" content="text/html; charset=UTF-8"');
+	$meta = enclo_s('link','rel="stylesheet" href="'.$hurl.'/'.$style.'.css" type="text/css" title="default"');
+	$meta .= enclo_s('meta','http-equiv="Content-Type" content="text/html; charset=UTF-8"');
   $meta .= enclose('script','','src="'.$hurl.'/ie7-standard-p.js" type="text/javascript"');
-  $meta .= enclose('link','rel="alternate" type="application/rss+xml" href="'.$hurl.'/rss/'.$cat.'" title="' . $sitename . ' feed"');
   $meta .= enclose('script','','src="'.$hurl.'/gen_validatorv2.js" type="text/javascript"');
+  $meta .= enclo_s('link','rel="alternate" type="application/rss+xml" href="'.$hurl.'/rss/'.$cat.'" title="' . $sitename . ' feed"');
 	return $meta;
 }
 
