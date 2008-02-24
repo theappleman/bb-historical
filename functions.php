@@ -7,6 +7,37 @@ global $db_prefix;
 $link = mysql_pconnect($db_host, $db_user, $db_pass) or die('Could not connect. Have you read the installation instructions?');
 mysql_select_db($db_data) or die('Could not select database. Have you read the installation instructions? ' );
 
+function postbox($cat,$id) {
+  global $hurl;
+  $box = NULL;
+  if ($id != 0) { $box = '<input type="hidden" name="commentref" value="'.$id.'" />'; }
+  $box .= '
+		<input type="hidden" name="cat" value="'.$cat.'" />
+		<input type="hidden" name="moderated" />
+		<input type="hidden" name="transaction_key" value="'.get_transaction_key().'" />
+		<input type="hidden" name="commentable" value="2" />';
+		$box .= enclose('p','Name: <input type="text" name="title" />&nbsp;<input type="file" name="userfile" />','class="name"');
+		$box .= enclose('textarea','','name="intro" rows="5" columns="100"');
+		$box .= enclose('div','<input type="submit" value="Lets go!" /><input type="reset" value="Reset" />','class="foot"');
+		$box = enclose('form',$box,'name="frm_cha" action="'.$hurl.'/addnew.php" method="post" enctype="multipart/form-data"');
+		$box = enclose('div',$box,'class="entry"');
+		$script .= enclose('script','var frmvalidator  = new Validator("frm_cha");
+				frmvalidator.addValidation("title","req","Name is required");
+				frmvalidator.addValidation("intro","req","Comment is required");
+				frmvalidator.addValidation("title","maxlength=100","Name must be less than 100 characters");','type="text/javascript"');
+		$box = $box . $script;
+		return $box;
+ }
+ 
+ function chrate($id) {
+   global $hurl;
+   $rate = NULL;
+   $rate .= enclose('a','-','href="'.$hurl.'/rating/lower/'.$id.'/'.get_transaction_key().'"');
+   $rate .= '(' . ratings($line2['id']) . ')';
+   $rate .= enclose('a','+','href="'.$hurl.'/rating/raise/'.$id.'/'.get_transaction_key().'"');
+   return $rate;
+  }
+
 function is_image($filename) {
 	$type=getimagesize($filename) or die("Not an image (gif/jpeg/png)");
 	$image_type = $type['mime'];

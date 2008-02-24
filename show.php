@@ -36,11 +36,8 @@ $title = enclose('a',html_entity_decode($line['title']),'href="'.$hurl.'/show/'.
 $entry .= enclose('div',$title,'class="title"');
 $entry .= enclose('div',$line['date'],'class="date"');
 if ($line['rateable'] != 1) {
-	$rate .= enclose('a','-','href="'.$hurl.'/rating/lower/'.$id.'/'.get_transaction_key().'"');
-	$rate .= '(' . ratings($id) . ')';
-	$rate .= enclose('a','+','href="'.$hurl.'/rating/raise/'.$id.'/'.get_transaction_key().'"');
+ $entry .= enclose('div',chrate($id),'class="rate"'); 
 }
-$entry .= enclose('div',$rate,'class="rate"');
 $entry .= enclose('div',html_entity_decode($line['intro']),'class="text"');
 // $foot .= ' Posted by ' . enclose('a',$line['owner'],'href="'.$hurl.'/user/'.$line['owner'].'"') . ' ';
 if ($line['commentable'] >= 1) { 
@@ -61,12 +58,9 @@ if ($line['commentable'] >= 1) {
 		$title = enclose('a',html_entity_decode($line2['title']),'');
 		$loop .= enclose('div',$title,'class="title"');
 		$loop .= enclose('div',$line2['date'],'class="date"');
-		if ($line2['rateable'] != 1) {
-			$rate .= enclose('a','-','href="'.$hurl.'/rating/lower/'.$line2['id'].'/'.get_transaction_key().'"');
-			$rate .= '(' . ratings($line2['id']) . ')';
-			$rate .= enclose('a','+','href="'.$hurl.'/rating/raise/'.$line2['id'].'/'.get_transaction_key().'"');
-		}
-		$loop .= enclose('div',$rate,'class="rate"');
+		if ($line2['rateable'] != 1) { 
+      $loop .= enclose('div',chrate($line2['id']),'class="rate"');
+    }
 		$loop .= enclose('div',html_entity_decode($line2['intro']),'class="text"');
 		if ($line2['commentable'] >= 1) { 
 			if (comments($line2['id']) != 1) { $comment = 's'; }
@@ -85,25 +79,7 @@ if ($line['commentable'] >= 1) {
 	else { $bot .= enclose('div',enclose('a','No more comments',''),'class="foot"'); }
 	$body .= enclose('div',$bot,'class="entry"');
 }
-if ($line['commentable'] == 2) {
-	$box .= '<input type="hidden" name="cat" value="comments" />
-		<input type="hidden" name="commentref" value="'.$id.'" />
-		<input type="hidden" name="moderated" />
-		<input type="hidden" name="transaction_key" value="'.get_transaction_key().'" />
-		<input type="hidden" name="commentable" value="2" />';
-	$box .= enclose('p','Name: <input type="text" name="title" value="'.$_SESSION['name'].'" />&nbsp;<input type="file" name="userfile" />','class="name"');
-	$box .= enclose('textarea','','name="intro" rows="4"');
-	$box .= enclose('p','','class="name"');
-	$box .= enclose('div','<input type="submit" value="Lets go!" /><input type="reset" value="Reset" />','class="foot"');
-	$box = enclose('form',$box,'name="frm_com" action="'.$GLOBALS['hurl'].'/addnew.php" method="post" enctype="multipart/form-data"');
-	$box = enclose('div',$box,'class="entry"');
-	$script .= enclose('script','var frmvalidator  = new Validator("frm_com");
-			frmvalidator.addValidation("title","req","Name is required");
-			frmvalidator.addValidation("intro","req","Comment is required");
-			frmvalidator.addValidation("title","maxlength=100","Name must be less than 100 characters");','type="text/javascript"');
-	$box = $box . $script;
-	$body .= $box;
-}
+if ($line['commentable'] == 2) { $body .= postbox('comments',$id); }
 
 $body = enclose('div',$body,'id="content"') . menu();
 $head = enclose('head',$head,'');
