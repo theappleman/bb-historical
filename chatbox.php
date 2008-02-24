@@ -21,7 +21,7 @@ if ($id != "0") { $query .= ' LIMIT '.$id; }
 $result = mysql_query($query);
 
 $return = NULL;$body = NULL;$head = NULL;
-$head .= enclo_s("title",$sitename.' '. $cat,"");
+$head .= enclose("title",$sitename.' '. $cat,"");
 $head .= head();
 
 $body .= enclose('div',$sitename,'id="head"');
