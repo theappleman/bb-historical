@@ -35,7 +35,7 @@ while ($line = mysql_fetch_array($result, MYSQL_ASSOC)) {
 	$loop .= enclose('div',get_day($line['date']),'class="bigdate"');
 	$loop .= enclose('div',enclose('a',html_entity_decode($line['title']),'href="'.$hurl.'/show/'.$line['id'].'"'),'class="title"');
 	$loop .= enclose('div',$line['date'],'class="date"');
-	if ($line['ratable'] == 0) { $loop .= enclose('div',chrate($line['id']),'class="rate"'); }
+	if ($line['rateable'] != 1) { $loop .= enclose('div',chrate($line['id']),'class="rate"'); }
   $line['intro'] .= show_pic($line['image']);
 	$loop .= enclose('div',html_entity_decode($line['intro']),'class="text"');
 	if ($line['commentable'] >= 1) {
