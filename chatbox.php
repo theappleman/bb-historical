@@ -57,7 +57,6 @@ if (comments($line['id']) >= 1) {
 		$foot = NULL;
 		$rate = NULL;
 		$nloop .= enclose('div',get_day($line2['date']),'class="bigdate"');
-		$title = ;
 		$nloop .= enclose('div',enclose('a',html_entity_decode($line2['title']),'href="'.$hurl.'/show/'.$line['id'].'"'),'class="title"');
 		$nloop .= enclose('div',$line2['date'],'class="date"');
 		if ($line2['rateable'] != 1) { $nloop .= enclose('div',chrate($line2['id']),'class="rate"'); }
