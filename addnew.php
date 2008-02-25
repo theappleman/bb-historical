@@ -73,5 +73,4 @@ if ($commentref == 0) {
 } else { mysql_unbuffered_query('UPDATE '.$db_prefix.'data SET lastupd = "'.date($datefmt).'" WHERE id = "'.$commentref.'" LIMIT 1') or die('Could not update post time (don\'t worry, your post has gone through).');
 header('Location:'.$hurl.'/show/'.$commentref); }
 
-
 ?>

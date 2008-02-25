@@ -28,3 +28,4 @@ list($section,$commentref) = mysql_fetch_array($r,MYSQL_BOTH);
 if ($section == "comments") {
 	header('Location:'.$hurl.'/show/'.$commentref);
 } else { header('Location:'.$hurl.'/show/'.$id); }
+?>
