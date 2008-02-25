@@ -11,7 +11,7 @@ $db_prefix = ""; // prefix of database tables
 
 $sitename = ""; // Kinda obvious? unless you can't read that...
 $hurl = ""; // It is best to set this. Very rarely it is ok to leave it blank. Base URL.
-$datefmt = "Y-m-d H:i:s"; 
+$datefmt = "Y-m-d H:i:s";
 $default = ""; // default category.
 $style = ""; // stylesheet name
 
@@ -42,8 +42,9 @@ CREATE TABLE IF NOT EXISTS `data` (
   `id` bigint(4) unsigned NOT NULL auto_increment COMMENT 'Unique ID for the entry',
   `title` varchar(100) collate utf8_unicode_ci NOT NULL COMMENT 'Headline, title or name',
   `date` datetime NOT NULL COMMENT 'Visible date of the entry',
-  `lastupd` datetime NOT NULL,
+  `lastupd` datetime NOT NULL COMMENT 'Date of last comment',
   `intro` text collate utf8_unicode_ci NOT NULL COMMENT 'Brief introduction of the entry',
+  `image` varchar(256) collate utf8_unicode_ci default NULL COMMENT 'Filename of attached image',
   `moderated` tinyint(1) default NULL COMMENT 'Moderation flag',
   `section` varchar(100) collate utf8_unicode_ci NOT NULL COMMENT 'Section which the entry falls under',
   `commentable` tinyint(1) NOT NULL COMMENT 'Commentable flag, allows items to have comments',

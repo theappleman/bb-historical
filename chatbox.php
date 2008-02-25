@@ -9,7 +9,7 @@ $id = $_REQUEST['id'];
 $_REQUEST = array(NULL);
 
 if ($id == "") { $id = "10"; }
-$query = 'SELECT id,title,date,intro,commentable,rateable,rating
+$query = 'SELECT id,title,date,intro,commentable,rateable,rating,image
 	FROM '.$db_prefix.'data
 	WHERE section = "'.$cat.'"
 		AND moderated != 1
@@ -36,6 +36,11 @@ while ($line = mysql_fetch_array($result, MYSQL_ASSOC)) {
 	$loop .= enclose('div',enclose('a',html_entity_decode($line['title']),'href="'.$hurl.'/show/'.$line['id'].'"'),'class="title"');
 	$loop .= enclose('div',$line['date'],'class="date"');
 	if ($ratable == 0) { $loop .= enclose('div',chrate($line['id']),'class="rate"'); }
+  if ($line['image'] != "") {
+  list($thumb,$filename) = explode('-',$line['image'],2);
+    if($thumb == "thumb") { $thumb = "thumb-"; } else { $thumb = NULL };
+    $line['intro'] .= '<br />'.enclose('a',enclo_s('img','src="'.$hurl.'/uploaded/'.$thumb.$uploadfilename.'"'),'href="'.$hurl.'/uploaded/'.$uploadfilename.'"');
+  }
 	$loop .= enclose('div',html_entity_decode($line['intro']),'class="text"');
 	if ($line['commentable'] >= 1) {
 		if (comments($line['id']) != 1) { $comment = 's'; } else { $comment = NULL; }
@@ -43,7 +48,7 @@ while ($line = mysql_fetch_array($result, MYSQL_ASSOC)) {
 	}
 	$loop .= enclose('div',$foot,'class="foot"');
 if (comments($line['id']) >= 1) {
-	$query2 = 'SELECT id,title,date,intro,rateable,rating
+	$query2 = 'SELECT id,title,date,intro,rateable,rating,image
 		FROM '.$db_prefix.'data
 		WHERE moderated != 1
 			AND date <= "'.date($datefmt).'"
@@ -60,6 +65,15 @@ if (comments($line['id']) >= 1) {
 		$nloop .= enclose('div',enclose('a',html_entity_decode($line2['title']),'href="'.$hurl.'/show/'.$line['id'].'"'),'class="title"');
 		$nloop .= enclose('div',$line2['date'],'class="date"');
 		if ($line2['rateable'] != 1) { $nloop .= enclose('div',chrate($line2['id']),'class="rate"'); }
+    if ($line2['image'] != "") {
+      list($thumb,$filename) = explode('-',$line2['image'],2);
+      if($thumb == "thumb") {
+        $thumb = "thumb-";
+      } else { $thumb = NULL };
+      if(is_image($uploaddir.$filename)) {
+        $line2['intro'] .= '<br />'.enclose('a',enclo_s('img','src="'.$hurl.'/uploaded/'.$thumb.$filename.'" '.array_slice(getimagesize($uploaddir.$thumb.$filename),2,1)),'href="'.$hurl.'/uploaded/'.$filename.'"');
+      }
+    }
 		$nloop .= enclose('div',html_entity_decode($line2['intro']),'class="text"');
     if ($line['commentable'] == 2) { $nloop .= enclose('div',enclose('a','Post a comment','href="'.$hurl.'/show/'.$line['id'].'"'),'class="foot"'); }
     else { $nloop .= enclose('div',enclose('a','No more comments','href="'.$hurl.'/show/'.$line['id'].'"'),'class="foot"'); }

@@ -7,12 +7,12 @@ require_once('functions.php');
 $id = $_REQUEST['id'];
 $_REQUEST = array(NULL);
 
-$query = 'SELECT title,date,section,intro,commentable,rateable,rating
+$query = 'SELECT title,date,section,intro,commentable,rateable,rating,image
 	FROM '.$db_prefix.'data
 	WHERE id ="' . $id . '"
 	LIMIT 1';
 $result = mysql_query($query);
-$query2 = 'SELECT id,title,date,intro,rateable,rating,commentable
+$query2 = 'SELECT id,title,date,intro,rateable,rating,commentable,image
 	FROM '.$db_prefix.'data
 	WHERE moderated != 1
 		AND date <= "'.date($datefmt).'"
@@ -32,6 +32,11 @@ $entry .= enclose('div',get_day($line['date']),'class="bigdate"');
 $entry .= enclose('div',enclose('a',html_entity_decode($line['title']),'href="'.$hurl.'/show/'.$id.'"'),'class="title"');
 $entry .= enclose('div',$line['date'],'class="date"');
 if ($line['rateable'] != 1) { $entry .= enclose('div',chrate($id),'class="rate"'); }
+if ($line['image'] != "") {
+  list($thumb,$filename) = explode('-',$line['image'],2);
+  if($thumb == "thumb") { $thumb = "thumb-"; } else { $thumb = NULL };
+  $line['intro'] .= '<br />'.enclose('a',enclo_s('img','src="'.$hurl.'/uploaded/'.$thumb.$uploadfilename.'"'),'href="'.$hurl.'/uploaded/'.$uploadfilename.'"');
+}
 $entry .= enclose('div',html_entity_decode($line['intro']),'class="text"');
 if ($line['commentable'] >= 1) {
 	if (comments($id) != 1) { $comment = 's'; } else { $comment = NULL; }
@@ -50,6 +55,15 @@ if ($commentable >= 1) {
 		$loop .= enclose('div',enclose('a',html_entity_decode($line2['title']),''),'class="title"');
 		$loop .= enclose('div',$line2['date'],'class="date"');
 		if ($line2['rateable'] != 1) { $loop .= enclose('div',chrate($line2['id']),'class="rate"'); }
+    if ($line2['image'] != "") {
+      list($thumb,$filename) = explode('-',$line2['image'],2);
+      if($thumb == "thumb") {
+        $thumb = "thumb-";
+      } else { $thumb = NULL };
+      if(is_image($uploaddir.$filename)) {
+        $line2['intro'] .= '<br />'.enclose('a',enclo_s('img','src="'.$hurl.'/uploaded/'.$thumb.$filename.'" '.array_slice(getimagesize($uploaddir.$thumb.$filename),2,1)),'href="'.$hurl.'/uploaded/'.$filename.'"');
+      }
+    }
 		$loop .= enclose('div',html_entity_decode($line2['intro']),'class="text"');
 		if ($line2['commentable'] >= 1) {
 			if (comments($line2['id']) != 1) { $comment = 's'; } else { $comment = NULL; }

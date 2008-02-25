@@ -41,8 +41,8 @@ if (is_uploaded_file($_FILES['userfile']['tmp_name']) ) {
 		$uploadfilename = $rand . '-' . basename($_FILES['userfile']['name']);
 		$uploadfile = $uploaddir . $uploadfilename;
 		if (move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadfile)) {
-      if(!make_thumb($uploadfilename)) { $thumb = NULL; } else { $thumb = "thumb-"; }
-      $intro .= htmlentities('<br />'.enclose('a',enclo_s('img','src="'.$hurl.'/uploaded/'.$thumb.$uploadfilename.'"'),'href="'.$hurl.'/uploaded/'.$uploadfilename.'"'));
+      if(make_thumb($uploadfilename)) { $thumb = "thumb-"; } else { $thumb = NULL; }
+      $image = $thumb.$uploadfilename;
 		} else { $allowed = false; }
 	}
 }
@@ -50,20 +50,21 @@ if (is_uploaded_file($_FILES['userfile']['tmp_name']) ) {
 if($allowed == true) {
 	if (check_transaction_key($transaction_key)) {
 		mysql_unbuffered_query('INSERT INTO '.$db_prefix.'data
-			(title,section, date,lastupd, intro, moderated, commentable, commentref,sticky,rateable)
+			(title,section, date,lastupd, intro, image, moderated, commentable, commentref,sticky,rateable)
 			VALUES ("' . $title . '",
 				"'. $cat .'",
 				"'.$date.'",
 				"'.$date.'",
 				"' . $intro . '",
+        "'.$image.'",
 				"' . $moderated . '",
 				"' . $commentable . '",
 				"' . $commentref . '",
 				"'.$sticky.'",
 				"'.$rateable.'"
 				)') or die('Sorry, there was a problem and your post could not be completed. ' .mysql_error() );
-	} else { die("Double post detected!"); }
-}
+	} else { exit("Double post detected!"); }
+} else { exit("There has been an error and you cannot post."); }
 
 if ($commentref == 0) {
 	if ($cat == "chatbox") {
