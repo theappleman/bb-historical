@@ -32,15 +32,7 @@ $entry .= enclose('div',get_day($line['date']),'class="bigdate"');
 $entry .= enclose('div',enclose('a',html_entity_decode($line['title']),'href="'.$hurl.'/show/'.$id.'"'),'class="title"');
 $entry .= enclose('div',$line['date'],'class="date"');
 if ($line['rateable'] != 1) { $entry .= enclose('div',chrate($id),'class="rate"'); }
-if ($line['image'] != "" && is_image($uploaddir.$line['image'])) {
-  list($thumb,$rand,$filename) = explode('-',$line['image'],3);
-  if($thumb == "thumb") {
-    $filename = "thumb-" . $rand . '-' . $filename;
-  } else {
-    $filename = $line['image'];
-  }
-  $line['intro'] .= '<br />'.enclose('a',enclo_s('img','src="'.$hurl.'/uploaded/'.$filename.'"'),'href="'.$hurl.'/uploaded/'.$line['image'].'"');
-  }
+$line['intro'] .= show_pic($line['image']);
 $entry .= enclose('div',html_entity_decode($line['intro']),'class="text"');
 if ($line['commentable'] >= 1) {
 	if (comments($id) != 1) { $comment = 's'; } else { $comment = NULL; }
@@ -59,13 +51,7 @@ if ($line['commentable'] >= 1) {
 		$loop .= enclose('div',enclose('a',html_entity_decode($line2['title']),''),'class="title"');
 		$loop .= enclose('div',$line2['date'],'class="date"');
 		if ($line2['rateable'] != 1) { $loop .= enclose('div',chrate($line2['id']),'class="rate"'); }
-    if ($line2['image'] != "" && is_image($uploaddir.$line2['image'])) {
-      list($thumb,$rand,$filename) = explode('-',$line2['image'],3);
-      if($thumb == "thumb") { $filename = "thumb-" . $rand. '-' . $filename;} else { $filename = $line2['image']; }
-      if(is_image($uploaddir.$filename)) {
-        $line2['intro'] .= '<br />'.enclose('a',enclo_s('img','src="'.$hurl.'/uploaded/'.$filename.'" '.array_slice(getimagesize($uploaddir.$filename),2,1)),'href="'.$hurl.'/uploaded/'.$line2['image'].'"');
-      }
-    }
+    $line2['intro'] .= show_pic($line2['image']);
 		$loop .= enclose('div',html_entity_decode($line2['intro']),'class="text"');
 		if ($line2['commentable'] >= 1) {
 			if (comments($line2['id']) != 1) { $comment = 's'; } else { $comment = NULL; }

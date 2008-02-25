@@ -29,7 +29,7 @@ function postbox($cat,$id) {
 		$box = $box . $script;
 		return $box;
  }
- 
+
  function finish_up($head,$body) {
   $body = enclose('div',$body,'id="content"') . menu();
   $head = enclose('head',$head,'');
@@ -37,7 +37,7 @@ function postbox($cat,$id) {
   $finish = enclose('html',$head . $body,'xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"');
   return $finish;
   }
- 
+
  function chrate($id) {
    global $hurl;
    $rate = NULL;
@@ -47,8 +47,22 @@ function postbox($cat,$id) {
    return $rate;
   }
 
+function show_pic($image) {
+  if ($image != "" && is_image($uploaddir.$image)) {
+    list($thumb,$rand,$filename) = explode('-',$image,3);
+    if($thumb == "thumb" && is_image($uploaddir."thumb-" . $rand . '-' . $filename)) {
+      $thumbname = "thumb-" . $rand . '-' . $filename;
+      $filename = $rand . '-' . $filename;
+    } else {
+      $thumbname = $image;
+      $filename = $image;
+    }
+    return '<br />'.enclose('a',enclo_s('img','src="'.$hurl.'/uploaded/'.$thumbname.'"'),'href="'.$hurl.'/uploaded/'.$filename.'"');
+  }
+}
+
 function is_image($filename) {
-	$type=getimagesize($filename) or die("Not an image (gif/jpeg/png)");
+	$type=@getimagesize($filename);
 	$image_type = $type['mime'];
 	if ($image_type == "image/gif" || $image_type == "image/jpeg" || $image_type == "image/png") {
 		return $image_type;
@@ -63,7 +77,7 @@ function make_thumb($filename) {
 		list($width_orig, $height_orig) = getimagesize($fullfile);
     if ($width > $width_orig && $height > $height_orig) { return false; }
 		$ratio_orig = $width_orig/$height_orig;
-		if ($width/$height > $ratio_orig) { $width = $height*$ratio_orig; } 
+		if ($width/$height > $ratio_orig) { $width = $height*$ratio_orig; }
 			else { $height = $width/$ratio_orig; }
 		$image_p = imagecreatetruecolor($width, $height);
 		switch($image_type) {
@@ -116,7 +130,7 @@ function date_reset($id){
 	mysql_unbuffered_query('UPDATE '.$db_prefix.'data SET date = '.date($datefmt).' WHERE id = "'.$id.' LIMIT 1') or die('Could not reset date');
 } // currently unused
 
-function mod_change($cat, $id) { 
+function mod_change($cat, $id) {
   global $db_prefix;
 	list($cat,$section) = mysql_fetch_array(mysql_query('SELECT '.$cat.',section FROM '.$db_prefix.'data WHERE id = "'.$id.'"'), MYSQL_ASSOC);
 	if ($result[$cat] == 1) { $nr = 0; } else { $nr = 1; }
@@ -124,22 +138,22 @@ function mod_change($cat, $id) {
 		SET '.$cat.' = "'.$nr.'"
 		WHERE id = '.$id.'
 		LIMIT 1') or die('Change failed. ' . mysql_error() );
-	return(single_section($section)); 
+	return(single_section($section));
 } //currently unused
 
-function comments($id) { 
+function comments($id) {
 	global $db_prefix;
 	$query = 'SELECT COUNT(*) FROM '.$db_prefix.'data WHERE commentref = "'.$id.'" AND moderated != "1" AND section = "comments"';
 	$result = mysql_result(mysql_query($query),0);
 	return $result;
-} 
+}
 
-function ratings($id) { 
+function ratings($id) {
 	global $db_prefix;
 	$query = 'SELECT rating FROM '.$db_prefix.'data WHERE id = "'.$id.'"';
 	$result = mysql_result(mysql_query($query),0);
 	return $result;
-} 
+}
 
 if (!function_exists('array_combine')) { function array_combine($keys, $values) {
 		$result = array() ;
