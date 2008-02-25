@@ -32,7 +32,7 @@ $entry .= enclose('div',get_day($line['date']),'class="bigdate"');
 $entry .= enclose('div',enclose('a',html_entity_decode($line['title']),'href="'.$hurl.'/show/'.$id.'"'),'class="title"');
 $entry .= enclose('div',$line['date'],'class="date"');
 if ($line['rateable'] != 1) { $entry .= enclose('div',chrate($id),'class="rate"'); }
-$line['intro'] .= show_pic($uploaddir.$line['image']);
+$line['intro'] .= show_pic($line['image']);
 $entry .= enclose('div',html_entity_decode($line['intro']),'class="text"');
 if ($line['commentable'] >= 1) {
 	if (comments($id) != 1) { $comment = 's'; } else { $comment = NULL; }
@@ -51,7 +51,7 @@ if ($line['commentable'] >= 1) {
 		$loop .= enclose('div',enclose('a',html_entity_decode($line2['title']),''),'class="title"');
 		$loop .= enclose('div',$line2['date'],'class="date"');
 		if ($line2['rateable'] != 1) { $loop .= enclose('div',chrate($line2['id']),'class="rate"'); }
-    $line2['intro'] .= show_pic($uploaddir.$line2['image']);
+    $line2['intro'] .= show_pic($line2['image']);
 		$loop .= enclose('div',html_entity_decode($line2['intro']),'class="text"');
 		if ($line2['commentable'] >= 1) {
 			if (comments($line2['id']) != 1) { $comment = 's'; } else { $comment = NULL; }

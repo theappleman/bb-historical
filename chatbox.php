@@ -36,7 +36,7 @@ while ($line = mysql_fetch_array($result, MYSQL_ASSOC)) {
 	$loop .= enclose('div',enclose('a',html_entity_decode($line['title']),'href="'.$hurl.'/show/'.$line['id'].'"'),'class="title"');
 	$loop .= enclose('div',$line['date'],'class="date"');
 	if ($ratable == 0) { $loop .= enclose('div',chrate($line['id']),'class="rate"'); }
-  $line['intro'] .= show_pic($uploaddir.$line['image']);
+  $line['intro'] .= show_pic($line['image']);
 	$loop .= enclose('div',html_entity_decode($line['intro']),'class="text"');
 	if ($line['commentable'] >= 1) {
 		if (comments($line['id']) != 1) { $comment = 's'; } else { $comment = NULL; }
@@ -61,7 +61,7 @@ if (comments($line['id']) >= 1) {
 		$nloop .= enclose('div',enclose('a',html_entity_decode($line2['title']),'href="'.$hurl.'/show/'.$line['id'].'"'),'class="title"');
 		$nloop .= enclose('div',$line2['date'],'class="date"');
 		if ($line2['rateable'] != 1) { $nloop .= enclose('div',chrate($line2['id']),'class="rate"'); }
-    $line2['intro'] .= show_pic($uploaddir.$line2['image']);
+    $line2['intro'] .= show_pic($line2['image']);
 		$nloop .= enclose('div',html_entity_decode($line2['intro']),'class="text"');
     if ($line['commentable'] == 2) { $nloop .= enclose('div',enclose('a','Post a comment','href="'.$hurl.'/show/'.$line['id'].'"'),'class="foot"'); }
     else { $nloop .= enclose('div',enclose('a','No more comments','href="'.$hurl.'/show/'.$line['id'].'"'),'class="foot"'); }

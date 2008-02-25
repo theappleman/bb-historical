@@ -48,6 +48,7 @@ function postbox($cat,$id) {
   }
 
 function show_pic($image) {
+  global $uploaddir;
   if ($image != "" && is_image($uploaddir.$image)) {
     list($thumb,$rand,$filename) = explode('-',$image,3);
     if($thumb == "thumb" && is_image($uploaddir."thumb-" . $rand . '-' . $filename)) {
