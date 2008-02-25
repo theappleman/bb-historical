@@ -33,11 +33,14 @@ $entry .= enclose('div',enclose('a',html_entity_decode($line['title']),'href="'.
 $entry .= enclose('div',$line['date'],'class="date"');
 if ($line['rateable'] != 1) { $entry .= enclose('div',chrate($id),'class="rate"'); }
 if ($line['image'] != "" && is_image($uploaddir.$line['image'])) {
-  list($thumb,$filename) = explode('-',$line['image'],2);
-  $filefullname = $thumb . $filename;
-  if($thumb == "thumb") { $filename = "thumb-" . $filename; $thumb = NULL;} else { $filename = $thumb . '-'; }
-  $line['intro'] .= '<br />'.enclose('a',enclo_s('img','src="'.$hurl.'/uploaded/'.$thumb.$filename.'"'),'href="'.$hurl.'/uploaded/'.$filename.'"');
-}
+  list($thumb,$rand,$filename) = explode('-',$line['image'],3);
+  if($thumb == "thumb") {
+    $filename = "thumb-" . $rand . '-' . $filename;
+  } else {
+    $filename = $line['image'];
+  }
+  $line['intro'] .= '<br />'.enclose('a',enclo_s('img','src="'.$hurl.'/uploaded/'.$filename.'"'),'href="'.$hurl.'/uploaded/'.$line['image'].'"');
+  }
 $entry .= enclose('div',html_entity_decode($line['intro']),'class="text"');
 if ($line['commentable'] >= 1) {
 	if (comments($id) != 1) { $comment = 's'; } else { $comment = NULL; }
@@ -57,11 +60,10 @@ if ($line['commentable'] >= 1) {
 		$loop .= enclose('div',$line2['date'],'class="date"');
 		if ($line2['rateable'] != 1) { $loop .= enclose('div',chrate($line2['id']),'class="rate"'); }
     if ($line2['image'] != "" && is_image($uploaddir.$line2['image'])) {
-      list($thumb,$filename) = explode('-',$line2['image'],2);
-      $filefullname = $thumb . $filename;
-      if($thumb == "thumb") { $filename = "thumb-" . $filename; $thumb = NULL;} else { $filename = $thumb . '-' . $filename; }
+      list($thumb,$rand,$filename) = explode('-',$line2['image'],3);
+      if($thumb == "thumb") { $filename = "thumb-" . $rand. '-' . $filename;} else { $filename = $line2['image']; }
       if(is_image($uploaddir.$filename)) {
-        $line2['intro'] .= '<br />'.enclose('a',enclo_s('img','src="'.$hurl.'/uploaded/'.$filename.'" '.array_slice(getimagesize($uploaddir.$filename),2,1)),'href="'.$hurl.'/uploaded/'.$filefullname.'"');
+        $line2['intro'] .= '<br />'.enclose('a',enclo_s('img','src="'.$hurl.'/uploaded/'.$filename.'" '.array_slice(getimagesize($uploaddir.$filename),2,1)),'href="'.$hurl.'/uploaded/'.$line2['image'].'"');
       }
     }
 		$loop .= enclose('div',html_entity_decode($line2['intro']),'class="text"');
