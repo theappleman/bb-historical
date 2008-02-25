@@ -1,5 +1,5 @@
 <?
-// comment.php
+// chatbox.php
 // view the chatbox and post
 
 require_once('functions.php');
@@ -10,7 +10,7 @@ $page = $_REQUEST['page'];
 $_REQUEST = array(NULL);
 
 if ($id == "") { $id = "10"; }
-if (page != "") { $id = ($page * $id) . ', ' $id; }
+if ($page != "") { $page = $page * $id; $id = $page . ', ' . $id; }
 $query = 'SELECT id,title,date,intro,commentable,rateable,rating,image
 	FROM '.$db_prefix.'data
 	WHERE section = "'.$cat.'"
