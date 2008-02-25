@@ -6,9 +6,11 @@ require_once('functions.php');
 
 $cat = $_REQUEST['cat'];
 $id = $_REQUEST['id'];
+$page = $_REQUEST['page'];
 $_REQUEST = array(NULL);
 
 if ($id == "") { $id = "10"; }
+if (page != "") { $id = ($page * $id) . ', ' $id; }
 $query = 'SELECT id,title,date,intro,commentable,rateable,rating,image
 	FROM '.$db_prefix.'data
 	WHERE section = "'.$cat.'"
