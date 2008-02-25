@@ -59,7 +59,7 @@ if ($line['commentable'] >= 1) {
     if ($line2['image'] != "" && is_image($uploaddir.$line2['image'])) {
       list($thumb,$filename) = explode('-',$line2['image'],2);
       $filefullname = $thumb . $filename;
-      if($thumb == "thumb") { $filename = "thumb-" . $filename; $thumb = NULL;} else { $filename = $thumb . '-'; }
+      if($thumb == "thumb") { $filename = "thumb-" . $filename; $thumb = NULL;} else { $filename = $thumb . '-' . $filename; }
       if(is_image($uploaddir.$filename)) {
         $line2['intro'] .= '<br />'.enclose('a',enclo_s('img','src="'.$hurl.'/uploaded/'.$filename.'" '.array_slice(getimagesize($uploaddir.$filename),2,1)),'href="'.$hurl.'/uploaded/'.$filefullname.'"');
       }
