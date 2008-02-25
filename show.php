@@ -65,7 +65,7 @@ if ($line['commentable'] >= 1) {
   if ($com_num != 1) { $pl = 's'; } else { $pl = NULL; }
 	$bot .= enclose('div','comment'.$pl,'class="title"');
 	$bot .= enclose('div',enclose('a','Comments through RSS feed','href="'.$hurl.'/rss/comments/'.$id.'"'),'class="text"');
-	if ($commentable == 2) { $bot .= enclose('div',enclose('a','Post a comment',''),'class="foot"'); }
+	if ($line2['commentable'] == 2) { $bot .= enclose('div',enclose('a','Post a comment',''),'class="foot"'); }
 	else { $bot .= enclose('div',enclose('a','No more comments',''),'class="foot"'); }
 	$body .= enclose('div',$bot,'class="entry"');
 }

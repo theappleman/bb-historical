@@ -49,7 +49,7 @@ if (is_uploaded_file($_FILES['userfile']['tmp_name']) ) {
 
 if($allowed == true) {
 	if (check_transaction_key($transaction_key)) {
-		mysql_unbuffered_query('INSERT INTO '.$db_prefix.'data
+		mysql_query('INSERT INTO '.$db_prefix.'data
 			(title,section, date,lastupd, intro, image, moderated, commentable, commentref,sticky,rateable)
 			VALUES ("' . $title . '",
 				"'. $cat .'",
