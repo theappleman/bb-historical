@@ -58,7 +58,7 @@ function show_pic($image) {
       $thumbname = $image;
       $filename = $image;
     }
-    return htmlentities('<br />'.enclose('a',enclo_s('img','src="'.$hurl.'/uploaded/'.$thumbname.'"'),'href="'.$hurl.'/uploaded/'.$filename.'"'));
+    return htmlentities('<br />'.enclose('a',enclo_s('img','src="'.$hurl.'/uploaded/'.$thumbname.'" '.array_splice( getimagesize( $uploaddir.$thumbname ), 3, 1 ) ),'href="'.$hurl.'/uploaded/'.$filename.'"'));
   } else { return ''; }
 }
 
