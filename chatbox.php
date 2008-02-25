@@ -38,8 +38,8 @@ while ($line = mysql_fetch_array($result, MYSQL_ASSOC)) {
 	if ($ratable == 0) { $loop .= enclose('div',chrate($line['id']),'class="rate"'); }
   if ($line['image'] != "") {
   list($thumb,$filename) = explode('-',$line['image'],2);
-    if($thumb == "thumb") { $thumb = "thumb-"; } else { $thumb = NULL };
-    $line['intro'] .= '<br />'.enclose('a',enclo_s('img','src="'.$hurl.'/uploaded/'.$thumb.$uploadfilename.'"'),'href="'.$hurl.'/uploaded/'.$uploadfilename.'"');
+    if($thumb == "thumb") { $thumb = "thumb-"; } else { $thumb = NULL; }
+    $line['intro'] .= '<br />'.enclose('a',enclo_s('img','src="'.$hurl.'/uploaded/'.$thumb.$filename.'"'),'href="'.$hurl.'/uploaded/'.$filename.'"');
   }
 	$loop .= enclose('div',html_entity_decode($line['intro']),'class="text"');
 	if ($line['commentable'] >= 1) {
@@ -69,7 +69,7 @@ if (comments($line['id']) >= 1) {
       list($thumb,$filename) = explode('-',$line2['image'],2);
       if($thumb == "thumb") {
         $thumb = "thumb-";
-      } else { $thumb = NULL };
+      } else { $thumb = NULL; }
       if(is_image($uploaddir.$filename)) {
         $line2['intro'] .= '<br />'.enclose('a',enclo_s('img','src="'.$hurl.'/uploaded/'.$thumb.$filename.'" '.array_slice(getimagesize($uploaddir.$thumb.$filename),2,1)),'href="'.$hurl.'/uploaded/'.$filename.'"');
       }

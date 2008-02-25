@@ -34,8 +34,8 @@ $entry .= enclose('div',$line['date'],'class="date"');
 if ($line['rateable'] != 1) { $entry .= enclose('div',chrate($id),'class="rate"'); }
 if ($line['image'] != "") {
   list($thumb,$filename) = explode('-',$line['image'],2);
-  if($thumb == "thumb") { $thumb = "thumb-"; } else { $thumb = NULL };
-  $line['intro'] .= '<br />'.enclose('a',enclo_s('img','src="'.$hurl.'/uploaded/'.$thumb.$uploadfilename.'"'),'href="'.$hurl.'/uploaded/'.$uploadfilename.'"');
+  if($thumb == "thumb") { $thumb = "thumb-"; } else { $thumb = NULL; }
+  $line['intro'] .= '<br />'.enclose('a',enclo_s('img','src="'.$hurl.'/uploaded/'.$thumb.$filename.'"'),'href="'.$hurl.'/uploaded/'.$filename.'"');
 }
 $entry .= enclose('div',html_entity_decode($line['intro']),'class="text"');
 if ($line['commentable'] >= 1) {
@@ -45,7 +45,7 @@ if ($line['commentable'] >= 1) {
 $entry .= enclose('div',$foot,'class="foot"');
 $body .= enclose('div',$entry,'class="entry"');
 
-if ($commentable >= 1) {
+if ($line['commentable'] >= 1) {
 	while ($line2 = mysql_fetch_array($result2, MYSQL_ASSOC)) {
 		$loop = NULL;
 		$foot = NULL;
@@ -59,7 +59,7 @@ if ($commentable >= 1) {
       list($thumb,$filename) = explode('-',$line2['image'],2);
       if($thumb == "thumb") {
         $thumb = "thumb-";
-      } else { $thumb = NULL };
+      } else { $thumb = NULL; }
       if(is_image($uploaddir.$filename)) {
         $line2['intro'] .= '<br />'.enclose('a',enclo_s('img','src="'.$hurl.'/uploaded/'.$thumb.$filename.'" '.array_slice(getimagesize($uploaddir.$thumb.$filename),2,1)),'href="'.$hurl.'/uploaded/'.$filename.'"');
       }
