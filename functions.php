@@ -63,7 +63,7 @@ function show_pic($image) {
 }
 
 function is_image($filename) {
-	$type=@getimagesize($filename);
+	$type=@getimagesize($filename) or return false;
 	$image_type = $type['mime'];
 	if ($image_type == "image/gif" || $image_type == "image/jpeg" || $image_type == "image/png") {
 		return $image_type;
