@@ -7,9 +7,9 @@ require_once('functions.php');
 $allowed = true;
 
 if (isset($_POST['reset'])) { $date = date($datefmt); }
-else { 
+else {
 	if ($_POST['date'] != "") { $date = htmlspecialchars($_POST['date']); }
-	else { $date = date($datefmt); } 
+	else { $date = date($datefmt); }
 }
 
 if (isset($_POST['moderated'])) { $moderated = 0; }	else { $moderated = 1; }
@@ -35,14 +35,14 @@ $sess_id = $_POST['session_id'];
 $_REQUEST = array(NULL);
 
 if (is_uploaded_file($_FILES['userfile']['tmp_name']) ) {
-	
+
 	if ( is_image($_FILES['userfile']['tmp_name']) ) {
 		$rand = mt_rand();
 		$uploadfilename = $rand . '-' . basename($_FILES['userfile']['name']);
 		$uploadfile = $uploaddir . $uploadfilename;
 		if (move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadfile)) {
       if(!make_thumb($uploadfilename)) { $thumb = NULL; } else { $thumb = "thumb-"; }
-      $intro .= htmlentities('<br />'.enclose('a',enclo_s('img','src="'.$hurl.'/uploaded/'.$thumb.$uploadfilename.'"),'href="'.$hurl.'/uploaded/'.$uploadfilename.'"));
+      $intro .= htmlentities('<br />'.enclose('a',enclo_s('img','src="'.$hurl.'/uploaded/'.$thumb.$uploadfilename.'"'),'href="'.$hurl.'/uploaded/'.$uploadfilename.'"'));
 		} else { $allowed = false; }
 	}
 }
@@ -50,8 +50,8 @@ if (is_uploaded_file($_FILES['userfile']['tmp_name']) ) {
 if($allowed == true) {
 	if (check_transaction_key($transaction_key)) {
 		mysql_unbuffered_query('INSERT INTO '.$db_prefix.'data
-			(title,section, date,lastupd, intro, moderated, commentable, commentref,sticky,rateable) 
-			VALUES ("' . $title . '", 
+			(title,section, date,lastupd, intro, moderated, commentable, commentref,sticky,rateable)
+			VALUES ("' . $title . '",
 				"'. $cat .'",
 				"'.$date.'",
 				"'.$date.'",
@@ -65,7 +65,7 @@ if($allowed == true) {
 	} else { die("Double post detected!"); }
 }
 
-if ($commentref == 0) { 
+if ($commentref == 0) {
 	if ($cat == "chatbox") {
 		header('Location:'.$hurl.'/chatbox');
 	} else { header('Location:'.$hurl.'/'.$cat); }
