@@ -61,7 +61,8 @@ while ($line = mysql_fetch_array($result, MYSQL_ASSOC)) {
 	if ($cat == "comments") { $perm = $id; }
 		else {	$perm = $line['id']; }
 	$item .= enclose('guid',$hurl.'/show/'.$perm,'');
-	$items .= enclose('item',$item,'');
+	$items .= enclose('item',$item.'
+  ','');
 }
 
 $return = enclose('rss',$channel.$items,'version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"');
