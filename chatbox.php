@@ -24,7 +24,7 @@ $result = mysql_query($query);
 
 $return = NULL;$body = NULL;$head = NULL;
 $head .= enclose("title",$sitename.' '. $cat,"");
-$head .= head();
+$head .= head($cat,$id);
 
 $body .= enclose('div',$sitename,'id="head"');
 

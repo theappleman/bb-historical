@@ -25,7 +25,7 @@ $line = mysql_fetch_array($result, MYSQL_ASSOC);
 
 $return = NULL;$head = NULL;$body = NULL;$comments = NULL;$bot = NULL;$box = NULL;$script=NULL;
 $head .= enclose('title',$sitename,'');
-$head .= head();
+$head .= head("comments",$id);
 
 $body .= enclose('div',$sitename,'id="head"');
 $entry .= enclose('div',get_day($line['date']),'class="bigdate"');
