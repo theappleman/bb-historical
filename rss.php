@@ -12,9 +12,9 @@ $query = 'SELECT id,title,date,intro FROM '.$db_prefix.'data ';
 
 if ($id != "" && $cat == "comments" && $id != "0")
 	{
-	$query .= 'WHERE section = "comments" 
-				AND commentref = "'.$id.'" 
-				AND moderated != "1" 
+	$query .= 'WHERE section = "comments"
+				AND commentref = "'.$id.'"
+				AND moderated != "1"
 				AND rating >= -50
 				AND date <= "'.date($datefmt).'"
 			ORDER BY sticky ASC, date DESC';
@@ -22,16 +22,16 @@ if ($id != "" && $cat == "comments" && $id != "0")
 	else {
 		if($cat != "") {
 			$query .= '
-			WHERE section LIKE "%'.$cat.'%" 
-				AND moderated != 1 
-				AND date <= "'.date($datefmt).'" 
+			WHERE section LIKE "%'.$cat.'%"
+				AND moderated != 1
+				AND date <= "'.date($datefmt).'"
 				AND rating >= -50
 			ORDER BY sticky ASC, date DESC ';
-			 
+
 		}
 		else {
-			$query .= 'WHERE moderated != 1 
-				AND date <= "'.date($datefmt).'" 
+			$query .= 'WHERE moderated != 1
+				AND date <= "'.date($datefmt).'"
 				AND rating >= -50
 			ORDER BY sticky ASC, date DESC ';
 		}
@@ -39,7 +39,7 @@ if ($id != "" && $cat == "comments" && $id != "0")
 		else { $query .='LIMIT 20'; }
 	}
 $result = mysql_query($query);
-	
+
 $return = NULL;
 $channel = NULL;
 
@@ -63,7 +63,7 @@ while ($line = mysql_fetch_array($result, MYSQL_ASSOC)) {
 	$items .= enclose('item',$item,'');
 }
 
-$return = enclose('rss',$channel.$items,'version="2.0"');
-
+$return = enclose('rss',$channel.$items,'version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"');
+header('Content-type: application/rss+xml');
 echo $return;
 ?>
