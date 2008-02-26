@@ -50,8 +50,6 @@ $channel .= enclose('language','en-gb','');
 $channel .= enclose('pubDate',date('r',strtotime(date($datefmt))),'');
 $channel .= enclo_s('atom:link','href="'.$hurl.$_SERVER['REQUEST_URI'].'" rel="self" type="application/rss+xml"');
 
-$channel = enclose('channel',$channel,'');
-
 while ($line = mysql_fetch_array($result, MYSQL_ASSOC)) {
 	$item = NULL;
 	$item .= enclose('title',html_entity_decode($line['title']),'');
@@ -61,11 +59,10 @@ while ($line = mysql_fetch_array($result, MYSQL_ASSOC)) {
 	if ($cat == "comments") { $perm = $id; }
 		else {	$perm = $line['id']; }
 	$item .= enclose('guid',$hurl.'/show/'.$perm,'');
-	$items .= enclose('item',$item.'
-  ','');
+	$items .= enclose('item',$item,'');
 }
-
-$return = enclose('rss',$channel.$items,'version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"');
+$channel = enclose('channel',$channel.$items,'');
+$return = enclose('rss',$channel,'version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"');
 header('Content-type: application/rss+xml');
 echo $return;
 ?>
