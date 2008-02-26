@@ -47,7 +47,7 @@ $channel .= enclose('title',$sitename.' '.$cat,'');
 $channel .= enclose('link',$hurl,'');
 $channel .= enclose('description',$meta_desc,'');
 $channel .= enclose('language','en-gb','');
-$channel .= enclose('pubDate',date($datefmt),'');
+$channel .= enclose('pubDate',date('U',strtotime(date($datefmt))),'');
 $channel .= enclo_s('atom:link','href="'.$hurl.$_SERVER['REQUEST_URI'].'" rel="self" type="application/rss+xml"');
 
 $channel = enclose('channel',$channel,'');
@@ -56,7 +56,7 @@ while ($line = mysql_fetch_array($result, MYSQL_ASSOC)) {
 	$item = NULL;
 	$item .= enclose('title',html_entity_decode($line['title']),'');
 	$item .= enclose('description',html_entity_decode($line['intro']),'');
-	$item .= enclose('pubDate',$line['date'],'');
+	$item .= enclose('pubDate',date('U',strtotime($line['date'])),'');
 	$item .= enclose('author',$line['owner'],'');
 	if ($cat == "comments") { $perm = $id; }
 		else {	$perm = $line['id']; }
