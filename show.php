@@ -7,7 +7,7 @@ require_once('functions.php');
 $id = $_REQUEST['id'];
 $_REQUEST = array(NULL);
 
-$query = 'SELECT title,date,section,intro,commentable,rateable,rating,image
+$query = 'SELECT title,date,intro,commentable,rateable,rating,image
 	FROM '.$db_prefix.'data
 	WHERE id ="' . $id . '"
 	LIMIT 1';
