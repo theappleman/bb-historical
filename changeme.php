@@ -58,7 +58,7 @@ CREATE TABLE IF NOT EXISTS `data` (
 CREATE TABLE IF NOT EXISTS `transactions` (
   `transaction_key` varchar(24) default NULL,
   UNIQUE KEY `uki` (`transaction_key`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT="Transaction key table";
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT="Transaction key table";
 
 */
 

@@ -7,6 +7,27 @@ require_once('userconf.php');
 $link = mysql_pconnect($db_host, $db_user, $db_pass) or die('Could not connect. Have you read the installation instructions?');
 mysql_select_db($db_data) or die('Could not select database. Have you read the installation instructions? ' );
 
+if( !function_exists('str_split') )
+{
+    function str_split($string, $split_length=1)
+    {
+        $array = array();
+        $len = strlen($string);
+        do
+        {
+            $part = '';
+            for ($j = 0; $j < $split_length; $j++)
+            {
+                $part .= $string{$i};
+                $i++;
+            }
+            $array[] = $part;
+        }
+        while ($i < $len);
+        return $array;
+    }
+}
+
 function postbox($cat,$id) {
   global $hurl, $accept;
   $box = NULL;
@@ -48,7 +69,7 @@ function postbox($cat,$id) {
   }
 
 function show_pic($image) {
-  global $uploaddir;
+  global $uploaddir,$hurl;
   if ($image != "" && is_image($uploaddir.$image)) {
     list($thumb,$rand,$filename) = explode('-',$image,3);
     if($thumb == "thumb" && is_image($uploaddir."thumb-" . $rand . '-' . $filename)) {
@@ -58,7 +79,7 @@ function show_pic($image) {
       $thumbname = $image;
       $filename = $image;
     }
-    return htmlentities('<br />'.enclose('a',enclo_s('img','src="'.$hurl.'/uploaded/'.$thumbname.'" '. implode( array_splice( getimagesize( $uploaddir.$thumbname ), 3, 1 ) ) ),'href="'.$hurl.'/uploaded/'.$filename.'"'));
+    return "\n".htmlentities(enclose('a',enclo_s('img','src="'.$hurl.'/uploaded/'.$thumbname.'" '. implode( array_splice( getimagesize( $uploaddir.$thumbname ), 3, 1 ) ) ),'href="'.$hurl.'/uploaded/'.$filename.'"'));
   } else { return ''; }
 }
 
@@ -133,13 +154,12 @@ function date_reset($id){
 
 function mod_change($cat, $id) {
   global $db_prefix;
-	list($cat,$section) = mysql_fetch_array(mysql_query('SELECT '.$cat.',section FROM '.$db_prefix.'data WHERE id = "'.$id.'"'), MYSQL_ASSOC);
-	if ($result[$cat] == 1) { $nr = 0; } else { $nr = 1; }
-	mysql_unbuffered_query('UPDATE '.$db_prefix.'data
+	$result = mysql_fetch_array(mysql_query('SELECT '.$cat.' FROM '.$db_prefix.'data WHERE id = "'.$id.'"'), MYSQL_ASSOC);
+	if ($result['cat'] == 1) { $nr = 0; } else { $nr = 1; }
+	mysql_query('UPDATE '.$db_prefix.'data
 		SET '.$cat.' = "'.$nr.'"
-		WHERE id = '.$id.'
+		WHERE id = "'.$id.'"
 		LIMIT 1') or die('Change failed. ' . mysql_error() );
-	return(single_section($section));
 } //currently unused
 
 function comments($id) {
@@ -202,7 +222,8 @@ function enclose($type,$content,$opts) {
 function enclo_s($type,$opts) { return '<' . $type . ' ' . $opts . ' />'; }
 
 function check_transaction_key($key) {
-    if (false === mysql_unbuffered_query('INSERT INTO transactions (transaction_key) VALUES ("'.$key.'")')) { return false; }
+    global $db_prefix;
+    if (false === mysql_unbuffered_query('INSERT INTO '.$db_prefix.'transactions (transaction_key) VALUES ("'.$key.'")')) { return false; }
     else { return true; }
 }
 
