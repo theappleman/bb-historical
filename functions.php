@@ -80,6 +80,7 @@ global $hurl, $accept;
   if ($id != 0) { $box = enclo_s('input','type="hidden" name="commentref" value="'.$id.'"'); }
     $box .= enclo_s('input','type="hidden" name="cat" value="'.$cat.'"');
     $box .= enclo_s('input','type="hidden" name="moderated"');
+    $box .= enclose('p','I implore you! Keep this text box empty:'.enclo_s('input','type="text" name="honeybun"'),'class="hidden"');
     $box .= enclo_s('input','type="hidden" name="transaction_key" value="'.get_transaction_key().'"');
     $box .= enclo_s('input','type="hidden" name="commentable" value="'.$ct.'"');
     $box .= enclo_s('input','type="hidden" name="MAX_FILE_SIZE" value="2097152" ');

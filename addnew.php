@@ -84,6 +84,15 @@ else {
 	} // Use of the string "google.us"
 }
 
+if (isset($_POST['honeybun'])) {
+	$honeybun = $_POST['honeybun'];
+	if ("$honeybun" != "") {
+		$allowed = false;
+	}
+} else {
+	$allowed = false;
+}
+
 $transaction_key = $_POST['transaction_key'];
 $_REQUEST[] = array();
 // Assuming nothing has gone horribly wrong above, handle the upload.
