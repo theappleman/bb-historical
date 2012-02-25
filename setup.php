@@ -9,11 +9,10 @@
 $connstr = "sqlite:db.db"; // SQLite; but be in a world-writable folder
 $db_prefix = ""; // prefix of database tables
 
-$rhurl = ""; // domain name (incl. .) e.g. ".applehq.eu"; remember to change .htaccess REQUIRED
+$hurl = ""; // URI to bb installation. Requires protocol (e.g. http://) or abs. path.
 $link = false; // Set true to use mod_rewrite
 
-$sitename = $cat; // string to use at the top of each page
-$secure = false; // Use HTTPS?
+$sitename = "Sitename - $cat"; // string to use at the top of each page
 $datefmt = "Y-m-d H:i:s"; // Another valid format is "c".
 $fuzzy = true; // turn on fuzzy dates. not an expensive operation, there is little reason to have this off
 $style = "style"; // stylesheet name
@@ -25,6 +24,8 @@ $snapcode = ""; // Your snap shots, just the number
 $nochat = array('comments'); // categories that will not be easily postable to.
 
 $uploaddir = getcwd()."/uploaded/"; // world writable folder for uploaded images. System absolute path - past the $hurl. Needs trailing slash
+// default is a directory below the current source directory
+
 // thumbnail max sizes DO NOT SET $height TO 0 (ZERO)
 $width = 320;
 $height = 240;

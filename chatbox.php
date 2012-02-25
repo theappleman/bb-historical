@@ -23,7 +23,7 @@ $query2 = $db->prepare('SELECT id,title,date,intro,image
 
 if ($out != "0") {
 	$query .= ' LIMIT :id';
-	$opts[':id'] = $id;
+	$opts[':id'] = $id + 1;
 }
 $getcat = $db->prepare($query);
 if ($getcat === FALSE)

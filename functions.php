@@ -28,16 +28,6 @@ try {
 	die("Error: " . $e->getMessage() . "<br />");
 }
 
-function hurl($secure, $cat, $rhurl)
-{
-	$hurl = $secure ? "https://" : "http://";
-	$hurl .= $cat;
-	$hurl .= $rhurl;
-	return $hurl;
-}
-
-$hurl = hurl($secure, $cat, $rhurl);
-
 function get_age($date, $fuzzy=true)
 {
 	if (!$fuzzy)
@@ -84,10 +74,10 @@ global $hurl, $accept;
     $box .= enclo_s('input','type="hidden" name="transaction_key" value="'.get_transaction_key().'"');
     $box .= enclo_s('input','type="hidden" name="commentable" value="'.$ct.'"');
     $box .= enclo_s('input','type="hidden" name="MAX_FILE_SIZE" value="2097152" ');
-		$box .= enclose('p','Name: '.enclo_s('input','name="title" tabindex="1" value="Anonymous" accesskey="q"').'&nbsp;'.enclo_s('input','type="file" accesskey="s" name="userfile" tabindex="3"'),'class="name"');
-		$box .= enclose('textarea',$message,'name="intro" rows="5" cols="100" tabindex="2" accesskey="w"');
-		$box .= enclose('div',enclo_s('input','type="submit" tabindex=4" value="Lets go!"'),'class="foot"');
-		$box = enclose('form',$box,'action="'.$hurl.'/addnew.php" method="post" enctype="multipart/form-data"');
+    $box .= enclose('p','Name: '.enclo_s('input','name="title" tabindex="1" value="anonymous" accesskey="q"').'&nbsp;'.enclo_s('input','type="file" accesskey="s" name="userfile" tabindex="3"'),'class="name"');
+    $box .= enclose('textarea',$message,'name="intro" rows="5" cols="100" tabindex="2" accesskey="w"');
+    $box .= enclose('div',enclo_s('input','type="submit" tabindex=4" value="Lets go!"'),'class="foot"');
+    $box = enclose('form',$box,'action="'.$hurl.'/addnew.php" method="post" enctype="multipart/form-data"');
     return $box;
 }
 
@@ -112,7 +102,7 @@ function finish_up($head,$body,$show=false) {
   $body = enclose('div',$body,'id="content"') . menu($show);
   $head = enclose('head',$head,'');
   $body = enclose('body',$body,'');
-  $finish = enclose('html',$head . $body,'xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"');
+  $finish = '<!DOCTYPE html>' . $head . $body . '</html>'; // HTML5!
   return $finish;
 }
 
@@ -121,7 +111,7 @@ function show_pic($image) {
   global $uploaddir, $hurl, $snapcode;
   if ( is_image($uploaddir.$image)) {
     list($thumb,$rand) = explode('-',$image,2);
-    if($thumb == "thumb" && is_image($uploaddir."thumb-" . $rand)) {
+    if($thumb == "thumb" && is_image($uploaddir.$rand)) {
       $thumbname = "thumb-" . $rand;
       $filename = $rand;
     } else {
